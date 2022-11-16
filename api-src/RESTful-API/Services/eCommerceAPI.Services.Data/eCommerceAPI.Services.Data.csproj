@@ -14,4 +14,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\eCommerceAPI.Data.Models\eCommerceAPI.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\eCommerceAPI.Data\eCommerceAPI.Data.csproj" />
+    <ProjectReference Include="..\..\eCommerce-RESTful-API\RESTful-API.csproj" />
+    <ProjectReference Include="..\..\eCommerceAPI.InputModels\eCommerceAPI.InputModels.csproj" />
+    <ProjectReference Include="..\..\eCommerceAPI.ViewModels\eCommerceAPI.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

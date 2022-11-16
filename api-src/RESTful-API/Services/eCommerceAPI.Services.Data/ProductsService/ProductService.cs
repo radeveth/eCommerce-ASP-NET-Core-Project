@@ -1,19 +1,22 @@
 ﻿namespace eCommerceAPI.Services.Data.ProductsService
 {
     using System.Threading.Tasks;
+    using AutoMapper;
     using eCommerceAPI.Data;
     using eCommerceAPI.Data.Models;
-    using eCommerceAPI.Data.Models.Enums;
     using eCommerceAPI.InputModels.Products;
-    using static System.Runtime.InteropServices.JavaScript.JSType;
+    using eCommerceAPI.ViewModels.Products;
+    using Microsoft.EntityFrameworkCore;
 
     public class ProductService : IProductService
     {
         private readonly EcommerceApiDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public ProductService(EcommerceApiDbContext dbContext)
+        public ProductService(EcommerceApiDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         public async Task CreateAsync(ProductFormModel productForm)
@@ -45,6 +48,21 @@
                 await this.dbContext.ProductCategories.AddAsync(productCategory);
                 await this.dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<T> GetViewModelById<T>(int id)
+        {
+            Product? product = await this.dbContext
+                .Products
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            return this.mapper.Map<T>(product);
+        }
+
+        public async Task<IEnumerable<ProductViewModel>> GetAll()
+        {
+            return this.mapper
+                .Map<IEnumerable<ProductViewModel>>(this.dbContext.Products);
         }
     }
 }

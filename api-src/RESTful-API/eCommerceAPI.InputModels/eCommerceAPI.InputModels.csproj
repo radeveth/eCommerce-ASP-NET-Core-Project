@@ -13,4 +13,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Data\eCommerceAPI.Data.Common\eCommerceAPI.Data.Common.csproj" />
+    <ProjectReference Include="..\Data\eCommerceAPI.Data.Models\eCommerceAPI.Data.Models.csproj" />
+  </ItemGroup>
+
 </Project>
