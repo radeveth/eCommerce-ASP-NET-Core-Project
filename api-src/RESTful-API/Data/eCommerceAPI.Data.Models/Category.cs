@@ -12,6 +12,7 @@
             this.ProductCategories = new HashSet<ProductCategory>();
         }
 
+        [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
