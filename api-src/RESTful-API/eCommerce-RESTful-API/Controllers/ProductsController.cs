@@ -8,18 +8,19 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using System.Text;
 
     [Route("api/[controller]/")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductsController> _logger;
+        private readonly ILogger<ProductsController> logger;
         private readonly EcommerceApiDbContext dbContext;
         private readonly IMapper mapper;
 
         public ProductsController(ILogger<ProductsController> logger, EcommerceApiDbContext dbContext, IMapper mapper)
         {
-            this._logger = logger;
+            this.logger = logger;
             this.dbContext = dbContext;
             this.mapper = mapper;
         }
@@ -27,6 +28,8 @@
         [HttpGet]
         public async Task<ActionResult<ProductViewModel>> GetByIdAsync(int id)
         {
+            this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetByIdAsync"));
+
             Product? product = await this.dbContext
                 .Products
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -37,13 +40,17 @@
         [HttpGet("all")]
         public IEnumerable<ProductViewModel> GetAll()
         {
+            this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetAll"));
+
             return this.mapper
                 .Map<IEnumerable<ProductViewModel>>(this.dbContext.Products);
         }
 
         [HttpPost]
-        public async Task<JsonResult> CreateAsync([FromBody] ProductFormModel productForm)
+        public async Task<JsonResult> CreateAsync([FromBody] ProductFormModel productForm, params string[] actionParams)
         {
+            this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "CreateAsync"));
+
             if (!this.ModelState.IsValid)
             {
                 IEnumerable<string> errorMessages = this.ModelState
@@ -90,6 +97,13 @@
             }
 
             return new JsonResult(this.Ok("Product successfully created!"));
+        }
+
+        private static string LogRequestInformation(string method, string actionName)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            return $"Method: {method}; Controller: ProductsController; Action: {actionName};";
         }
     }
 }

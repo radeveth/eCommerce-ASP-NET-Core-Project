@@ -1,8 +1,9 @@
 namespace eCommerce_RESTful_API
 {
     using eCommerceAPI.Data;
+    using EFCore.AutomaticMigrations;
     using Microsoft.EntityFrameworkCore;
-
+    using System.Threading.Tasks;
     using static eCommerceAPI.Mappings.ApplicationProfile;
 
     public class Program
@@ -10,18 +11,19 @@ namespace eCommerce_RESTful_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
 
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
 
-            builder.Services.AddDbContext<EcommerceApiDbContext>(
-            options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<EcommerceApiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddAutoMapper(config =>
             {
                 config.AddProfile<ProductsProfile>();
                 config.AddProfile<CategoriesProffile>();
                 config.AddProfile<ImageProfile>();
+                config.AddProfile<ApplicationUsersProffile>();
             });
 
             // Add services to the container.
@@ -31,13 +33,12 @@ namespace eCommerce_RESTful_API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                //app.UseMigrationsEndPoint();
             }
 
             app.UseHttpsRedirection();

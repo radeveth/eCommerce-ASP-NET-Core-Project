@@ -1,7 +1,11 @@
 ﻿namespace eCommerceAPI.Mappings
 {
+    using System.Linq;
     using AutoMapper;
     using eCommerceAPI.Data.Models;
+    using eCommerceAPI.ViewModels.ApplicationUsers;
+    using eCommerceAPI.ViewModels.Categories;
+    using eCommerceAPI.ViewModels.Images;
     using eCommerceAPI.ViewModels.Products;
 
     public class ApplicationProfile
@@ -20,7 +24,7 @@
         {
             public ImageProfile()
             {
-                this.CreateMap<Image, ProductImageViewModel>();
+                this.CreateMap<Image, ImageViewModel>();
             }
         }
 
@@ -28,7 +32,20 @@
         {
             public CategoriesProffile()
             {
-                // this.CreateMap<>();
+                this.CreateMap<Category, CategoryViewModel>()
+                    .ForMember(x => x.Image, y => y.MapFrom(s => s.ProductCategories
+                        .Select(p => p.Product)
+                        .OrderByDescending(p => p.Reviews.Sum(r => (int)r.ReviewScale) / p.Reviews.Count)
+                        .FirstOrDefault()
+                        .Images.FirstOrDefault()));
+            }
+        }
+
+        public class ApplicationUsersProffile : Profile
+        {
+            public ApplicationUsersProffile()
+            {
+                this.CreateMap<ApplicationUser, ApplicationUserViewModel>();
             }
         }
     }

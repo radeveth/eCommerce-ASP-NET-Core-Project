@@ -1,6 +1,6 @@
-﻿namespace eCommerceAPI.ViewModels.Products
+﻿namespace eCommerceAPI.ViewModels.Images
 {
-    public class ProductImageViewModel
+    public class ImageViewModel
     {
         public string Name { get; set; }
 

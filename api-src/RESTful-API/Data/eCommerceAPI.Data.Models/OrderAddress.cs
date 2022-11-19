@@ -6,12 +6,12 @@
 
     using static eCommerceAPI.Data.Common.DataValidation.ApplicationUserAddressValidation;
 
-    public class ApplicationUserAddress : BaseDeleteableModel<int>
+    public class OrderAddress : BaseDeleteableModel<int>
     {
-        [ForeignKey(nameof(ApplicationUser))]
-        public int UserId { get; set; }
-
-        public ApplicationUser User { get; set; }
+        public OrderAddress()
+        {
+            this.Orders = new HashSet<Order>();
+        }
 
         [MaxLength(CountryMaxLength)]
         public string Country { get; set; }
@@ -23,5 +23,7 @@
 
         [MaxLength(AddressMaxLength)]
         public string Address { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

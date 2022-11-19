@@ -19,7 +19,7 @@
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-        public DbSet<ApplicationUserAddress> ApplicationUserAddresses { get; set; }
+        public DbSet<OrderAddress> OrderAddresses { get; set; }
 
         public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
 
@@ -55,7 +55,7 @@
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ApplicationUserRoleConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationUserAddressConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderAddressConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

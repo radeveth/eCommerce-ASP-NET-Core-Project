@@ -32,12 +32,6 @@
 
         public Gender Gender { get; set; }
 
-        public string Phone { get; set; }
-
-        public int AddressId { get; set; }
-
-        public ApplicationUserAddress Address { get; set; }
-
         public ICollection<ApplicationUserRole> ApplicationUserRoles { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }

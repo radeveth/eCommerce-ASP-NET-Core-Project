@@ -6,6 +6,7 @@
 
     public class CategoryFoemModel
     {
+        [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Name field should be between {2} an {1}")]
         public string Name { get; set; }
 

@@ -27,8 +27,10 @@
 
         public string PostalCode { get; set; }
 
-        [MaxLength(AddressMaxLength)]
-        public string Address { get; set; }
+        [ForeignKey(nameof(OrderAddress))]
+        public int AddressId { get; set; }
+
+        public OrderAddress Address { get; set; }
 
         public decimal Price { get; set; }
 

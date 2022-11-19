@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerceAPI.Data;
 
@@ -11,9 +12,11 @@ using eCommerceAPI.Data;
 namespace eCommerceAPI.Data.Migrations
 {
     [DbContext(typeof(EcommerceApiDbContext))]
-    partial class EcommerceApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221119214849_RemovingPropertyForAddressInApplicationUserEntityAndAddingAddressPropertyForOrderEntity")]
+    partial class RemovingPropertyForAddressInApplicationUserEntityAndAddingAddressPropertyForOrderEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -343,7 +346,7 @@ namespace eCommerceAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderAddresses");
+                    b.ToTable("ApplicationUserAddresses");
                 });
 
             modelBuilder.Entity("eCommerceAPI.Data.Models.Product", b =>

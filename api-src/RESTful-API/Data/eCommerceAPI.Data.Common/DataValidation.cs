@@ -27,6 +27,8 @@
         {
             public const int FullNameMaxLength = 100;
             public const int UsernameMaxLength = 30;
+            public const int PasswordMaxLength = 3;
+            public const int PasswordMinLength = 100;
         }
 
         public static class ImageValidation
