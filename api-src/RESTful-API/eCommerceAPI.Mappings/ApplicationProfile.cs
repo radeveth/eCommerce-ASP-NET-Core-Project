@@ -1,6 +1,5 @@
-﻿namespace eCommerceAPI.Services.Mappings
+﻿namespace eCommerceAPI.Mappings
 {
-    using System.Linq;
     using AutoMapper;
     using eCommerceAPI.Data.Models;
     using eCommerceAPI.ViewModels.Products;

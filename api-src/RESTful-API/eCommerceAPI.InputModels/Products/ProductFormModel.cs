@@ -26,14 +26,12 @@
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = "Description field should be between {2} and {1}.")]
         public string Description { get; set; }
 
-        public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
+        public IEnumerable<int> Categories { get; set; }
 
         [Required(ErrorMessage = "Brand field is required.")]
         public int BrandId { get; set; }
 
-        public IEnumerable<ProductBrandViewModel> Brands { get; set; }
-
-        [Required]
+        //[Required]
         public string UserId { get; set; }
     }
 }

@@ -8,10 +8,16 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
-    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.435">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data\eCommerceAPI.Data.Models\eCommerceAPI.Data.Models.csproj" />
+    <ProjectReference Include="..\eCommerceAPI.InputModels\eCommerceAPI.InputModels.csproj" />
+    <ProjectReference Include="..\eCommerceAPI.ViewModels\eCommerceAPI.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

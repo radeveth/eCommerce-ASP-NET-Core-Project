@@ -1,9 +1,9 @@
 namespace eCommerce_RESTful_API
 {
-    using eCommerceAPI.Services.Data.CategoriesService;
-    using eCommerceAPI.Services.Data.ProductsService;
+    using eCommerceAPI.Data;
+    using Microsoft.EntityFrameworkCore;
 
-    using static eCommerceAPI.Services.Mappings.ApplicationProfile;
+    using static eCommerceAPI.Mappings.ApplicationProfile;
 
     public class Program
     {
@@ -11,15 +11,18 @@ namespace eCommerce_RESTful_API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+
+            builder.Services.AddDbContext<EcommerceApiDbContext>(
+            options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
             builder.Services.AddAutoMapper(config =>
             {
                 config.AddProfile<ProductsProfile>();
                 config.AddProfile<CategoriesProffile>();
                 config.AddProfile<ImageProfile>();
             });
-
-            builder.Services.AddTransient<IProductService, ProductService>();
-            builder.Services.AddTransient<ICategoryService, CategoryService>();
 
             // Add services to the container.
             builder.Services.AddControllers();

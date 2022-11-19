@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Categories\" />
-    <Folder Include="Products\" />
+    <ProjectReference Include="..\Data\eCommerceAPI.Data.Models\eCommerceAPI.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>
