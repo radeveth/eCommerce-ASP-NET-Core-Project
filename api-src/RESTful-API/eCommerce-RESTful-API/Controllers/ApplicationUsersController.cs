@@ -1,39 +1,29 @@
 ﻿namespace eCommerce_RESTful_API.Controllers
 {
-    using AutoMapper;
-    using BCrypt.Net;
-    using eCommerceAPI.Data;
-    using eCommerceAPI.Data.Models;
     using eCommerceAPI.InputModels.ApplicationUsers;
+    using eCommerceAPI.Services.Data.ApplicationUsersServices;
     using eCommerceAPI.ViewModels.ApplicationUsers;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
 
     [Route("api/[controller]/")]
     [ApiController]
     public class ApplicationUsersController : ControllerBase
     {
-        private readonly IMapper mapper;
-        private readonly EcommerceApiDbContext dbContext;
         private readonly ILogger<ApplicationUsersController> logger;
+        private readonly IApplicationUserService applicationUserService;
 
-        public ApplicationUsersController(ILogger<ApplicationUsersController> logger, EcommerceApiDbContext dbContext, IMapper mapper)
+        public ApplicationUsersController(ILogger<ApplicationUsersController> logger, IApplicationUserService applicationUserService)
         {
-            this.mapper = mapper;
-            this.dbContext = dbContext;
             this.logger = logger;
+            this.applicationUserService = applicationUserService;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUserViewModel>> GetById(string id)
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetById"));
 
-            ApplicationUser applicationUser = await this.dbContext
-                .ApplicationUsers
-                .FirstOrDefaultAsync(a => a.Id == id);
-
-            return this.mapper.Map<ApplicationUserViewModel>(applicationUser);
+            return await this.applicationUserService.GetById(id);
         }
 
         [HttpGet("all")]
@@ -41,11 +31,11 @@
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetAll"));
 
-            return this.mapper.Map<IEnumerable<ApplicationUserViewModel>>(this.dbContext.ApplicationUsers);
+            return this.applicationUserService.GetAll();
         }
 
         [HttpPost]
-        public async Task<JsonResult> CreateAsync(ApplicationUserFromModel userForm)
+        public async Task<JsonResult> CreateAsync([FromBody] ApplicationUserFromModel userForm)
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "CreateAsync"));
 
@@ -59,23 +49,9 @@
                 return new JsonResult(errorMessages);
             }
 
-            string randomSalt = BCrypt.GenerateSalt(10);
-            string hashedPassword = BCrypt.HashPassword(userForm.PasswordHash, randomSalt);
-            userForm.PasswordHash = hashedPassword;
-
             try
             {
-                ApplicationUser applicationUser = new ApplicationUser()
-                {
-                    Username = userForm.Username,
-                    PasswordHash = userForm.PasswordHash,
-                    Email = userForm.Email,
-                    FullName = userForm.FullName,
-                    Gender = userForm.Gender,
-                };
-
-                await this.dbContext.ApplicationUsers.AddAsync(applicationUser);
-                await this.dbContext.SaveChangesAsync();
+                await this.applicationUserService.CreateAsync(userForm);
             }
             catch (Exception ex)
             {
@@ -83,6 +59,19 @@
             }
 
             return new JsonResult(this.Ok("User successfully created."));
+        }
+
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] ApplicationUserCred userCred)
+        {
+            var token = this.applicationUserService.Authorization(userCred);
+
+            if (token == null)
+            {
+                return this.Unauthorized();
+            }
+
+            return this.Ok(token);
         }
 
         private static string LogRequestInformation(string method, string actionName)

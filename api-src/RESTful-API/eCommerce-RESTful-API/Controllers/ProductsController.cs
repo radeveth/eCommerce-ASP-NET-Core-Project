@@ -7,6 +7,7 @@
     using eCommerceAPI.InputModels.Products;
     using eCommerceAPI.Services.Data.ProductsServices;
     using eCommerceAPI.ViewModels.Products;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -24,12 +25,14 @@
             this.productService = productService;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductViewModel>> GetByIdAsync(int id)
+        public async Task<string> GetByIdAsync(int id)
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetByIdAsync"));
 
-            return await this.productService.GetByIdAsync(id);
+            return id.ToString() + "--";
+            //return await this.productService.GetByIdAsync(id);
         }
 
         [HttpGet("all")]
@@ -57,7 +60,7 @@
 
             try
             {
-                this.productService.CreateAsync(productForm);
+                await this.productService.CreateAsync(productForm);
             }
             catch (Exception ex)
             {

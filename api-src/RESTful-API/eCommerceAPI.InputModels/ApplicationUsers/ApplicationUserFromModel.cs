@@ -18,7 +18,7 @@
         public string Email { get; set; }
 
         [Required]
-        [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength, ErrorMessage = "Password should be between {2} an {1}")]
+        //[StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength, ErrorMessage = "Password should be between {2} an {1}")]
         public string PasswordHash { get; set; }
 
         public Gender Gender { get; set; }
