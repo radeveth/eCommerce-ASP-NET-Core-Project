@@ -4,6 +4,7 @@
     using eCommerceAPI.Data;
     using eCommerceAPI.Data.Models;
     using eCommerceAPI.InputModels.Categories;
+    using eCommerceAPI.Services.Data.CategoriesServices;
     using eCommerceAPI.ViewModels.Categories;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -12,27 +13,21 @@
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly IMapper mapper;
-        private readonly EcommerceApiDbContext dbContext;
         private readonly ILogger<ProductsController> logger;
+        private readonly ICategoryService categoryService;
 
-        public CategoriesController(ILogger<ProductsController> logger, EcommerceApiDbContext dbContext, IMapper mapper)
+        public CategoriesController(ILogger<ProductsController> logger, ICategoryService categoryService)
         {
-            this.mapper = mapper;
-            this.dbContext = dbContext;
             this.logger = logger;
+            this.categoryService = categoryService;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<CategoryViewModel>> GetByIdAync(int id)
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetByIdAsync"));
 
-            Category category = await this.dbContext
-                .Categories
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            return this.mapper.Map<CategoryViewModel>(category);
+            return await this.categoryService.GetByIdAync(id);
         }
 
         [HttpGet("all")]
@@ -40,13 +35,11 @@
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetAll"));
 
-            IEnumerable<Category> categories = this.dbContext.Categories;
-
-            return this.mapper.Map<IEnumerable<CategoryViewModel>>(categories);
+            return this.categoryService.GetAll();
         }
 
         [HttpPost]
-        public async Task<JsonResult> CreateAsync(CategoryFoemModel categoryFoem)
+        public async Task<JsonResult> CreateAsync(CategoryFoemModel categoryForm)
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "CreateAsync"));
 
@@ -62,15 +55,7 @@
 
             try
             {
-                Category category = new Category()
-                {
-                    Name = categoryFoem.Name,
-                    Description = categoryFoem.Description,
-                    UserId = categoryFoem.UserId,
-                };
-
-                await this.dbContext.Categories.AddAsync(category);
-                await this.dbContext.SaveChangesAsync();
+                await this.categoryService.CreateAsync(categoryForm);
             }
             catch (Exception ex)
             {

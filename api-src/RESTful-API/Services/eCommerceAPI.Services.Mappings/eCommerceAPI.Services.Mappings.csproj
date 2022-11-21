@@ -15,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\eCommerceAPI.Data.Models\eCommerceAPI.Data.Models.csproj" />
-    <ProjectReference Include="..\eCommerceAPI.InputModels\eCommerceAPI.InputModels.csproj" />
-    <ProjectReference Include="..\eCommerceAPI.ViewModels\eCommerceAPI.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Data\eCommerceAPI.Data.Models\eCommerceAPI.Data.Models.csproj" />
+    <ProjectReference Include="..\..\eCommerceAPI.InputModels\eCommerceAPI.InputModels.csproj" />
+    <ProjectReference Include="..\..\eCommerceAPI.ViewModels\eCommerceAPI.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

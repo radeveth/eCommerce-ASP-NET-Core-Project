@@ -1,40 +1,35 @@
 ﻿namespace eCommerce_RESTful_API.Controllers
 {
+    using System.Text;
     using AutoMapper;
     using eCommerceAPI.Data;
     using eCommerceAPI.Data.Models;
     using eCommerceAPI.InputModels.Products;
+    using eCommerceAPI.Services.Data.ProductsServices;
     using eCommerceAPI.ViewModels.Products;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-    using System.Text;
 
     [Route("api/[controller]/")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
         private readonly ILogger<ProductsController> logger;
-        private readonly EcommerceApiDbContext dbContext;
-        private readonly IMapper mapper;
+        private readonly IProductService productService;
 
-        public ProductsController(ILogger<ProductsController> logger, EcommerceApiDbContext dbContext, IMapper mapper)
+        public ProductsController(ILogger<ProductsController> logger, IProductService productService)
         {
             this.logger = logger;
-            this.dbContext = dbContext;
-            this.mapper = mapper;
+            this.productService = productService;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ProductViewModel>> GetByIdAsync(int id)
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetByIdAsync"));
 
-            Product? product = await this.dbContext
-                .Products
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            return this.mapper.Map<ProductViewModel>(product);
+            return await this.productService.GetByIdAsync(id);
         }
 
         [HttpGet("all")]
@@ -42,12 +37,11 @@
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetAll"));
 
-            return this.mapper
-                .Map<IEnumerable<ProductViewModel>>(this.dbContext.Products);
+            return this.productService.GetAll();
         }
 
         [HttpPost]
-        public async Task<JsonResult> CreateAsync([FromBody] ProductFormModel productForm, params string[] actionParams)
+        public async Task<JsonResult> CreateAsync([FromBody] ProductFormModel productForm)
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "CreateAsync"));
 
@@ -63,33 +57,7 @@
 
             try
             {
-                Product product = new Product()
-                {
-                    Name = productForm.Name,
-                    Price = productForm.Price,
-                    Description = productForm.Description,
-                    Status = productForm.Status,
-                    Quantity = productForm.Quantity,
-                    BrandId = productForm.BrandId,
-                    UserId = productForm.UserId,
-                    CreatedOn = DateTime.UtcNow,
-                    IsDeleted = false,
-                };
-
-                await this.dbContext.Products.AddAsync(product);
-                await this.dbContext.SaveChangesAsync();
-
-                foreach (var category in productForm.Categories)
-                {
-                    ProductCategory productCategory = new ProductCategory()
-                    {
-                        ProductId = product.Id,
-                        CategoryId = category,
-                    };
-
-                    await this.dbContext.ProductCategories.AddAsync(productCategory);
-                    await this.dbContext.SaveChangesAsync();
-                }
+                this.productService.CreateAsync(productForm);
             }
             catch (Exception ex)
             {

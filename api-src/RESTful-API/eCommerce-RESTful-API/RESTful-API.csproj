@@ -30,12 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\eCommerceAPI.Data.Common\eCommerceAPI.Data.Common.csproj" />
-    <ProjectReference Include="..\Data\eCommerceAPI.Data.Models\eCommerceAPI.Data.Models.csproj" />
-    <ProjectReference Include="..\Data\eCommerceAPI.Data\eCommerceAPI.Data.csproj" />
     <ProjectReference Include="..\eCommerceAPI.InputModels\eCommerceAPI.InputModels.csproj" />
-    <ProjectReference Include="..\eCommerceAPI.Mappings\eCommerceAPI.Mappings.csproj" />
     <ProjectReference Include="..\eCommerceAPI.ViewModels\eCommerceAPI.ViewModels.csproj" />
+    <ProjectReference Include="..\Services\eCommerceAPI.Services.Data\eCommerceAPI.Services.Data.csproj" />
+    <ProjectReference Include="..\Services\eCommerceAPI.Services.Mappings\eCommerceAPI.Services.Mappings.csproj" />
   </ItemGroup>
 
 </Project>

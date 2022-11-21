@@ -41,7 +41,7 @@
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetAll"));
 
-            return mapper.Map<IEnumerable<ApplicationUserViewModel>>(this.dbContext.ApplicationUsers);
+            return this.mapper.Map<IEnumerable<ApplicationUserViewModel>>(this.dbContext.ApplicationUsers);
         }
 
         [HttpPost]
@@ -82,7 +82,7 @@
                 return new JsonResult(ex.Message);
             }
 
-            return new JsonResult(Ok("User successfully created."));
+            return new JsonResult(this.Ok("User successfully created."));
         }
 
         private static string LogRequestInformation(string method, string actionName)

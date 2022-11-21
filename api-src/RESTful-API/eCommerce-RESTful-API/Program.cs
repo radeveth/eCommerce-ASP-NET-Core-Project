@@ -1,17 +1,16 @@
 namespace eCommerce_RESTful_API
 {
     using eCommerceAPI.Data;
-    using EFCore.AutomaticMigrations;
+    using eCommerceAPI.Services.Data.CategoriesServices;
+    using eCommerceAPI.Services.Data.ProductsServices;
     using Microsoft.EntityFrameworkCore;
-    using System.Threading.Tasks;
-    using static eCommerceAPI.Mappings.ApplicationProfile;
+    using static eCommerceAPI.Services.Mappings.ApplicationProfile;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var app = builder.Build();
 
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
@@ -28,21 +27,24 @@ namespace eCommerce_RESTful_API
 
             // Add services to the container.
             builder.Services.AddControllers();
+            builder.Services.AddTransient<ICategoryService, CategoryService>();
+            builder.Services.AddTransient<IProductService, ProductService>();
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                //app.UseMigrationsEndPoint();
             }
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
