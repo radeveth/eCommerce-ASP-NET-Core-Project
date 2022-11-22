@@ -20,31 +20,31 @@
                 {
                     Name = "Smartphones",
                     Description = "",
-                    UserId = "1044379359483265024",// dbContext.ApplicationUserRoles.Select(a => a.UserId).FirstOrDefault()
+                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id,
                 },
                 new Category()
                 {
                     Name = "Electric Appliances",
                     Description = "",
-                    UserId = "1044379359483265024",
+                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id,
                 },
                 new Category()
                 {
                     Name = "Fashion",
                     Description = "",
-                    UserId = "1044379359483265024",
+                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id,
                 },
                 new Category()
                 {
                     Name = "Sports",
                     Description = "",
-                    UserId = "1044379359483265024",
+                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id,
                 },
                 new Category()
                 {
                     Name = "Gaming",
                     Description = "",
-                    UserId = "1044379359483265024",
+                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id,
                 },
             };
 

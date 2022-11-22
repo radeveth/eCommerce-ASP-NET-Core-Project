@@ -380,7 +380,6 @@ namespace eCommerceAPI.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("OrderId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Price")
@@ -538,8 +537,7 @@ namespace eCommerceAPI.Data.Migrations
                     b.HasOne("eCommerceAPI.Data.Models.Order", "Order")
                         .WithMany("Products")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("eCommerceAPI.Data.Models.ApplicationUser", "User")
                         .WithMany("Products")

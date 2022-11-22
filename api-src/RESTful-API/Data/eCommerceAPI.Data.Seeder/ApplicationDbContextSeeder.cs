@@ -22,6 +22,7 @@
             var seeders = new List<ISeeder>
             {
                 new CategoriesSeeder(),
+                new ProductsSeeder(),
             };
 
             foreach (var seeder in seeders)

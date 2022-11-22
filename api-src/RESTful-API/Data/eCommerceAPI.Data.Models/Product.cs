@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Diagnostics.CodeAnalysis;
     using eCommerceAPI.Data.Common.Models;
     using eCommerceAPI.Data.Models.Enums;
 
@@ -43,8 +44,9 @@
 
         public ApplicationUser User { get; set; }
 
+        [AllowNull]
         [ForeignKey(nameof(Order))]
-        public string OrderId { get; set; }
+        public string? OrderId { get; set; }
 
         public Order Order { get; set; }
 

@@ -12,8 +12,8 @@ using eCommerceAPI.Data;
 namespace eCommerceAPI.Data.Migrations
 {
     [DbContext(typeof(EcommerceApiDbContext))]
-    [Migration("20221119100219_test1")]
-    partial class test1
+    [Migration("20221122223104_InitialSetUp")]
+    partial class InitialSetUp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,9 +56,6 @@ namespace eCommerceAPI.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -87,10 +84,6 @@ namespace eCommerceAPI.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -98,57 +91,7 @@ namespace eCommerceAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
-
                     b.ToTable("ApplicationUsers");
-                });
-
-            modelBuilder.Entity("eCommerceAPI.Data.Models.ApplicationUserAddress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationUserAddresses");
                 });
 
             modelBuilder.Entity("eCommerceAPI.Data.Models.ApplicationUserRole", b =>
@@ -305,10 +248,8 @@ namespace eCommerceAPI.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -357,9 +298,55 @@ namespace eCommerceAPI.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("eCommerceAPI.Data.Models.OrderAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderAddresses");
                 });
 
             modelBuilder.Entity("eCommerceAPI.Data.Models.Product", b =>
@@ -483,17 +470,6 @@ namespace eCommerceAPI.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("eCommerceAPI.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("eCommerceAPI.Data.Models.ApplicationUserAddress", "Address")
-                        .WithOne("User")
-                        .HasForeignKey("eCommerceAPI.Data.Models.ApplicationUser", "AddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("eCommerceAPI.Data.Models.ApplicationUserRole", b =>
                 {
                     b.HasOne("eCommerceAPI.Data.Models.ApplicationRole", "Role")
@@ -537,11 +513,19 @@ namespace eCommerceAPI.Data.Migrations
 
             modelBuilder.Entity("eCommerceAPI.Data.Models.Order", b =>
                 {
+                    b.HasOne("eCommerceAPI.Data.Models.OrderAddress", "Address")
+                        .WithMany("Orders")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("eCommerceAPI.Data.Models.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Address");
 
                     b.Navigation("User");
                 });
@@ -629,12 +613,6 @@ namespace eCommerceAPI.Data.Migrations
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("eCommerceAPI.Data.Models.ApplicationUserAddress", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("eCommerceAPI.Data.Models.Brand", b =>
                 {
                     b.Navigation("Products");
@@ -648,6 +626,11 @@ namespace eCommerceAPI.Data.Migrations
             modelBuilder.Entity("eCommerceAPI.Data.Models.Order", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("eCommerceAPI.Data.Models.OrderAddress", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("eCommerceAPI.Data.Models.Product", b =>

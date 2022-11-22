@@ -18,7 +18,5 @@
         public int? YearOfFoundation { get; set; }
 
         public string FounderName { get; set; }
-
-        public virtual ICollection<Product> Products { get; set; }
     }
 }

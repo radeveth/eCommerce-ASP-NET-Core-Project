@@ -20,7 +20,7 @@
         }
 
         [HttpPost]
-        public async Task<JsonResult> CreateAsync(BrandFormModel brandForm)
+        public async Task<JsonResult> CreateAsync([FromBody] BrandFormModel brandForm)
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "CreateAsync"));
 
@@ -42,6 +42,7 @@
             {
                 return new JsonResult(ex.Message);
             }
+
             return new JsonResult(this.Ok("Brand successfully created!"));
         }
 
