@@ -21,9 +21,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerceAPI.Data.Common", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{68BF2F3B-F515-4A01-AED1-00479D21CD68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceAPI.Services.Mappings", "Services\eCommerceAPI.Services.Mappings\eCommerceAPI.Services.Mappings.csproj", "{4982DC26-904B-4E61-BB6B-9070EB9C5480}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerceAPI.Services.Mappings", "Services\eCommerceAPI.Services.Mappings\eCommerceAPI.Services.Mappings.csproj", "{4982DC26-904B-4E61-BB6B-9070EB9C5480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceAPI.Services.Data", "Services\eCommerceAPI.Services.Data\eCommerceAPI.Services.Data.csproj", "{1B483521-9F3D-407A-8802-C8FF3B7E199C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerceAPI.Services.Data", "Services\eCommerceAPI.Services.Data\eCommerceAPI.Services.Data.csproj", "{1B483521-9F3D-407A-8802-C8FF3B7E199C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5A3790A1-FC88-4D22-972E-DD689C35DDE9}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

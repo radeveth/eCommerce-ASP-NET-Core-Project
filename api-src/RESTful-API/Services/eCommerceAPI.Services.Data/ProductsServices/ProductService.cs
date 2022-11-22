@@ -5,6 +5,7 @@
     using eCommerceAPI.Data.Models;
     using eCommerceAPI.InputModels.Products;
     using eCommerceAPI.ViewModels.Products;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
 
     public class ProductService : IProductService
@@ -49,6 +50,33 @@
 
             await this.dbContext.Products.AddAsync(product);
             await this.dbContext.SaveChangesAsync();
+
+            try
+            {
+                int imagesCounter = 0;
+                foreach (var image in productForm.Images)
+                {
+                    IFormFile imageFile = image.Src;
+
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        imagesCounter++;
+                        using var stream = new MemoryStream();
+                        await imageFile.CopyToAsync(stream);
+
+                        Image newImage = new Image()
+                        {
+                            Name = $"{product.Name.Replace(" ", "-")}_{imagesCounter}",
+                            Src = stream.ToArray(),
+                            ProductId = product.Id,
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
 
             foreach (var category in productForm.Categories)
             {

@@ -2,7 +2,9 @@ namespace eCommerce_RESTful_API
 {
     using System.Text;
     using eCommerceAPI.Data;
+    using eCommerceAPI.Data.Seeder;
     using eCommerceAPI.Services.Data.ApplicationUsersServices;
+    using eCommerceAPI.Services.Data.BrandsServices;
     using eCommerceAPI.Services.Data.CategoriesServices;
     using eCommerceAPI.Services.Data.ProductsServices;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +38,7 @@ namespace eCommerce_RESTful_API
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IProductService, ProductService>();
             builder.Services.AddTransient<IApplicationUserService, ApplicationUserService>();
+            builder.Services.AddTransient<IBrandService, BrandService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -63,6 +66,13 @@ namespace eCommerce_RESTful_API
 
             var app = builder.Build();
 
+            using (var serviceScope = app.Services.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<EcommerceApiDbContext>();
+                dbContext.Database.Migrate();
+                new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+            }
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -70,6 +80,7 @@ namespace eCommerce_RESTful_API
                 app.UseSwaggerUI();
                 app.UseMigrationsEndPoint();
             }
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

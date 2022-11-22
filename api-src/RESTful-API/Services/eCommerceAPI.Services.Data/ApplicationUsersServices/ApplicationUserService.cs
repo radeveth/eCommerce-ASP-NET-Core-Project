@@ -1,6 +1,7 @@
 ﻿namespace eCommerceAPI.Services.Data.ApplicationUsersServices
 {
     using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
     using System.Security.Claims;
     using System.Text;
     using AutoMapper;
@@ -61,34 +62,36 @@
 
         public string Authorization(ApplicationUserCred userCred)
         {
-            // TODO:
-            //if (!this.dbContext.ApplicationUsers.Any(a => a.Username == userCred.Username && ValidatePassword(userCred.Password, a.PasswordHash)))
-            //{
-            //    return null;
-            //}
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this.tokenKey);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            foreach (var user in this.dbContext.ApplicationUsers)
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                if ((bool)BCrypt.Verify(userCred.Password, user.PasswordHash) && user.Username == userCred.Username)
                 {
-                    new Claim(ClaimTypes.Name, userCred.Username),
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            };
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes(this.tokenKey);
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                    new Claim(ClaimTypes.Name, userCred.Username),
+                        }),
+                        Expires = DateTime.UtcNow.AddHours(1),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                    };
+
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    return tokenHandler.WriteToken(token);
+                }
+            }
+
+            return null;
         }
 
-        private static bool ValidatePassword(string password, string correctHash)
+        private static bool? ValidatePassword(string password, string correctHash)
         {
             bool result = BCrypt.Verify(password, correctHash);
 
-            return result;
+            return result == false ? null : true;
         }
 
         private static string GenerateId()

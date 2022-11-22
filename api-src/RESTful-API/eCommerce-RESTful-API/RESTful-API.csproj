@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Data\eCommerceAPI.Data.Seeder\eCommerceAPI.Data.Seeder.csproj" />
     <ProjectReference Include="..\eCommerceAPI.InputModels\eCommerceAPI.InputModels.csproj" />
     <ProjectReference Include="..\eCommerceAPI.ViewModels\eCommerceAPI.ViewModels.csproj" />
     <ProjectReference Include="..\Services\eCommerceAPI.Services.Data\eCommerceAPI.Services.Data.csproj" />

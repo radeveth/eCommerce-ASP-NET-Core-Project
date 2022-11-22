@@ -30,7 +30,7 @@
             return await this.categoryService.GetByIdAync(id);
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public IEnumerable<CategoryViewModel> GetAll()
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetAll"));

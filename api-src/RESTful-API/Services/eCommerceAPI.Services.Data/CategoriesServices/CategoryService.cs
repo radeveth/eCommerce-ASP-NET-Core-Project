@@ -34,13 +34,13 @@
             return this.mapper.Map<IEnumerable<CategoryViewModel>>(categories);
         }
 
-        public async Task CreateAsync(CategoryFoemModel categoryFoem)
+        public async Task CreateAsync(CategoryFoemModel categoryForm)
         {
             Category category = new Category()
             {
-                Name = categoryFoem.Name,
-                Description = categoryFoem.Description,
-                UserId = categoryFoem.UserId,
+                Name = categoryForm.Name,
+                Description = categoryForm.Description,
+                UserId = categoryForm.UserId,
             };
 
             await this.dbContext.Categories.AddAsync(category);
