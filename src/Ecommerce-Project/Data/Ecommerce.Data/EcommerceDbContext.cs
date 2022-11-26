@@ -3,9 +3,10 @@
     using Ecommerce.Data.Configurations;
     using Ecommerce.Data.Models;
     using Eommerce.Data.Configurations;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class EcommerceDbContext : DbContext
+    public class EcommerceDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public EcommerceDbContext()
         {
@@ -16,13 +17,7 @@
         {
         }
 
-        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
-
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-
         public DbSet<OrderAddress> OrderAddresses { get; set; }
-
-        public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
 
         public DbSet<Brand> Brands { get; set; }
 
@@ -55,7 +50,6 @@
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationUserRoleConfiguration());
             modelBuilder.ApplyConfiguration(new OrderAddressConfiguration());
 
             base.OnModelCreating(modelBuilder);

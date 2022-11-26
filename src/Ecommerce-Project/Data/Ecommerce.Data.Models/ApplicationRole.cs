@@ -1,16 +1,27 @@
 ﻿namespace Ecommerce.Data.Models
 {
-    using Ecommerce.Data.Common.Models;
+    using Ecommerce.Data.Common.Models.Interfaces;
+    using Microsoft.AspNetCore.Identity;
 
-    public class ApplicationRole : BaseDeleteableModel<string>
+    public class ApplicationRole : IdentityRole, IBaseDeleteableModel
     {
         public ApplicationRole()
+            : this(null)
         {
-            this.ApplicationUserRoles = new HashSet<ApplicationUserRole>();
         }
 
-        public string Name { get; set; }
+        public ApplicationRole(string name)
+            : base(name)
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
 
-        public ICollection<ApplicationUserRole> ApplicationUserRoles { get; set; }
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
     }
 }

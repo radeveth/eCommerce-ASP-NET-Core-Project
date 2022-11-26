@@ -37,7 +37,7 @@ namespace Ecommerce.RESTful_API
             builder.Services.AddControllers();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IProductService, ProductService>();
-            builder.Services.AddTransient<IApplicationUserService, ApplicationUserService>();
+            //builder.Services.AddTransient<IApplicationUserService, ApplicationUserService>();
             builder.Services.AddTransient<IBrandService, BrandService>();
 
             builder.Services.AddEndpointsApiExplorer();

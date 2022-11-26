@@ -2,39 +2,46 @@
 {
     using System.ComponentModel.DataAnnotations;
     using Ecommerce.Data.Common.Models;
+    using Ecommerce.Data.Common.Models.Interfaces;
     using Ecommerce.Data.Models.Enums;
+    using Microsoft.AspNetCore.Identity;
+
     using static Ecommerce.Data.Common.DataValidation.ApplicationUserValidation;
 
-    public class ApplicationUser : BaseDeleteableModel<string>
+    public class ApplicationUser : IdentityUser, IBaseDeleteableModel
     {
         public ApplicationUser()
         {
+            this.Id = Guid.NewGuid().ToString();
+            this.Roles = new HashSet<IdentityUserRole<string>>();
+            this.Claims = new HashSet<IdentityUserClaim<string>>();
+            this.Logins = new HashSet<IdentityUserLogin<string>>();
+
             this.Reviews = new HashSet<Review>();
             this.Products = new HashSet<Product>();
             this.Categories = new HashSet<Category>();
             this.Orders = new HashSet<Order>();
-            this.ApplicationUserRoles = new HashSet<ApplicationUserRole>();
         }
 
         [Required]
         [MaxLength(FullNameMaxLength)]
         public string FullName { get; set; }
 
-        [Required]
-        [MaxLength(UsernameMaxLength)]
-        public string Username { get; set; }
-
-        [Required]
-        public string Email { get; set; }
-
-        public string EmailConfirmed { get; set; }
-
-        [Required]
-        public string PasswordHash { get; set; }
-
         public Gender Gender { get; set; }
 
-        public ICollection<ApplicationUserRole> ApplicationUserRoles { get; set; }
+        public DateTime? DeletedOn { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
+
+        public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
+
+        public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
+
+        public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
 

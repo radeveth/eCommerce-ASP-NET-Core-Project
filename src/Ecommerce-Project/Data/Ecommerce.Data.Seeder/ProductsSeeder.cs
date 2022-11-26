@@ -5,6 +5,7 @@
     using Ecommerce.Data;
     using Ecommerce.Data.Models;
     using Ecommerce.Data.Models.Enums;
+    using Microsoft.EntityFrameworkCore;
 
     public class ProductsSeeder : ISeeder
     {
@@ -14,6 +15,9 @@
             {
                 return;
             }
+
+            string randomAdministrationRoleId = await dbContext.Roles.Where(r => r.Name == "Administartor").Select(r => r.Id).FirstOrDefaultAsync();
+            string randomUserWhoIsAdmin = await dbContext.UserRoles.Where(u => u.RoleId == randomAdministrationRoleId).Select(u => u.UserId).FirstOrDefaultAsync();
 
             List<Product> products = new List<Product>()
             {
@@ -25,7 +29,7 @@
                     Quantity = 5,
                     Description = "random phone description that is more than 10 characters.",
                     BrandId = dbContext.Brands.FirstOrDefault().Id, // TODO
-                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id,
+                    UserId = randomUserWhoIsAdmin,
                 },
                 new Product()
                 {
@@ -35,7 +39,7 @@
                     Quantity = 200,
                     Description = "random bosch drayer description that is more than 10 characters.",
                     BrandId = dbContext.Brands.FirstOrDefault().Id, // TODO
-                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id, // dbContext.ApplicationUserRoles.Select(a => a.UserId).FirstOrDefault(),
+                    UserId = randomUserWhoIsAdmin, // dbContext.ApplicationUserRoles.Select(a => a.UserId).FirstOrDefault(),
                 },
                 new Product()
                 {
@@ -45,7 +49,7 @@
                     Quantity = 40,
                     Description = "random playstation description that is more than 10 characters.",
                     BrandId = dbContext.Brands.FirstOrDefault().Id, // TODO
-                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id,
+                    UserId = randomUserWhoIsAdmin,
                 },
                 new Product()
                 {
@@ -55,7 +59,7 @@
                     Quantity = 130,
                     Description = "random gaming monitor description that is more than 10 characters.",
                     BrandId = dbContext.Brands.FirstOrDefault().Id, // TODO
-                    UserId = dbContext.ApplicationUsers.FirstOrDefault().Id,
+                    UserId = randomUserWhoIsAdmin,
                 },
             };
 

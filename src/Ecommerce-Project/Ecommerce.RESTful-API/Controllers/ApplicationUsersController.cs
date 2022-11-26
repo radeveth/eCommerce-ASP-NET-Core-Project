@@ -3,6 +3,7 @@
     using Ecommerce.InputModels.ApplicationUsers;
     using Ecommerce.Services.Data.ApplicationUsersServices;
     using Ecommerce.ViewModels.ApplicationUsers;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]/")]
@@ -18,65 +19,65 @@
             this.applicationUserService = applicationUserService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ApplicationUserViewModel>> GetById(string id)
-        {
-            this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetById"));
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<ApplicationUserViewModel>> GetById(string id)
+        //{
+        //    this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetById"));
 
-            return await this.applicationUserService.GetById(id);
-        }
+        //    return await this.applicationUserService.GetById(id);
+        //}
 
-        [HttpGet("all")]
-        public IEnumerable<ApplicationUserViewModel> GetAll()
-        {
-            this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetAll"));
+        //[HttpGet("all")]
+        //public IEnumerable<ApplicationUserViewModel> GetAll()
+        //{
+        //    this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetAll"));
 
-            return this.applicationUserService.GetAll();
-        }
+        //    return this.applicationUserService.GetAll();
+        //}
 
-        [HttpPost]
-        public async Task<JsonResult> CreateAsync([FromBody] ApplicationUserFromModel userForm)
-        {
-            this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "CreateAsync"));
+        //[HttpPost]
+        //public async Task<JsonResult> CreateAsync([FromBody] ApplicationUserFromModel userForm)
+        //{
+        //    this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "CreateAsync"));
 
-            if (!this.ModelState.IsValid)
-            {
-                IEnumerable<string> errorMessages = this.ModelState
-                    .Values
-                    .SelectMany(model => model.Errors)
-                    .Select(e => e.ErrorMessage);
+        //    if (!this.ModelState.IsValid)
+        //    {
+        //        IEnumerable<string> errorMessages = this.ModelState
+        //            .Values
+        //            .SelectMany(model => model.Errors)
+        //            .Select(e => e.ErrorMessage);
 
-                return new JsonResult(errorMessages);
-            }
+        //        return new JsonResult(errorMessages);
+        //    }
 
-            try
-            {
-                await this.applicationUserService.CreateAsync(userForm);
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(ex.Message);
-            }
+        //    try
+        //    {
+        //        await this.applicationUserService.CreateAsync(userForm);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
 
-            return new JsonResult(this.Ok("User successfully created."));
-        }
+        //    return new JsonResult(this.Ok("User successfully created."));
+        //}
 
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] ApplicationUserCred userCred)
-        {
-            var token = this.applicationUserService.Authorization(userCred);
+        //[HttpPost("authenticate")]
+        //public IActionResult Authenticate([FromBody] ApplicationUserCred userCred)
+        //{
+        //    var token = this.applicationUserService.Authorization(userCred);
 
-            if (token == null)
-            {
-                return this.Unauthorized();
-            }
+        //    if (token == null)
+        //    {
+        //        return this.Unauthorized();
+        //    }
 
-            return this.Ok(token);
-        }
+        //    return this.Ok(token);
+        //}
 
-        private static string LogRequestInformation(string method, string actionName)
-        {
-            return $"Method: {method}; Controller: ApplicationUsersController; Action: {actionName};";
-        }
+        //private static string LogRequestInformation(string method, string actionName)
+        //{
+        //    return $"Method: {method}; Controller: ApplicationUsersController; Action: {actionName};";
+        //}
     }
 }
