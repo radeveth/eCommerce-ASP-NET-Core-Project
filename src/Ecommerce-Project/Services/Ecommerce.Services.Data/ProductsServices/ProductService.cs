@@ -90,5 +90,13 @@
                 await this.dbContext.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category)
+        {
+            category = category.ToLower();
+            IEnumerable<ProductViewModel> products = this.GetAll().Where(p => p.Category.ToLower() == category);
+
+            return products;
+        }
     }
 }

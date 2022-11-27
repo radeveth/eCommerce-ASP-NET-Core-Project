@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Data\Ecommerce.Data.Models\Ecommerce.Data.Models.csproj" />
     <ProjectReference Include="..\Data\Ecommerce.Data.Seeder\Ecommerce.Data.Seeder.csproj" />
     <ProjectReference Include="..\Data\Ecommerce.Data\Ecommerce.Data.csproj" />
+    <ProjectReference Include="..\Ecommerce.Common\Ecommerce.Common.csproj" />
     <ProjectReference Include="..\Ecommerce.InputModels\Ecommerce.InputModels.csproj" />
     <ProjectReference Include="..\Ecommerce.ViewModels\Ecommerce.ViewModels.csproj" />
     <ProjectReference Include="..\Services\Ecommerce.Services.Data\Ecommerce.Services.Data.csproj" />

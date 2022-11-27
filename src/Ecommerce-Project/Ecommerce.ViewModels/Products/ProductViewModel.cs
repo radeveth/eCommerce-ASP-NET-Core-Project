@@ -16,6 +16,10 @@
 
         public string Description { get; set; }
 
+        public int CategoryId { get; set; }
+
+        public string Category { get; set; }
+
         public string Brand { get; set; }
 
         public IEnumerable<ImageViewModel> Images { get; set; }

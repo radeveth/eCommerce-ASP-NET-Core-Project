@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.Services.Mappings
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.RESTful-API", "Ecommerce.RESTful-API\Ecommerce.RESTful-API.csproj", "{14477589-FE9C-4A5E-AC31-4B118CFF27B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.Web", "Ecommerce.Web\Ecommerce.Web.csproj", "{E43561A9-61D2-400B-8869-EE01F21791FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.Web", "Ecommerce.Web\Ecommerce.Web.csproj", "{E43561A9-61D2-400B-8869-EE01F21791FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.Common", "Ecommerce.Common\Ecommerce.Common.csproj", "{7F50EBAF-4AA3-474E-83F7-D7A4AADDF416}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{E43561A9-61D2-400B-8869-EE01F21791FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E43561A9-61D2-400B-8869-EE01F21791FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E43561A9-61D2-400B-8869-EE01F21791FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F50EBAF-4AA3-474E-83F7-D7A4AADDF416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F50EBAF-4AA3-474E-83F7-D7A4AADDF416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F50EBAF-4AA3-474E-83F7-D7A4AADDF416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F50EBAF-4AA3-474E-83F7-D7A4AADDF416}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

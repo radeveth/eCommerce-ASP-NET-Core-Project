@@ -6,13 +6,18 @@
     <title>@ViewData["Title"] - Ecommerce.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/slick.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    @*<link rel="stylesheet" href="./css/fontawesome.css">*@
     <link rel="stylesheet" href="./css/lazy.css">
+    <link rel="stylesheet" href="./css/owl.carousel.min.js">
+    <link rel="stylesheet" href="./css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="./lib/nouislider/css/nouislider.min.css">
     <link rel="stylesheet" href="~/Ecommerce.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <div id="top-header">
+        <div>
             <partial name="HeaderPartial" />
         </div>
     </header>
@@ -22,16 +27,19 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @*<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2022 - Ecommerce.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="./lib/popper/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/lazy.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/slick.min.js" asp-append-version="true"></script>
+    <script src="~/js/owl.carousel.js asp-append-version="true"></script>
+    <script src="~/lib/nouislider/js/nouislider.min.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

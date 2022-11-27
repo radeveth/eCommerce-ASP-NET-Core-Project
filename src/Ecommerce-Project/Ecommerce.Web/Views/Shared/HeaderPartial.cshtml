@@ -1,24 +1,12 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+﻿@using Ecommerce.Common
 
 <div class="row" style="background-color: #2B2D42; height: 40px">
     <div class="container">
-        <div class="offset-1 col-1 badge" style="margin-top: 10px"><i class="fa fa-phone" style="color: red"></i> &nbsp; 087 747 5376</div>
-        <div class="col-1 badge" style="margin-top: 10px"><i class="fa fa-envelope" style="color: red"></i> &nbsp; radevradoslav12@gmail.com</div>
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa fa-phone" style="color: red"></i></a>
-
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        }
-        else
-        {
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register"><i class="fa fa-user" style="color: red"></i></a>
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login"><i class="fa fa-sign-out" style="color: red"></i></a>
-        }
+        <div class="row">
+            <div class="offset-1 col-1 badge" style="margin-top: 10px"><i class="fa fa-phone" style="color: red"></i> &nbsp; @GlobalConstants.Telephone</div>
+            <div class="col-1 badge" style="margin-top: 10px"><i class="fa fa-envelope" style="color: red"></i> &nbsp; @GlobalConstants.Email</div>
+            <partial name="_LoginPartial" />
+        </div>
     </div>
 </div>
 
@@ -26,15 +14,17 @@
     <div class="container">
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img class="navbar-brand d-flex align-items-center" src="./images/ecommerce-icon.png" width=50 height=50 /></a>
 
-        <form class="d-flex form-inline my-2 my-lg-0" method="get">
-            <input name="SearchName" type="search" class="form-control me-2" placeholder="Search Product" aria-label="Search">
-            <button asp-controller="Movies" asp-action="All" type="submit" class="btn btn-neutral"><center><img style="margin-bottom:3px" src="https://cdn-icons-png.flaticon.com/512/251/251116.png" width=20 height=20 /></center></button>
-        </form>
+        <div class="input-group rounded">
+            <input type="search" class="form-control rounded-pill" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+            <span class="input-group-text border-0" id="search-addon">
+                <i class="fas fa-search"></i>
+            </span>
+        </div>
 
         <div class="col-md-3 clearfix">
             <div class="header-ctn">
                 <div>
-                    <a href="#">
+                    <a href="#" style="text-decoration: none!important">
                         <i style="color: red" class="fa fa-heart"></i>
                         <span>Your Wishlist</span>
                         <div class="qty">2</div>

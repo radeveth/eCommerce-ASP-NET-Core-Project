@@ -10,5 +10,7 @@
         public IEnumerable<ProductViewModel> GetAll();
 
         public Task CreateAsync(ProductFormModel productForm);
+
+        public Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category);
     }
 }

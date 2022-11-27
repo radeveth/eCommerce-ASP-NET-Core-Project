@@ -15,7 +15,9 @@
             {
                 this.CreateMap<Product, ProductViewModel>()
                     .ForMember(x => x.Brand, y => y.MapFrom(s => s.Brand.Name))
-                    .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Sum(r => (int)r.ReviewScale)));
+                    .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Sum(r => (int)r.ReviewScale)))
+                    .ForMember(x => x.Category, y => y.MapFrom(s => s.ProductCategories.Select(p => p.Category.Name)))
+                    .ForMember(x => x.CategoryId, y => y.MapFrom(s => s.ProductCategories.Select(p => p.CategoryId)));
             }
         }
 
