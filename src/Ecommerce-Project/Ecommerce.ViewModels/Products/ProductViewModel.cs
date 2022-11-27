@@ -1,5 +1,6 @@
 ﻿namespace Ecommerce.ViewModels.Products
 {
+    using Ecommerce.Data.Models;
     using Ecommerce.Data.Models.Enums;
     using Ecommerce.ViewModels.Images;
     using Ecommerce.ViewModels.Review;
@@ -22,7 +23,7 @@
 
         public string Brand { get; set; }
 
-        public IEnumerable<ImageViewModel> Images { get; set; }
+        public ImageViewModel Image { get; set; }
 
         public decimal AverageReview { get; set; }
 

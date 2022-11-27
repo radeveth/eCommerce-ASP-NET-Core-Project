@@ -1,25 +1,26 @@
 ﻿namespace Ecommerce.Web.Controllers
 {
-    using Ecommerce.Services.Data.ProductsServices;
+    using Ecommerce.Services.Data.HomeServices;
     using Ecommerce.ViewModels.Home;
-    using Ecommerce.ViewModels.Products;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
 
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IProductService productService;
+        private readonly ILogger<HomeController> logger;
+        private readonly IHomeService homeService;
 
-        public HomeController(ILogger<HomeController> logger, IProductService productService)
+        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
         {
-            _logger = logger;
-            this.productService = productService;
+            this.logger = logger;
+            this.homeService = homeService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            HomeServiceModel serviceModel = await this.homeService.GetHomeServiceModel(4);
+
+            return View(serviceModel);
         }
 
         public IActionResult Privacy()

@@ -25,7 +25,7 @@
 
         public IEnumerable<ProductImageInputModel> Images { get; set; }
 
-        public IEnumerable<int> Categories { get; set; }
+        public int CategoryId { get; set; }
 
         [Required(ErrorMessage = "Brand field is required.")]
         public int BrandId { get; set; }

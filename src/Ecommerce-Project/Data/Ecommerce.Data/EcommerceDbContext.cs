@@ -29,8 +29,6 @@
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<ProductCategory> ProductCategories { get; set; }
-
         public DbSet<Review> Reviews { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
@@ -49,7 +47,6 @@
             modelBuilder.ApplyConfiguration(new ImageConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new OrderAddressConfiguration());
 
             base.OnModelCreating(modelBuilder);

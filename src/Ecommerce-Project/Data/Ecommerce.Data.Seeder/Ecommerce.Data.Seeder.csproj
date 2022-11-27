@@ -18,4 +18,19 @@
     <ProjectReference Include="..\Ecommerce.Data\Ecommerce.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Images\drayer-bosch.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\gaming-monitor.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\iphone.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\playstation.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

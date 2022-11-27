@@ -44,6 +44,7 @@
                 Quantity = productForm.Quantity,
                 BrandId = productForm.BrandId,
                 UserId = productForm.UserId,
+                CategoryId = productForm.CategoryId,
                 CreatedOn = DateTime.UtcNow,
                 IsDeleted = false,
             };
@@ -76,18 +77,6 @@
             catch (Exception ex)
             {
                 throw new InvalidOperationException(ex.Message);
-            }
-
-            foreach (var category in productForm.Categories)
-            {
-                ProductCategory productCategory = new ProductCategory()
-                {
-                    ProductId = product.Id,
-                    CategoryId = category,
-                };
-
-                await this.dbContext.ProductCategories.AddAsync(productCategory);
-                await this.dbContext.SaveChangesAsync();
             }
         }
 

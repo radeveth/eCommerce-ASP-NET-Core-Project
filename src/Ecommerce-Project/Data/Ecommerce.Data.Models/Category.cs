@@ -10,7 +10,7 @@
     {
         public Category()
         {
-            this.ProductCategories = new HashSet<ProductCategory>();
+            this.Products = new HashSet<Product>();
         }
 
         [Required]
@@ -26,6 +26,6 @@
 
         public ApplicationUser User { get; set; }
 
-        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

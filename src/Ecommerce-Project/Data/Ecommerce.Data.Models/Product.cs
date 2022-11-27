@@ -13,7 +13,6 @@
         public Product()
         {
             this.Reviews = new HashSet<Review>();
-            this.ProductCategories = new HashSet<ProductCategory>();
             this.Images = new HashSet<Image>();
         }
 
@@ -31,6 +30,12 @@
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(Category))]
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
 
         [Required]
         [ForeignKey(nameof(Brand))]
@@ -53,7 +58,5 @@
         public virtual ICollection<Image> Images { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
-
-        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
     }
 }

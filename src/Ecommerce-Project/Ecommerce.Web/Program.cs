@@ -3,7 +3,12 @@ namespace Ecommerce.Web
     using Ecommerce.Data;
     using Ecommerce.Data.Models;
     using Ecommerce.Data.Seeder;
+    using Ecommerce.Services.Data.BrandsServices;
+    using Ecommerce.Services.Data.CategoriesServices;
+    using Ecommerce.Services.Data.HomeServices;
+    using Ecommerce.Services.Data.ProductsServices;
     using Microsoft.EntityFrameworkCore;
+    using static Ecommerce.Services.Mappings.ApplicationProfile;
 
     public class Program
     {
@@ -17,6 +22,19 @@ namespace Ecommerce.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            builder.Services.AddAutoMapper(config =>
+            {
+                config.AddProfile<ProductsProfile>();
+                config.AddProfile<CategoriesProffile>();
+                config.AddProfile<ImageProfile>();
+                config.AddProfile<HomeProffile>();
+            });
+
+            builder.Services.AddTransient<IBrandService, BrandService>();
+            builder.Services.AddTransient<ICategoryService, CategoryService>();
+            builder.Services.AddTransient<IHomeService, HomeService>();
+            builder.Services.AddTransient<IProductService, ProductService>();
+
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -29,6 +47,7 @@ namespace Ecommerce.Web
             .AddEntityFrameworkStores<EcommerceDbContext>();
 
             builder.Services.AddControllersWithViews();
+
 
             var app = builder.Build();
 

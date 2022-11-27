@@ -4,6 +4,7 @@
     using Ecommerce.Data.Models;
     using Ecommerce.ViewModels.ApplicationUsers;
     using Ecommerce.ViewModels.Categories;
+    using Ecommerce.ViewModels.Home;
     using Ecommerce.ViewModels.Images;
     using Ecommerce.ViewModels.Products;
 
@@ -14,10 +15,10 @@
             public ProductsProfile()
             {
                 this.CreateMap<Product, ProductViewModel>()
+                    .ForMember(x => x.Image, y => y.MapFrom(s => s.Images.FirstOrDefault()))
                     .ForMember(x => x.Brand, y => y.MapFrom(s => s.Brand.Name))
                     .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Sum(r => (int)r.ReviewScale)))
-                    .ForMember(x => x.Category, y => y.MapFrom(s => s.ProductCategories.Select(p => p.Category.Name)))
-                    .ForMember(x => x.CategoryId, y => y.MapFrom(s => s.ProductCategories.Select(p => p.CategoryId)));
+                    .ForMember(x => x.Category, y => y.MapFrom(s => s.Category.Name));
             }
         }
 
@@ -34,11 +35,9 @@
             public CategoriesProffile()
             {
                 this.CreateMap<Category, CategoryViewModel>()
-                    .ForMember(x => x.Image, y => y.MapFrom(mapExpression: s => s.ProductCategories
-                        .Select(p => p.Product)
-                        .OrderByDescending(p => p.Reviews.Sum(r => (int)r.ReviewScale) / p.Reviews.Count)
-                        .FirstOrDefault()
-                        .Images.FirstOrDefault()));
+                    .ForMember(x => x.Image, y => y.MapFrom(s => s.Products
+                    .OrderByDescending(p => p.Reviews.Sum(r => (int)r.ReviewScale) / p.Reviews.Count)
+                    .FirstOrDefault().Images.FirstOrDefault()));
             }
         }
 
@@ -47,6 +46,14 @@
             public ApplicationUsersProffile()
             {
                 this.CreateMap<ApplicationUser, ApplicationUserViewModel>();
+            }
+        }
+
+        public class HomeProffile : Profile
+        {
+            public HomeProffile()
+            {
+                this.CreateMap<Category, HomeCategoryViewModel>();
             }
         }
     }
