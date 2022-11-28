@@ -18,7 +18,7 @@
 
         public async Task<IActionResult> Index()
         {
-            HomeServiceModel serviceModel = await this.homeService.GetHomeServiceModel(4);
+            HomeServiceModel serviceModel = await this.homeService.GetHomeServiceModel(3);
 
             return View(serviceModel);
         }

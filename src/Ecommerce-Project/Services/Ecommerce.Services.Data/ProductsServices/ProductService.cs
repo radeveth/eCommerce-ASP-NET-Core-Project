@@ -82,8 +82,8 @@
 
         public async Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category)
         {
-            category = category.ToLower();
-            IEnumerable<ProductViewModel> products = this.GetAll().Where(p => p.Category.ToLower() == category);
+            category = category.ToLower().Replace(" ", string.Empty);
+            IEnumerable<ProductViewModel> products = this.GetAll().Where(p => p.Category.ToLower().Replace(" ", string.Empty) == category);
 
             return products;
         }

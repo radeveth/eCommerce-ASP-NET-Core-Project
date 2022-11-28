@@ -26,7 +26,8 @@
         {
             public ImageProfile()
             {
-                this.CreateMap<Image, ImageViewModel>();
+                this.CreateMap<Image, ImageViewModel>()
+                    .ForMember(x => x.Src, y => y.MapFrom(s => string.Format("data:image/png;base64, {0}", Convert.ToBase64String(s.Src))));
             }
         }
 

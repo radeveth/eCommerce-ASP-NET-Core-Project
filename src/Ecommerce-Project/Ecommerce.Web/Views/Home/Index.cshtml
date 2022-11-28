@@ -4,58 +4,67 @@
     ViewData["Title"] = "Home | Commerce Park";
 }
 
-@foreach (var category in Model.Categories)
-{
-    @foreach (var product in category.Products)
-    {
-        <!-- Products tab & slick -->
-        <div class="col-md-12">
-            <div class="row">
-                <div class="products-tabs">
-                    <!-- tab -->
-                    <div id="tab1" class="tab-pane active">
-                        <div class="products-slick" data-nav="#slick-nav-1">
-                            <!-- product -->
-                            <div class="product card col-3">
-                                <div class="product-img">
-                                    <img src="@product.Image" alt="">
-                                    <div class="product-label">
-                                        <span class="sale">-30%</span>
-                                        <span class="new">NEW</span>
-                                    </div>
-                                </div>
-                                <div class="product-body">
-                                    <p class="product-category">@category.Name</p>
-                                    <h3 class="product-name"><a href="#">@product.Name</a></h3>
-                                    <h4 class="product-price">$@($"{product.Price:f2}") <del class="product-old-price">$@($"{product.Price:f2}")</del></h4>
-                                    <div class="product-rating">
-                                        @for (int i = 1; i <= product.AverageReview; i++)
-                                        {
-                                            <i class="fa fa-star"></i>
-                                        }
-                                    </div>
-                                    <div class="product-btns">
-                                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-                                    </div>
-                                </div>
-                                <div class="add-to-cart">
-                                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                                </div>
-                            </div>
-                            <!-- /product -->
+<h1 class="text-center mt-4">Top Products</h1>
+<hr class="offset-2 col-8" style="margin-top: 30px" />
 
+<div class="container mt-5">
+    @foreach (var category in Model.Categories)
+    {
+        if (!category.Products.Any())
+        {
+            continue;
+        }
+
+        <h2>● @category.Name</h2>
+        <div class="row">
+            @foreach (var product in category.Products)
+            {
+                <div class="col-4">
+                    <div class="row">
+                        <div class="products-tabs">
+                            <div id="tab1" class="tab-pane active">
+                                <div class="products-slick" data-nav="#slick-nav-1">
+                                    <div class="product">
+                                        <div class="product-img">
+                                            <img src="@product.Image.Src" alt="">
+                                            <div class="product-label">
+                                                <span class="sale">-30%</span>
+                                                <span class="new">NEW</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-body">
+                                            <p class="product-category">@category.Name</p>
+                                            <h3 class="product-name"><a href="#">@product.Name</a></h3>
+                                            <h4 class="product-price">$@($"{product.Price:f2}") <del class="product-old-price">$@($"{product.Price:f2}")</del></h4>
+                                            <div class="product-rating">
+                                                @for (int i = 1; i <= product.AverageReview; i++)
+                                                {
+                                                    <i class="fa fa-star"></i>
+                                                }
+                                            </div>
+                                            <div class="product-btns">
+                                                <button class="add-to-wishlist"><i class="fa fa-heart"></i><span class="tooltipp">add to wishlist</span></button>
+                                                <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                            </div>
+                                        </div>
+                                        <div class="add-to-cart">
+                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="slick-nav-1" class="products-slick-nav"></div>
+                            </div>
                         </div>
-                        <div id="slick-nav-1" class="products-slick-nav"></div>
                     </div>
-                    <!-- /tab -->
                 </div>
-            </div>
+            }
         </div>
-        <!-- Products tab & slick -->
+        <br />
+        <br />
+        <br />
+        <br />
     }
-}
+</div>
 
 @section Scripts {
     <script>
@@ -76,6 +85,4 @@
             }
         })
     </script>
-
-
 }

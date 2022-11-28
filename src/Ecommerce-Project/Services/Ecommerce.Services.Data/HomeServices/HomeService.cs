@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using Ecommerce.Data;
+    using Ecommerce.Data.Models;
     using Ecommerce.ViewModels.Home;
     using Ecommerce.ViewModels.Products;
 
@@ -31,18 +32,27 @@
 
         private ICollection<HomeCategoryViewModel> GetCategories(int countOfProductsPerCategory)
         {
-            ICollection<HomeCategoryViewModel> categories = new List<HomeCategoryViewModel>();
+            ICollection<HomeCategoryViewModel> categoriesView = new List<HomeCategoryViewModel>();
 
-            foreach (var category in this.dbContext.Categories)
+            IQueryable<Category> categories = this.dbContext.Categories.AsQueryable();
+
+            foreach (var category in categories)
             {
-                categories.Add(new HomeCategoryViewModel()
+                IEnumerable<Product> products = this.dbContext.Products.Where(p => p.CategoryId == category.Id).Take(countOfProductsPerCategory);
+
+                foreach (var product in products)
+                {
+                    product.Images = this.dbContext.Images.Where(i => i.ProductId == product.Id).ToList();
+                }
+
+                categoriesView.Add(new HomeCategoryViewModel()
                 {
                     Name = category.Name,
-                    Products = this.mapper.Map<IEnumerable<ProductViewModel>>(this.dbContext.Products.Where(p => p.CategoryId == category.Id).Take(countOfProductsPerCategory)),
+                    Products = this.mapper.Map<IEnumerable<ProductViewModel>>(products),
                 });
             }
 
-            return categories;
+            return categoriesView;
         }
     }
 }
