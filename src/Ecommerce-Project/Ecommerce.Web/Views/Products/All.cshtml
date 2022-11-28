@@ -1,5 +1,100 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ProductsServiceModel
+
 @{
+    ViewData["Title"] = "Products | Commerce Park";
 }
+
+<div class="container-fluid">
+    <div id="breadcrumb" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb-tree">
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">@Model.SearchingCategory (@(Model.Products.Count() == 1 ? "1 result" : $"{Model.Products.Count()} results"))</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+
+
+<div class="container-fluid">
+    <div class="row" style="margin-left: 35px">
+        <div class="col-md-2 single-left">
+            <div class="aside">
+                <h3 class="aside-title">Categories</h3>
+                <div class="checkbox-filter">
+                    @foreach (var categoryName in Model.CategoryNames)
+                    {
+                        <div class="input-checkbox">
+                            <input type="checkbox" id="category-1">
+                            <label for="category-1">
+                                <span></span>@categoryName<small>(120)</small>
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 single-right" style="margin-right: 35px">
+            @if (Model.Products.Any())
+            {
+                <div class="row">
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="products-tabs">
+                                    <div id="tab1" class="tab-pane active">
+                                        <div class="products-slick" data-nav="#slick-nav-1">
+                                            <div class="product">
+                                                <div class="product-img">
+                                                    <img src="@product.Image.Src" alt="">
+                                                    <div class="product-label">
+                                                        <span class="sale">-30%</span>
+                                                        <span class="new">NEW</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-body">
+                                                    <p class="product-category">@product.Category</p>
+                                                    <h3 class="product-name"><a href="#">@product.Name</a></h3>
+                                                    <h4 class="product-price">$@($"{product.Price:f2}") <del class="product-old-price">$@($"{product.Price:f2}")</del></h4>
+                                                    <div class="product-rating">
+                                                        @for (int i = 1; i <= product.AverageReview; i++)
+                                                        {
+                                                            <i class="fa fa-star"></i>
+                                                        }
+                                                    </div>
+                                                    <div class="product-btns">
+                                                        <button class="add-to-wishlist"><i class="fa fa-heart"></i><span class="tooltipp">add to wishlist</span></button>
+                                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                                    </div>
+                                                </div>
+                                                <div class="add-to-cart">
+                                                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="slick-nav-1" class="products-slick-nav"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="jumbotron">
+                    <h1 class="text-center display-4">Currently there are no results for "@Model.SearchingCategory" category!</h1>
+                    <p class="text-center lead">You can try later <i style="color: black" class="fa fa-smile"></i>.</p>
+                    <hr class="my-4">
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

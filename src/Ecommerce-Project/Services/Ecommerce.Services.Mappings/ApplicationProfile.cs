@@ -16,7 +16,6 @@
             {
                 this.CreateMap<Product, ProductViewModel>()
                     .ForMember(x => x.Image, y => y.MapFrom(s => s.Images.FirstOrDefault()))
-                    .ForMember(x => x.Brand, y => y.MapFrom(s => s.Brand.Name))
                     .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Sum(r => (int)r.ReviewScale)))
                     .ForMember(x => x.Category, y => y.MapFrom(s => s.Category.Name));
             }
@@ -37,7 +36,7 @@
             {
                 this.CreateMap<Category, CategoryViewModel>()
                     .ForMember(x => x.Image, y => y.MapFrom(s => s.Products
-                    .OrderByDescending(p => p.Reviews.Sum(r => (int)r.ReviewScale) / p.Reviews.Count)
+                    .OrderByDescending(p => p.Reviews.Count)
                     .FirstOrDefault().Images.FirstOrDefault()));
             }
         }

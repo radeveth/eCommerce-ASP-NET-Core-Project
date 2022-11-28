@@ -12,5 +12,7 @@
         public Task CreateAsync(ProductFormModel productForm);
 
         public Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category);
+
+        public Task<ProductsServiceModel> GetProductsServiceModel(string category, int currentPage = 1);
     }
 }

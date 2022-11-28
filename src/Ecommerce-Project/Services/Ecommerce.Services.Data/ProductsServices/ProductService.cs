@@ -30,7 +30,15 @@
 
         public IEnumerable<ProductViewModel> GetAll()
         {
-            return this.mapper.Map<IEnumerable<ProductViewModel>>(this.dbContext.Products);
+            IEnumerable<Product> products = this.dbContext.Products.AsQueryable();
+
+            foreach (var product in products)
+            {
+                product.Category = this.dbContext.Categories.FirstOrDefault(c => c.Id == product.CategoryId);
+                product.Images = this.dbContext.Images.Where(i => i.ProductId == product.Id).ToList();
+            }
+
+            return this.mapper.Map<IEnumerable<ProductViewModel>>(products.AsQueryable());
         }
 
         public async Task CreateAsync(ProductFormModel productForm)
@@ -82,10 +90,29 @@
 
         public async Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category)
         {
+            if (category == "all")
+            {
+                return this.GetAll();
+            }
+
             category = category.ToLower().Replace(" ", string.Empty);
             IEnumerable<ProductViewModel> products = this.GetAll().Where(p => p.Category.ToLower().Replace(" ", string.Empty) == category);
 
             return products;
+        }
+
+        public async Task<ProductsServiceModel> GetProductsServiceModel(string category, int currentPage = 1)
+        {
+            IEnumerable<ProductViewModel> products = await this.GetByAllProductsForCategory(category);
+
+            ProductsServiceModel productsServiceModel = new ProductsServiceModel()
+            {
+                Products = products.Skip((currentPage - 1) * ProductsServiceModel.ProductsPerPage).Take(ProductsServiceModel.ProductsPerPage),
+                CurrentPage = currentPage,
+                SearchingCategory = category == "all" ? "all" : products.Any() ? products.FirstOrDefault().Category : category,
+            };
+
+            return productsServiceModel;
         }
     }
 }
