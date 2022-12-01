@@ -13,6 +13,8 @@
 
         public string SearchCategory { get; set; }
 
+        public string SearchNameCriteria { get; set; }
+
         public decimal CheapestProduct { get; set; }
 
         public decimal MostExpensiveProduct { get; set; }

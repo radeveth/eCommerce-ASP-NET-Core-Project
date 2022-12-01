@@ -1,0 +1,58 @@
+﻿@using Ecommerce.Common
+
+<div>
+    <div class="row" style="background-color: #2B2D42; height: 40px">
+        <div class="container">
+            <div class="row">
+                <div class="offset-1 col-1 badge" style="margin-top: 10px"><i class="fa fa-phone" style="color: red"></i> &nbsp; @GlobalConstants.Telephone</div>
+                <div class="col-1 badge" style="margin-top: 10px"><i class="fa fa-envelope" style="color: red"></i> &nbsp; @GlobalConstants.Email</div>
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg" style="background-color: #334; height: 80px">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img class="navbar-brand d-flex align-items-center" src="./images/ecommerce-icon.png" width=50 height=50 /></a>
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white d-flex text-center">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-togglend-0 text-white" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <strong class="text-white">Categories</strong>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="@null" class="dropdown-item">All</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="Smartphones" class="dropdown-item">Smartphones</a></li>
+                        <li><a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="ElectricAppliances" class="dropdown-item">Electric Appliances</a></li>
+                        <li><a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="Gaming" class="dropdown-item">Gaming</a></li>
+                        <li><a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="Sports" class="dropdown-item">Sports</a></li>
+                        <li><a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="Fashion" class="dropdown-item">Fashion</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" role="button"><strong class="text-white">Hot Deals</strong></a></li>
+                <li class="nav-item"><a class="nav-link" role="button"><strong class="text-white">About Us</strong></a></li>
+                <li class="nav-item"><a class="nav-link" role="button"><strong class="text-white">About Us</strong></a></li>
+            </ul>
+
+            <div class="col-md-3 clearfix">
+                <div class="header-ctn">
+                    <div>
+                        <a href="#" style="margin-top: 10px" class="nav-link">
+                            <i style="color: red" class="fa fa-heart"></i>
+                            <span>Wishlist</span>
+                            <div class="qty">2</div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="#" style="margin-top: 10px" class="nav-link">
+                            <i style="color: red" class="fa fa-shopping-cart"></i>
+                            <span>Your Cart</span>
+                            <div class="qty">3</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>

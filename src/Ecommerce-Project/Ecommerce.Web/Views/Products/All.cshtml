@@ -4,6 +4,8 @@
     ViewData["Title"] = "Products | Commerce Park";
 
     int totalPages = (int)Math.Ceiling((double)(Model.TotalProducts / ProductsServiceModel.ProductsPerPage));
+
+    int startPage = Model.CurrentPage - 3 <= 0 ? 1 : Model.CurrentPage - 3;
 }
 
 <div class="container-fluid">
@@ -13,7 +15,7 @@
                 <div class="col-md-12">
                     <ul class="breadcrumb-tree">
                         <li><a href="#">Products</a></li>
-                        <li><a href="#">@Model.SearchCategory (@(Model.Products.Count() == 1 ? "1 result" : $"{Model.Products.Count()} results"))</a></li>
+                        <li><a href="#">@Model.SearchCategory (@(Model.TotalProducts == 1 ? "1 result" : $"{Model.TotalProducts} results"))</a></li>
                     </ul>
                 </div>
             </div>
@@ -22,25 +24,32 @@
 </div>
 
 <div class="container">
-    <form method="get">
-        <div class="form-group col-2">
-            <label asp-for="ProductsSorting" class="form-label"></label>
-            <select asp-for="ProductsSorting" class="form-control border-secondary">
-                <option selected disabled>Order by...</option>
-                <option value="0">The Lowest Price</option>
-                <option value="1">Highest Price</option>
-                <option value="2">Biggest Discount</option>
-                <option value="3">Latest</option>
-                <option value="4">Ascending</option>
-                <option value="5">Descending</option>
-                <option value="6">Most Commented</option>
-            </select>
+    <form method="get" class="mb-2">
+        <div class="row">
+            <div class="offset-1 form-group col-4">
+                <label asp-for="ProductsSorting" class="form-label d-none"></label>
+                <select asp-for="ProductsSorting" class="form-control border-secondary">
+                    <option selected disabled>Order by...</option>
+                    <option value="0">The Lowest Price</option>
+                    <option value="1">Highest Price</option>
+                    <option value="2">Biggest Discount</option>
+                    <option value="3">Latest</option>
+                    <option value="4">Ascending</option>
+                    <option value="5">Descending</option>
+                    <option value="6">Most Commented</option>
+                </select>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="SearchNameCriteria" class="form-label d-none"></label>
+                <input asp-for="SearchNameCriteria" type="search" class="form-control border-secondary" placeholder="Search product by name" />
+            </div>
 
             <label asp-for="SearchCategory" class="form-label d-none"></label>
             <input asp-for="SearchCategory" class="form-control d-none" value="@Model.SearchCategory">
-        </div>
 
-        <input type="submit" class="btn btn-warning col-1" value="Search">
+            <input type="submit" class="btn btn-secondary rounded-pull col-2" value="Search">
+        </div>
     </form>
 </div>
 
@@ -97,7 +106,7 @@
                                                     </div>
                                                     <div class="product-btns">
                                                         <button class="add-to-wishlist"><i class="fa fa-heart"></i><span class="tooltipp">add to wishlist</span></button>
-                                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                                        <button asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
                                                     </div>
                                                 </div>
                                                 <div class="add-to-cart">
@@ -114,7 +123,7 @@
                 </div>
 
                 <div class="store-filter clearfix">
-                    <span class="store-qty">Showing 20-100 products</span>
+                    <span class="store-qty">Showing @(Model.CurrentPage * ProductsServiceModel.ProductsPerPage)-@(Model.CurrentPage * ProductsServiceModel.ProductsPerPage + ProductsServiceModel.ProductsPerPage) products</span>
                     <ul class="store-pagination">
                         <li>
                             <a asp-controller="Products"
@@ -125,7 +134,31 @@
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         </li>
+                        @for (int i = startPage; i <= Model.CurrentPage - 1; i++)
+                        {
+                            <a asp-controller="Products"
+                       asp-action="All"
+                       asp-route-SearchCategory="@Model.SearchCategory"
+                       asp-route-ProductsSorting="@Model.ProductsSorting"
+                       asp-route-CurrentPage="@i">
+                            <li>@i</li>
+                            </a>
+                        }
                         <li class="active">@Model.CurrentPage</li>
+                        @for (int i = Model.CurrentPage + 1; i <= Model.CurrentPage + 3; i++)
+                        {
+                            if (i == totalPages + 1)
+                            {
+                                break;
+                            }
+                            <a asp-controller="Products"
+                       asp-action="All"
+                       asp-route-SearchCategory="@Model.SearchCategory"
+                       asp-route-ProductsSorting="@Model.ProductsSorting"
+                       asp-route-CurrentPage="@i">
+                            <li>@i</li>
+                            </a>
+                        }
                         <li>
                             <a asp-controller="Products"
                            asp-action="All"

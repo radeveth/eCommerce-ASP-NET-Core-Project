@@ -1,0 +1,27 @@
+﻿@model ProductDetailsModel
+
+@{
+    ViewData["Title"] = $"{Model.Name} | Details";
+}
+
+<!-- Product main img -->
+<div class="col-md-5 col-md-push-2">
+    <div id="product-main-img">
+        <div class="product-preview">
+            <img src="@Model.Images.First()" alt="">
+        </div>
+
+        <div class="product-preview">
+            <img src="@Model.Images.First()" alt="">
+        </div>
+
+        <div class="product-preview">
+            <img src="@Model.Images.First()" alt="">
+        </div>
+
+        <div class="product-preview">
+            <img src="@Model.Images.First()" alt="">
+        </div>
+    </div>
+</div>
+<!-- /Product main img -->

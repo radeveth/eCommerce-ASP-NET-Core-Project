@@ -31,5 +31,12 @@
 
             return View(productServiceModel);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+
+
+            return this.View();
+        }
     }
 }

@@ -7,6 +7,8 @@
 
     public class ProductDetailsModel
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public decimal Price { get; set; }
@@ -23,7 +25,7 @@
 
         public string Brand { get; set; }
 
-        public ImageViewModel Image { get; set; }
+        public IEnumerable<ImageViewModel> Images { get; set; }
 
         public decimal AverageReview { get; set; }
 

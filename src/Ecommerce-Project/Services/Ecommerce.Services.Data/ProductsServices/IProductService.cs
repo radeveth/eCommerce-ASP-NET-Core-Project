@@ -6,7 +6,7 @@
 
     public interface IProductService
     {
-        public Task<ProductViewModel> GetByIdAsync(int id);
+        public Task<T> GetByIdAsync<T>(int id);
 
         public IEnumerable<ProductViewModel> GetAll();
 
@@ -15,5 +15,7 @@
         public Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category);
 
         public Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string category, int currentPage = 1);
+
+        public Task<ProductDetailsModel> Details(int id);
     }
 }

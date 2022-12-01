@@ -20,13 +20,13 @@
             this.mapper = mapper;
         }
 
-        public async Task<ProductViewModel> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync<T>(int id)
         {
             Product product = await this.dbContext
                 .Products
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            return this.mapper.Map<ProductViewModel>(product);
+            return this.mapper.Map<T>(product);
         }
 
         public IEnumerable<ProductViewModel> GetAll()
@@ -133,6 +133,17 @@
             }
 
             return productsServiceModel;
+        }
+
+        public async Task<ProductDetailsModel> Details(int id)
+        {
+            Product sourceProduct = await this.dbContext.Products.AsQueryable().FirstOrDefaultAsync(p => p.Id == id);
+
+            ProductDetailsModel detailsModel = new ProductDetailsModel()
+            {
+                Id = sourceProduct.Id,
+                Name = sourceProduct.Name,
+            };
         }
     }
 }
