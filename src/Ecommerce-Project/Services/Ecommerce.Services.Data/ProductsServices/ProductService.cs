@@ -5,6 +5,7 @@
     using Ecommerce.Data.Models;
     using Ecommerce.InputModels.Products;
     using Ecommerce.ViewModels.Products;
+    using Ecommerce.ViewModels.Products.Enums;
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
 
@@ -101,16 +102,35 @@
             return products;
         }
 
-        public async Task<ProductsServiceModel> GetProductsServiceModel(string category, int currentPage = 1)
+        public async Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string category, int currentPage = 1)
         {
             IEnumerable<ProductViewModel> products = await this.GetByAllProductsForCategory(category);
 
             ProductsServiceModel productsServiceModel = new ProductsServiceModel()
             {
-                Products = products.Skip((currentPage - 1) * ProductsServiceModel.ProductsPerPage).Take(ProductsServiceModel.ProductsPerPage),
                 CurrentPage = currentPage,
-                SearchingCategory = category == "all" ? "all" : products.Any() ? products.FirstOrDefault().Category : category,
+                SearchCategory = category == "all" ? "all" : products.Any() ? products.FirstOrDefault().Category : category,
+                Products = products.Skip((currentPage - 1) * ProductsServiceModel.ProductsPerPage).Take(ProductsServiceModel.ProductsPerPage),
+                TotalProducts = products.Count(),
             };
+
+            if (products.Any())
+            {
+                productsServiceModel.CheapestProduct = products.OrderBy(p => p.Price).FirstOrDefault().Price;
+                productsServiceModel.MostExpensiveProduct = products.OrderByDescending(p => p.Price).FirstOrDefault().Price;
+
+                productsServiceModel.Products = productsSorting switch
+                {
+                    ProductsSorting.TheLowestPrice => productsServiceModel.Products.OrderBy(p => p.Price),
+                    ProductsSorting.HighestPrice => productsServiceModel.Products.OrderByDescending(p => p.Price),
+                    ProductsSorting.BiggestDiscount => productsServiceModel.Products.OrderByDescending(p => p.Price), // TODO
+                    ProductsSorting.Latest => productsServiceModel.Products.OrderByDescending(p => p.CreatedOn),
+                    ProductsSorting.Ascending => productsServiceModel.Products.OrderBy(p => p.Name),
+                    ProductsSorting.Descending => productsServiceModel.Products.OrderByDescending(p => p.Name),
+                    ProductsSorting.MostCommented => productsServiceModel.Products.OrderByDescending(p => p.CreatedOn), // TODO
+                    _ => productsServiceModel.Products.OrderByDescending(p => p.CreatedOn),
+                };
+            }
 
             return productsServiceModel;
         }

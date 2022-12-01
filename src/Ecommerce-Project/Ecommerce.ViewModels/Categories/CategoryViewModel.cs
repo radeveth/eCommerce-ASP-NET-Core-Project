@@ -11,5 +11,7 @@
         public string UserId { get; set; }
 
         public ImageViewModel Image { get; set; }
+
+        public int ProductsCount { get; set; }
     }
 }

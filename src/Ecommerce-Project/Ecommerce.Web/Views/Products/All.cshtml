@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Products | Commerce Park";
+
+    int totalPages = (int)Math.Ceiling((double)(Model.TotalProducts / ProductsServiceModel.ProductsPerPage));
 }
 
 <div class="container-fluid">
@@ -11,28 +13,53 @@
                 <div class="col-md-12">
                     <ul class="breadcrumb-tree">
                         <li><a href="#">Products</a></li>
-                        <li><a href="#">@Model.SearchingCategory (@(Model.Products.Count() == 1 ? "1 result" : $"{Model.Products.Count()} results"))</a></li>
+                        <li><a href="#">@Model.SearchCategory (@(Model.Products.Count() == 1 ? "1 result" : $"{Model.Products.Count()} results"))</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <br />
 </div>
 
+<div class="container">
+    <form method="get">
+        <div class="form-group col-2">
+            <label asp-for="ProductsSorting" class="form-label"></label>
+            <select asp-for="ProductsSorting" class="form-control border-secondary">
+                <option selected disabled>Order by...</option>
+                <option value="0">The Lowest Price</option>
+                <option value="1">Highest Price</option>
+                <option value="2">Biggest Discount</option>
+                <option value="3">Latest</option>
+                <option value="4">Ascending</option>
+                <option value="5">Descending</option>
+                <option value="6">Most Commented</option>
+            </select>
+
+            <label asp-for="SearchCategory" class="form-label d-none"></label>
+            <input asp-for="SearchCategory" class="form-control d-none" value="@Model.SearchCategory">
+        </div>
+
+        <input type="submit" class="btn btn-warning col-1" value="Search">
+    </form>
+</div>
+
+<br />
 
 <div class="container-fluid">
     <div class="row" style="margin-left: 35px">
-        <div class="col-md-2 single-left">
+        <div class="col-2 single-left">
             <div class="aside">
                 <h3 class="aside-title">Categories</h3>
                 <div class="checkbox-filter">
-                    @foreach (var categoryName in Model.CategoryNames)
+                    @foreach (var category in Model.Categories)
                     {
                         <div class="input-checkbox">
                             <input type="checkbox" id="category-1">
                             <label for="category-1">
-                                <span></span>@categoryName<small>(120)</small>
+                                <a asp-controller="Products" asp-action="All" asp-route-SearchCategory="@category.Name" class="btn btn-neutral">
+                                    <span></span>@category.Name <small> (@category.ProductsCount)</small>
+                                </a>
                             </label>
                         </div>
                     }
@@ -85,11 +112,36 @@
                         </div>
                     }
                 </div>
+
+                <div class="store-filter clearfix">
+                    <span class="store-qty">Showing 20-100 products</span>
+                    <ul class="store-pagination">
+                        <li>
+                            <a asp-controller="Products"
+                           asp-action="All"
+                           asp-route-SearchCategory="@Model.SearchCategory"
+                           asp-route-ProductsSorting="@Model.ProductsSorting"
+                           asp-route-CurrentPage="@((Model.CurrentPage - 1) < 1 ? Model.CurrentPage = 1 : Model.CurrentPage - 1)">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        </li>
+                        <li class="active">@Model.CurrentPage</li>
+                        <li>
+                            <a asp-controller="Products"
+                           asp-action="All"
+                           asp-route-SearchCategory="@Model.SearchCategory"
+                           asp-route-ProductsSorting="@Model.ProductsSorting"
+                           asp-route-CurrentPage="@((Model.CurrentPage + 1) > totalPages ? Model.CurrentPage = totalPages : Model.CurrentPage + 1)">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             }
             else
             {
                 <div class="jumbotron">
-                    <h1 class="text-center display-4">Currently there are no results for "@Model.SearchingCategory" category!</h1>
+                    <h1 class="text-center display-4">Currently there are no results for "@Model.SearchCategory" category!</h1>
                     <p class="text-center lead">You can try later <i style="color: black" class="fa fa-smile"></i>.</p>
                     <hr class="my-4">
                 </div>

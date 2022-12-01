@@ -2,6 +2,7 @@
 {
     using Ecommerce.InputModels.Products;
     using Ecommerce.ViewModels.Products;
+    using Ecommerce.ViewModels.Products.Enums;
 
     public interface IProductService
     {
@@ -13,6 +14,6 @@
 
         public Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category);
 
-        public Task<ProductsServiceModel> GetProductsServiceModel(string category, int currentPage = 1);
+        public Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string category, int currentPage = 1);
     }
 }

@@ -18,5 +18,7 @@
         public ImageViewModel Image { get; set; }
 
         public decimal AverageReview { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

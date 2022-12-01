@@ -3,6 +3,7 @@
     using Ecommerce.Services.Data.CategoriesServices;
     using Ecommerce.Services.Data.ProductsServices;
     using Ecommerce.ViewModels.Products;
+    using Ecommerce.ViewModels.Products.Enums;
     using Microsoft.AspNetCore.Mvc;
 
     public class ProductsController : Controller
@@ -16,14 +17,17 @@
             this.categoryService = categoryService;
         }
 
-        public async Task<IActionResult> All(string searchCategory = null, int currentPage = 1)
+        public async Task<IActionResult> All([FromQuery] ProductsServiceModel productsServiceModel)
         {
-            ProductsServiceModel productServiceModel = await this.productService.GetProductsServiceModel((searchCategory == null ? "all"  : searchCategory), currentPage);
-            productServiceModel.Categories = this.categoryService.GetAll().Select(c => new ProductCategoryViewModel()
+            ProductsServiceModel productServiceModel = await this.productService.GetProductsServiceModel(productsServiceModel.ProductsSorting, (productsServiceModel.SearchCategory == null ? "all" : productsServiceModel.SearchCategory), productsServiceModel.CurrentPage);
+
+            IEnumerable<ProductCategoryViewModel> categories = this.categoryService.GetAll().Select(c => new ProductCategoryViewModel()
             {
                 Name = c.Name,
-                ProductsCount = 1,
-            }); // TODO
+                ProductsCount = c.ProductsCount,
+            });
+
+            productServiceModel.Categories = categories.OrderByDescending(c => c.ProductsCount);
 
             return View(productServiceModel);
         }
