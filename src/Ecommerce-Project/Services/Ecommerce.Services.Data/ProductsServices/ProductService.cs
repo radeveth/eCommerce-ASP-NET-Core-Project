@@ -145,6 +145,12 @@
                 Id = sourceProduct.Id,
                 Name = sourceProduct.Name,
                 Images = this.mapper.Map<IEnumerable<ImageViewModel>>(this.dbContext.Images.Where(i => i.ProductId == id).ToList()),
+                TotalReviews = sourceProduct.Reviews.Count,
+                Price = sourceProduct.Price,
+                Status = sourceProduct.Status,
+                Description = sourceProduct.Description,
+                //Category = sourceProduct.Category.Name,
+                AverageReview = sourceProduct.Reviews.Count == 0 ? -1 : sourceProduct.Reviews.Sum(r => (int)r.ReviewScale) / sourceProduct.Reviews.Count,
             };
 
             return detailsModel;

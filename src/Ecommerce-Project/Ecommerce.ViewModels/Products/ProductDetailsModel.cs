@@ -29,6 +29,8 @@
 
         public decimal AverageReview { get; set; }
 
+        public int TotalReviews { get; set; }
+
         public IEnumerable<ReviewViewModel> Reviews { get; set; }
     }
 }

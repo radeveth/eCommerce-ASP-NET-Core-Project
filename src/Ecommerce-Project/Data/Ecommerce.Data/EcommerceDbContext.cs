@@ -33,6 +33,8 @@
 
         public DbSet<ProductWishlist> ProductsWishlist { get; set; }
 
+        public DbSet<ReviewVote> ReviewVotes { get; set; }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
             this.SaveChangesAsync(true, cancellationToken);
 
@@ -49,6 +51,7 @@
             modelBuilder.ApplyConfiguration(new ImageConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ReviewVoteConfiguration());
             modelBuilder.ApplyConfiguration(new OrderAddressConfiguration());
             modelBuilder.ApplyConfiguration(new ProductWishlistConfiguration());
 

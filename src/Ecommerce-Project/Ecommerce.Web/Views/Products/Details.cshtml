@@ -4,54 +4,122 @@
     ViewData["Title"] = $"{Model.Name} | Details";
 }
 
-<div class="slider demo responsive">
-    @foreach (var image in Model.Images)
-    {
-        @*<div class="for_slick_slider multiple-items">
-    <div class="items">
-    <img src="@image.Src" />
-    <div class="overlay"></div>
+<div class="container">
+    <div class="slider demo responsive">
+        @foreach (var image in Model.Images)
+        {
+            @*<div class="for_slick_slider multiple-items">
+        <div class="items">
+        <img src="@image.Src" />
+        <div class="overlay"></div>
+        </div>
+        </div>
+        <div class="for_slick_slider multiple-items">
+        <div class="items">
+        <img src="@image.Src" />
+        <div class="overlay"></div>
+        </div>
+        </div>
+        <div class="for_slick_slider multiple-items">
+        <div class="items">
+        <img src="@image.Src" />
+        <div class="overlay"></div>
+        </div>
+        </div>
+        <div class="for_slick_slider multiple-items">
+        <div class="items">
+        <img src="@image.Src" />
+        <div class="overlay"></div>
+        </div>
+        </div>
+        <div class="for_slick_slider multiple-items">
+        <div class="items">
+        <img src="@image.Src" />
+        <div class="overlay"></div>
+        </div>
+        </div>
+        <div class="for_slick_slider multiple-items">
+        <div class="items">
+        <img src="@image.Src" />
+        <div class="overlay"></div>
+        </div>
+        </div>*@
+            <div class="col-5"><img src="@image.Src" /></div>
+            <div><img src="@image.Src" /></div>
+            <div><img src="@image.Src" /></div>
+            <div><img src="@image.Src" /></div>
+            <div><img src="@image.Src" /></div>
+            <div><img src="@image.Src" /></div>
+            <div><img src="@image.Src" /></div>
+            <div><img src="@image.Src" /></div>
+        }
     </div>
+
+    <!-- Product details -->
+    <div class="col-md-5">
+        <div class="product-details">
+            <h2 class="product-name">@Model.Name</h2>
+            <div>
+                <div class="product-rating">
+                    @*@for (int i = 1; i <= Model.AverageReview; i++)
+                    {
+                        <i class="fa fa-star"></i>
+                    }*@
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <a class="review-link" href="#">@Model.TotalReviews Review(s) | <a asp-controller="Reviews" asp-action="AddReview" asp-route-ProductId="@Model.Id">Add your review</a></a>
+            </div>
+            <div>
+                <h3 class="product-price">$@($"{Model.Price:f2}") <del class="product-old-price">$990.00</del></h3>
+                <span class="product-available">@Model.Status</span>
+            </div>
+            <p>@Model.Description</p>
+
+            <div class="product-options">
+                <label>
+                    Size
+                    <select class="input-select">
+                        <option value="0">X</option>
+                    </select>
+                </label>
+                <label>
+                    Color
+                    <select class="input-select">
+                        <option value="0">Red</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="add-to-cart">
+                <div class="qty-label">
+                    Qty
+                    <div class="input-number">
+                        <input type="number">
+                        <span class="qty-up">+</span>
+                        <span class="qty-down">-</span>
+                    </div>
+                </div>
+                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+            </div>
+
+                <a role="button" class="badge badge-secondary"><i class="fa fa-heart"></i> Add to wishlist</a>
+                <span class="badge badge-secondary">Category: <a role="button">Model.Category</a></span>
+
+            <ul class="product-links">
+                <li>Share:</li>
+                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fab fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fab fa-envelope"></i></a></li>
+            </ul>
+
+        </div>
     </div>
-    <div class="for_slick_slider multiple-items">
-    <div class="items">
-    <img src="@image.Src" />
-    <div class="overlay"></div>
-    </div>
-    </div>
-    <div class="for_slick_slider multiple-items">
-    <div class="items">
-    <img src="@image.Src" />
-    <div class="overlay"></div>
-    </div>
-    </div>
-    <div class="for_slick_slider multiple-items">
-    <div class="items">
-    <img src="@image.Src" />
-    <div class="overlay"></div>
-    </div>
-    </div>
-    <div class="for_slick_slider multiple-items">
-    <div class="items">
-    <img src="@image.Src" />
-    <div class="overlay"></div>
-    </div>
-    </div>
-    <div class="for_slick_slider multiple-items">
-    <div class="items">
-    <img src="@image.Src" />
-    <div class="overlay"></div>
-    </div>
-    </div>*@
-        <div><img src="@image.Src" /></div>
-        <div><img src="@image.Src" /></div>
-        <div><img src="@image.Src" /></div>
-        <div><img src="@image.Src" /></div>
-        <div><img src="@image.Src" /></div>
-        <div><img src="@image.Src" /></div>
-        <div><img src="@image.Src" /></div>
-        <div><img src="@image.Src" /></div>
-    }
+    <!-- /Product details -->
 </div>
 
 

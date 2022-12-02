@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Add Review";
+}
+
+
+<h1>TinyMCE Quick Start Guide</h1>
+<form method="post">
+    <textarea id="mytextarea">Hello, World!</textarea>
+</form>
+
+@section Scripts {
+    <script src="~/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+    </script>
+}

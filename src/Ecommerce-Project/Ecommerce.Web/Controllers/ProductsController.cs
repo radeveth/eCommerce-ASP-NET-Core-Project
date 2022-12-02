@@ -1,5 +1,6 @@
 ﻿namespace Ecommerce.Web.Controllers
 {
+    using Ecommerce.InputModels.Products;
     using Ecommerce.Services.Data.CategoriesServices;
     using Ecommerce.Services.Data.ProductsServices;
     using Ecommerce.ViewModels.Products;
@@ -17,11 +18,26 @@
             this.categoryService = categoryService;
         }
 
+        public IActionResult Create()
+        {
+            ProductFormModel productForm = new ProductFormModel();
+
+            return this.View(productForm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateAsync(ProductFormModel productForm)
+        {
+            await this.productService.CreateAsync(productForm);
+
+            return this.RedirectToAction("Index", nameof(HomeController));
+        }
+
         public async Task<IActionResult> All([FromQuery] ProductsServiceModel productsServiceModel)
         {
             ProductsServiceModel productServiceModel = await this.productService.GetProductsServiceModel(productsServiceModel.ProductsSorting, (productsServiceModel.SearchCategory == null ? "all" : productsServiceModel.SearchCategory), productsServiceModel.CurrentPage);
 
-            IEnumerable<ProductCategoryViewModel> categories = this.categoryService.GetAll().Select(c => new ProductCategoryViewModel()
+            IEnumerable<ViewModels.Products.ProductCategoryViewModel> categories = this.categoryService.GetAll().Select(c => new ViewModels.Products.ProductCategoryViewModel()
             {
                 Name = c.Name,
                 ProductsCount = c.ProductsCount,
