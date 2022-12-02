@@ -4,6 +4,7 @@
     using Ecommerce.Data;
     using Ecommerce.Data.Models;
     using Ecommerce.InputModels.Products;
+    using Ecommerce.ViewModels.Images;
     using Ecommerce.ViewModels.Products;
     using Ecommerce.ViewModels.Products.Enums;
     using Microsoft.AspNetCore.Http;
@@ -143,7 +144,10 @@
             {
                 Id = sourceProduct.Id,
                 Name = sourceProduct.Name,
+                Images = this.mapper.Map<IEnumerable<ImageViewModel>>(this.dbContext.Images.Where(i => i.ProductId == id).ToList()),
             };
+
+            return detailsModel;
         }
     }
 }

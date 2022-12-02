@@ -4,24 +4,99 @@
     ViewData["Title"] = $"{Model.Name} | Details";
 }
 
-<!-- Product main img -->
-<div class="col-md-5 col-md-push-2">
-    <div id="product-main-img">
-        <div class="product-preview">
-            <img src="@Model.Images.First()" alt="">
-        </div>
-
-        <div class="product-preview">
-            <img src="@Model.Images.First()" alt="">
-        </div>
-
-        <div class="product-preview">
-            <img src="@Model.Images.First()" alt="">
-        </div>
-
-        <div class="product-preview">
-            <img src="@Model.Images.First()" alt="">
-        </div>
+<div class="slider demo responsive">
+    @foreach (var image in Model.Images)
+    {
+        @*<div class="for_slick_slider multiple-items">
+    <div class="items">
+    <img src="@image.Src" />
+    <div class="overlay"></div>
     </div>
+    </div>
+    <div class="for_slick_slider multiple-items">
+    <div class="items">
+    <img src="@image.Src" />
+    <div class="overlay"></div>
+    </div>
+    </div>
+    <div class="for_slick_slider multiple-items">
+    <div class="items">
+    <img src="@image.Src" />
+    <div class="overlay"></div>
+    </div>
+    </div>
+    <div class="for_slick_slider multiple-items">
+    <div class="items">
+    <img src="@image.Src" />
+    <div class="overlay"></div>
+    </div>
+    </div>
+    <div class="for_slick_slider multiple-items">
+    <div class="items">
+    <img src="@image.Src" />
+    <div class="overlay"></div>
+    </div>
+    </div>
+    <div class="for_slick_slider multiple-items">
+    <div class="items">
+    <img src="@image.Src" />
+    <div class="overlay"></div>
+    </div>
+    </div>*@
+        <div><img src="@image.Src" /></div>
+        <div><img src="@image.Src" /></div>
+        <div><img src="@image.Src" /></div>
+        <div><img src="@image.Src" /></div>
+        <div><img src="@image.Src" /></div>
+        <div><img src="@image.Src" /></div>
+        <div><img src="@image.Src" /></div>
+        <div><img src="@image.Src" /></div>
+    }
 </div>
-<!-- /Product main img -->
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.demo').slick({
+                infinite: true,
+                slidesToShow: 4,
+                slidesToScroll: 4,
+                arrows: true,
+                autoplay: false,
+                autoplaySpeed: 2000,
+                dots: false,
+                centerMode: true,
+                centerPadding: '0'
+            });
+        });
+
+    </script>
+}
+@*
+padding-bottom: 60px;
+  margin-bottom: -60px;
+  z-index: 2;
+
+.products-slick-nav {
+  position: absolute;
+  right: 15px;
+  z-index: 10;
+}
+
+.products-slick-nav .slick-prev, .products-slick-nav .slick-next {
+  position: static;
+  -webkit-transform: none;
+  -ms-transform: none;
+  transform: none;
+  width: 20px;
+  height: 20px;
+  display: inline-block !important;
+  margin: 0px 2px;
+}
+
+.products-slick-nav .slick-prev:before, .products-slick-nav .slick-next:before {
+  font-size: 14px;
+}
+*@

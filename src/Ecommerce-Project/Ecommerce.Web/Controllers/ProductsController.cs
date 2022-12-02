@@ -34,9 +34,9 @@
 
         public async Task<IActionResult> Details(int id)
         {
+            ProductDetailsModel productDetails = await this.productService.Details(id);
 
-
-            return this.View();
+            return this.View(productDetails);
         }
     }
 }

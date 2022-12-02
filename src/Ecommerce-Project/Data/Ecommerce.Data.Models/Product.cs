@@ -14,6 +14,7 @@
         {
             this.Reviews = new HashSet<Review>();
             this.Images = new HashSet<Image>();
+            this.ProductsWishlist = new HashSet<ProductWishlist>();
         }
 
         [Required]
@@ -58,5 +59,7 @@
         public virtual ICollection<Image> Images { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<ProductWishlist> ProductsWishlist { get; set; }
     }
 }

@@ -162,6 +162,36 @@ Table OF Contents
 	Typography
 \*----------------------------*/
 
+.for_slick_slider .items {
+    width: 350px;
+    height: 250px;
+    margin: 50px;
+    position: relative;
+}
+
+.for_slick_slider .items .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 350px;
+    height: 250px;
+    background: rgba(0, 0, 0, 0.64);
+}
+
+.for_slick_slider .slick-center .overlay {
+    opacity: 0;
+}
+
+.for_slick_slider .items img {
+    width: 350px;
+    height: 250px;
+    transition: all linear .4s
+}
+
+.for_slick_slider .slick-center img {
+    transform: scale(1.2);
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;

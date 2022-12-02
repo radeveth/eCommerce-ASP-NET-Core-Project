@@ -7,7 +7,14 @@
 
     public class Review : BaseModel<int>
     {
+        public Review()
+        {
+            this.Votes = new HashSet<ReviewVote>();
+        }
+
         public ReviewScale ReviewScale { get; set; }
+
+        public string Comment { get; set; }
 
         [Required]
         [ForeignKey(nameof(Product))]
@@ -20,5 +27,7 @@
         public string UserId { get; set; }
 
         public ApplicationUser User { get; set; }
+
+        public ICollection<ReviewVote> Votes { get; set; }
     }
 }
