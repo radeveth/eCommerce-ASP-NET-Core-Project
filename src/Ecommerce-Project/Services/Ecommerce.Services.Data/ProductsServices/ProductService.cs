@@ -124,7 +124,7 @@
             return products;
         }
 
-        public async Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string category, int currentPage = 1)
+        public async Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string searchingName, string category, int currentPage = 1)
         {
             IEnumerable<ProductViewModel> products = await this.GetByAllProductsForCategory(category);
 
@@ -134,7 +134,6 @@
                 SearchCategory = category == "all" ? "all" : products.Any() ? products.FirstOrDefault().Category : category,
                 Products = products.Skip((currentPage - 1) * ProductsServiceModel.ProductsPerPage).Take(ProductsServiceModel.ProductsPerPage),
                 TotalProducts = products.Count(),
-                ImageHeight = 400,
             };
 
             if (products.Any())
@@ -153,6 +152,12 @@
                     ProductsSorting.MostCommented => productsServiceModel.Products.OrderByDescending(p => p.CreatedOn), // TODO
                     _ => productsServiceModel.Products.OrderByDescending(p => p.CreatedOn),
                 };
+            }
+
+            if (!string.IsNullOrEmpty(searchingName))
+            {
+                searchingName = searchingName.Trim().ToLower();
+                products = products.Where(p => p.Name.Trim().ToLower().Contains(searchingName));
             }
 
             return productsServiceModel;

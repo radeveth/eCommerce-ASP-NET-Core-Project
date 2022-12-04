@@ -17,7 +17,7 @@
 
         public ProductFormModel GetProductFormModel();
 
-        public Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string category, int currentPage = 1);
+        public Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string searchingName, string category, int currentPage = 1);
 
         public Task<ProductDetailsModel> Details(int id);
     }

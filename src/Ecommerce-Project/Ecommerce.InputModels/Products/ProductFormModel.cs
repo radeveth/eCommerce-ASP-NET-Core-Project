@@ -9,23 +9,23 @@
 
     public class ProductFormModel
     {
-        [Display(Name = "Name: ")]
+        [Display(Name = "* Name: ")]
         [Required(ErrorMessage = "Name field is required.")]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Name field should be between {2} and {1}.")]
         public string Name { get; set; }
 
-        [Display(Name = "Price: ")]
+        [Display(Name = "* Price: ")]
         [Required(ErrorMessage = "Price field is required.")]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Status field is required.")]
         public Status Status { get; set; }
 
-        [Display(Name = "Quantity: ")]
+        [Display(Name = "* Quantity: ")]
         [Required(ErrorMessage = "Quantity field is required.")]
         public int Quantity { get; set; }
 
-        [Display(Name = "Description: ")]
+        [Display(Name = "* Description: ")]
         [Required(ErrorMessage = "Description field is required.")]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = "Description field should be between {2} and {1}.")]
         public string Description { get; set; }
@@ -34,13 +34,13 @@
         [NotMapped]
         public IFormFileCollection Images { get; set; }
 
-        [Display(Name = "Category: ")]
+        [Display(Name = "* Category: ")]
         [Required(ErrorMessage = "Category field is required.")]
         public int CategoryId { get; set; }
 
         public IEnumerable<ProductCategoryFormModel> Categories { get; set; }
 
-        [Display(Name = "Brand: ")]
+        [Display(Name = "* Brand: ")]
         [Required(ErrorMessage = "Brand field is required.")]
         public int BrandId { get; set; }
 

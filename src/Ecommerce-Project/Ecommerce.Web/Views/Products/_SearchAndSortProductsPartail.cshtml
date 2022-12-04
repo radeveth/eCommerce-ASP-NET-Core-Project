@@ -1,0 +1,31 @@
+﻿@model SearchingProductsCriteria
+
+<div class="container">
+    <form method="get" class="mb-2">
+        <div class="row">
+            <div class="offset-1 form-group col-4">
+                <label asp-for="ProductsSorting" class="form-label d-none"></label>
+                <select asp-for="ProductsSorting" class="form-control border-secondary">
+                    <option selected disabled>Order by...</option>
+                    <option value="0">The Lowest Price</option>
+                    <option value="1">Highest Price</option>
+                    <option value="2">Biggest Discount</option>
+                    <option value="3">Latest</option>
+                    <option value="4">Ascending</option>
+                    <option value="5">Descending</option>
+                    <option value="6">Most Commented</option>
+                </select>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="SearchNameCriteria" class="form-label d-none"></label>
+                <input asp-for="SearchNameCriteria" type="search" class="form-control border-secondary" placeholder="Search product by name" />
+            </div>
+
+            <label asp-for="SearchCategory" class="form-label d-none"></label>
+            <input asp-for="SearchCategory" class="form-control d-none" value="@Model.SearchCategory">
+
+            <input type="submit" class="btn btn-secondary rounded-pull col-2" value="Search">
+        </div>
+    </form>
+</div>

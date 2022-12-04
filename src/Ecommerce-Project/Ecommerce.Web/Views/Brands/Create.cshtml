@@ -1,0 +1,37 @@
+﻿@model BrandFormModel
+
+@{
+    ViewData["Title"] = "Create Brand | Commerce Park";
+}
+
+<div class="container">
+    <form method="post">
+        <div class="offset-1 col-10 form-group form-margin mt-3">
+            <label asp-for="Name" style="margin-bottom: 3px"></label>
+            <input asp-for="Name" type="text" class="border border-secondary form-control rounded-pill" placeholder="Sony, IPhone, etc..." />
+            <span asp-validation-for="Name" class="small text-danger"></span>
+        </div>
+        <div class="offset-1 col-10 form-group form-margin mt-3">
+            <label asp-for="YearOfFoundation" style="margin-bottom: 3px"></label>
+            <input asp-for="YearOfFoundation" type="text" class="border border-secondary form-control rounded-pill" placeholder="1946" />
+            <span asp-validation-for="YearOfFoundation" class="small text-danger"></span>
+        </div>
+        <div class="offset-1 col-10 form-group form-margin mt-3">
+            <label asp-for="Description" style="margin-bottom: 3px"></label>
+            <textarea asp-for="Description" id="mytextarea"></textarea>
+            <span asp-validation-for="Description" class="small text-danger"></span>
+        </div>
+
+        <input type="submit" value="Create" class="mt-5 offset-5 col-2 btn btn-secondary rounded-pill" />
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+    </script>
+}

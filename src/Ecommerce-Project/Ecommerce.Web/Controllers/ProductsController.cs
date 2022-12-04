@@ -49,7 +49,7 @@
 
         public async Task<IActionResult> All([FromQuery] ProductsServiceModel productsServiceModel)
         {
-            ProductsServiceModel productServiceModel = await this.productService.GetProductsServiceModel(productsServiceModel.ProductsSorting, (productsServiceModel.SearchCategory == null ? "all" : productsServiceModel.SearchCategory), productsServiceModel.CurrentPage);
+            ProductsServiceModel productServiceModel = await this.productService.GetProductsServiceModel(productsServiceModel.ProductsSorting, productsServiceModel.SearchNameCriteria, (productsServiceModel.SearchCategory == null ? "all" : productsServiceModel.SearchCategory), productsServiceModel.CurrentPage);
 
             IEnumerable<ViewModels.Products.ProductCategoryViewModel> categories = this.categoryService.GetAll().Select(c => new ViewModels.Products.ProductCategoryViewModel()
             {
