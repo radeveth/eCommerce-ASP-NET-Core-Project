@@ -3,11 +3,13 @@
     using AutoMapper;
     using Ecommerce.Data;
     using Ecommerce.Data.Models;
+    using Ecommerce.Data.Models.Enums;
     using Ecommerce.InputModels.Products;
     using Ecommerce.ViewModels.Images;
     using Ecommerce.ViewModels.Products;
     using Ecommerce.ViewModels.Products.Enums;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Http.Internal;
     using Microsoft.EntityFrameworkCore;
 
     public class ProductService : IProductService
@@ -43,6 +45,15 @@
             return this.mapper.Map<IEnumerable<ProductViewModel>>(products.AsQueryable());
         }
 
+        public ProductFormModel GetProductFormModel()
+        {
+            return new ProductFormModel()
+            {
+                Brands = this.mapper.Map<IEnumerable<ProductBrandFormModel>>(this.dbContext.Brands),
+                Categories = this.mapper.Map<IEnumerable<ProductCategoryFormModel>>(this.dbContext.Categories),
+            };
+        }
+
         public async Task CreateAsync(ProductFormModel productForm)
         {
             Product product = new Product()
@@ -50,7 +61,7 @@
                 Name = productForm.Name,
                 Price = productForm.Price,
                 Description = productForm.Description,
-                Status = productForm.Status,
+                Status = productForm.Quantity > 0 ? Status.Available : Status.Unavailable,
                 Quantity = productForm.Quantity,
                 BrandId = productForm.BrandId,
                 UserId = productForm.UserId,
@@ -64,25 +75,35 @@
 
             try
             {
-                int imagesCounter = 0;
-                foreach (var image in productForm.Images)
+                List<Image> images = new List<Image>();
+                int countOfImages = 0;
+                foreach (var imageFile in productForm.Images)
                 {
-                    IFormFile imageFile = image.Src;
-
-                    if (imageFile != null && imageFile.Length > 0)
+                    if (imageFile.Length > 0)
                     {
-                        imagesCounter++;
-                        using var stream = new MemoryStream();
-                        await imageFile.CopyToAsync(stream);
-
-                        Image newImage = new Image()
+                        using (var memoryStream = new MemoryStream())
                         {
-                            Name = $"{product.Name.Replace(" ", "-")}_{imagesCounter}",
-                            Src = stream.ToArray(),
-                            ProductId = product.Id,
-                        };
+                            await imageFile.CopyToAsync(memoryStream);
+
+                            // Upload the file if less than 2 MB
+                            if (memoryStream.Length < 2097152)
+                            {
+                                Image newImage = new Image()
+                                {
+                                    Name = $@"{product.Name}_{++countOfImages}",
+                                    Src = memoryStream.ToArray(),
+                                    ProductId = product.Id,
+                                    Product = product,
+                                };
+
+                                images.Add(newImage);
+                            }
+                        }
                     }
                 }
+
+                await this.dbContext.Images.AddRangeAsync(images);
+                await this.dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {

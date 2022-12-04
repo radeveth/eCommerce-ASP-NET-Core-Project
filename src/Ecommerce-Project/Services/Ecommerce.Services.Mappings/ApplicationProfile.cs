@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using Ecommerce.Data.Models;
+    using Ecommerce.InputModels.Products;
     using Ecommerce.ViewModels.ApplicationUsers;
     using Ecommerce.ViewModels.Categories;
     using Ecommerce.ViewModels.Home;
@@ -18,6 +19,9 @@
                     .ForMember(x => x.Image, y => y.MapFrom(s => s.Images.FirstOrDefault()))
                     .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Sum(r => (int)r.ReviewScale)))
                     .ForMember(x => x.Category, y => y.MapFrom(s => s.Category.Name));
+
+                this.CreateMap<Brand, ProductBrandFormModel>();
+                this.CreateMap<Category, ProductCategoryFormModel>();
             }
         }
 

@@ -14,6 +14,8 @@
 
         public Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category);
 
+        public ProductFormModel GetProductFormModel();
+
         public Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string category, int currentPage = 1);
 
         public Task<ProductDetailsModel> Details(int id);
