@@ -5,7 +5,7 @@
 
     public class ProductsServiceModel
     {
-        public const int ProductsPerPage = 1;
+        public const int ProductsPerPage = 6;
 
         public int CurrentPage { get; set; } = 1;
 
@@ -23,6 +23,8 @@
         public ProductsSorting ProductsSorting { get; set; }
 
         public IEnumerable<ProductViewModel> Products { get; set; }
+
+        public int ImageHeight { get; set; }
 
         public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
     }

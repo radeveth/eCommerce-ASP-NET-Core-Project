@@ -82,42 +82,7 @@
                     @foreach (var product in Model.Products)
                     {
                         <div class="col-4">
-                            <div class="row">
-                                <div class="products-tabs">
-                                    <div id="tab1" class="tab-pane active">
-                                        <div class="products-slick" data-nav="#slick-nav-1">
-                                            <div class="product">
-                                                <div class="product-img">
-                                                    <img src="@product.Image.Src" alt="">
-                                                    <div class="product-label">
-                                                        <span class="sale">-30%</span>
-                                                        <span class="new">NEW</span>
-                                                    </div>
-                                                </div>
-                                                <div class="product-body">
-                                                    <p class="product-category">@product.Category</p>
-                                                    <h3 class="product-name"><a href="#">@product.Name</a></h3>
-                                                    <h4 class="product-price">$@($"{product.Price:f2}") <del class="product-old-price">$@($"{product.Price:f2}")</del></h4>
-                                                    <div class="product-rating">
-                                                        @for (int i = 1; i <= product.AverageReview; i++)
-                                                        {
-                                                            <i class="fa fa-star"></i>
-                                                        }
-                                                    </div>
-                                                    <div class="product-btns">
-                                                        <button class="add-to-wishlist"><i class="fa fa-heart"></i><span class="tooltipp">add to wishlist</span></button>
-                                                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></a>
-                                                    </div>
-                                                </div>
-                                                <div class="add-to-cart">
-                                                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="slick-nav-1" class="products-slick-nav"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            <partial name="_ProductCardPartial" model="product" />
                         </div>
                     }
                 </div>

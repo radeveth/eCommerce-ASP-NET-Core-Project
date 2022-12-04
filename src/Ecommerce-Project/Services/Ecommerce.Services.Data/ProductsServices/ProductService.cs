@@ -90,7 +90,7 @@
                             {
                                 Image newImage = new Image()
                                 {
-                                    Name = $@"{product.Name}_{++countOfImages}",
+                                    Name = $@"{product.Id}product_{++countOfImages}",
                                     Src = memoryStream.ToArray(),
                                     ProductId = product.Id,
                                     Product = product,
@@ -134,6 +134,7 @@
                 SearchCategory = category == "all" ? "all" : products.Any() ? products.FirstOrDefault().Category : category,
                 Products = products.Skip((currentPage - 1) * ProductsServiceModel.ProductsPerPage).Take(ProductsServiceModel.ProductsPerPage),
                 TotalProducts = products.Count(),
+                ImageHeight = 400,
             };
 
             if (products.Any())
