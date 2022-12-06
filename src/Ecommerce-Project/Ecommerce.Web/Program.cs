@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Ecommerce.Data;
 namespace Ecommerce.Web
 {
     using Ecommerce.Data;

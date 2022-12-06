@@ -12,5 +12,7 @@
         public Task CreateAsync(ApplicationUserFromModel userForm);
 
         public string Authorization(ApplicationUserCred userCred);
+
+        public Task<bool> AddProductToUserWishlist(string userId, int productId);
     }
 }

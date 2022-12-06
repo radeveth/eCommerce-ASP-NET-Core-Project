@@ -157,7 +157,7 @@
             if (!string.IsNullOrEmpty(searchingName))
             {
                 searchingName = searchingName.Trim().ToLower();
-                products = products.Where(p => p.Name.Trim().ToLower().Contains(searchingName));
+                productsServiceModel.Products = productsServiceModel.Products.Where(p => p.Name.Trim().ToLower().Contains(searchingName));
             }
 
             return productsServiceModel;

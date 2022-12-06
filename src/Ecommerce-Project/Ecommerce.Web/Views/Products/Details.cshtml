@@ -4,54 +4,11 @@
     ViewData["Title"] = $"{Model.Name} | Details";
 }
 
-<div class="container">
-    <div class="slider demo responsive">
-        @foreach (var image in Model.Images)
+<div class="container mt-4">
+    <div class="glider">
+        @foreach (var productImage in Model.Images)
         {
-            @*<div class="for_slick_slider multiple-items">
-        <div class="items">
-        <img src="@image.Src" />
-        <div class="overlay"></div>
-        </div>
-        </div>
-        <div class="for_slick_slider multiple-items">
-        <div class="items">
-        <img src="@image.Src" />
-        <div class="overlay"></div>
-        </div>
-        </div>
-        <div class="for_slick_slider multiple-items">
-        <div class="items">
-        <img src="@image.Src" />
-        <div class="overlay"></div>
-        </div>
-        </div>
-        <div class="for_slick_slider multiple-items">
-        <div class="items">
-        <img src="@image.Src" />
-        <div class="overlay"></div>
-        </div>
-        </div>
-        <div class="for_slick_slider multiple-items">
-        <div class="items">
-        <img src="@image.Src" />
-        <div class="overlay"></div>
-        </div>
-        </div>
-        <div class="for_slick_slider multiple-items">
-        <div class="items">
-        <img src="@image.Src" />
-        <div class="overlay"></div>
-        </div>
-        </div>*@
-            <div class="col-5"><img src="@image.Src" /></div>
-            <div><img src="@image.Src" /></div>
-            <div><img src="@image.Src" /></div>
-            <div><img src="@image.Src" /></div>
-            <div><img src="@image.Src" /></div>
-            <div><img src="@image.Src" /></div>
-            <div><img src="@image.Src" /></div>
-            <div><img src="@image.Src" /></div>
+            <div><img src="@productImage.Src" /></div>
         }
     </div>
 
@@ -63,7 +20,7 @@
                 <div class="product-rating">
                     @*@for (int i = 1; i <= Model.AverageReview; i++)
                     {
-                        <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
                     }*@
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>
@@ -106,8 +63,9 @@
                 <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
             </div>
 
-                <a role="button" class="badge badge-secondary"><i class="fa fa-heart"></i> Add to wishlist</a>
-                <span class="badge badge-secondary">Category: <a role="button">Model.Category</a></span>
+            <a id="addProductToWishlist" role="button" class="badge badge-secondary"><i class="fa fa-heart"></i> Add to wishlist</a>
+            <a id="removeProductToWishlist" role="button" class="badge badge-secondary d-none"><i class="fa fa-heart"></i> Add to wishlist</a>
+            <span class="badge badge-secondary">Category: <a role="button">Model.Category</a></span>
 
             <ul class="product-links">
                 <li>Share:</li>
@@ -141,30 +99,27 @@
         });
 
     </script>
-}
-@*
-padding-bottom: 60px;
-  margin-bottom: -60px;
-  z-index: 2;
 
-.products-slick-nav {
-  position: absolute;
-  right: 15px;
-  z-index: 10;
-}
+    <script>
+        new Glider(document.querySelector('.glider'), {
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            draggable: true,
+            dots: '.dots',
+            arrows: {
+                prev: '.glider-prev',
+                next: '.glider-next'
+            }
+        });
+    </script>
 
-.products-slick-nav .slick-prev, .products-slick-nav .slick-next {
-  position: static;
-  -webkit-transform: none;
-  -ms-transform: none;
-  transform: none;
-  width: 20px;
-  height: 20px;
-  display: inline-block !important;
-  margin: 0px 2px;
-}
+    <script>
+        const wishlistButtonElement = document.querySelector("#wishlist");
 
-.products-slick-nav .slick-prev:before, .products-slick-nav .slick-next:before {
-  font-size: 14px;
+        wishlistButtonElement.addEventListener("click", (e) => {
+            $.get('/api/ApplicationUsersApi/AddProductToUserWishlist?ProductId=' + @Model.Id, (data) => {
+
+            })
+        });
+    </script>
 }
-*@

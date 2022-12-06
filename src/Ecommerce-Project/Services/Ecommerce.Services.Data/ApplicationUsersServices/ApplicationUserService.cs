@@ -1,8 +1,10 @@
 ﻿namespace Ecommerce.Services.Data.ApplicationUsersServices
 {
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using System.Text;
+    using System.Threading.Tasks;
     using AutoMapper;
     using BCrypt.Net;
     using Ecommerce.Data;
@@ -10,11 +12,13 @@
     using Ecommerce.InputModels.ApplicationUsers;
     using Ecommerce.ViewModels.ApplicationUsers;
     using IdGen;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.IdentityModel.Tokens;
 
-    public class ApplicationUserService
+    public class ApplicationUserService : IApplicationUserService
     {
+        /*
         //private readonly IMapper mapper;
         //private readonly EcommerceDbContext dbContext;
         //private readonly string tokenKey = "My test token key";
@@ -100,5 +104,55 @@
 
         //    return id.ToString();
         //}
+        */
+
+        private readonly EcommerceDbContext dbContext;
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public ApplicationUserService(EcommerceDbContext dbContext, UserManager<ApplicationUser> userManager)
+        {
+            this.dbContext = dbContext;
+            this.userManager = userManager;
+        }
+
+        public async Task<bool> AddProductToUserWishlist(string userId, int productId)
+        {
+            if (this.dbContext.ProductsWishlist.Any(p => p.UserId == userId && p.ProductId == productId) || !this.dbContext.Products.Any(p => p.Id == productId))
+            {
+                return false;
+            }
+
+            ApplicationUser applicationUser = await this.userManager.FindByIdAsync(userId);
+
+            await this.dbContext.ProductsWishlist.AddAsync(new ProductWishlist()
+            {
+                UserId = userId,
+                User = applicationUser,
+                ProductId = productId,
+                Product = this.dbContext.Products.FirstOrDefault(p => p.Id == productId),
+            });
+
+            return true;
+        }
+
+        public string Authorization(ApplicationUserCred userCred)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateAsync(ApplicationUserFromModel userForm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ApplicationUserViewModel> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApplicationUserViewModel> GetById(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
