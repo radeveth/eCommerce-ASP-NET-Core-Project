@@ -16,16 +16,24 @@ else
     <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login"><i class="fa fa-sign-out" style="color: red"></i></a>
 }*@
 
-@if (!SignInManager.IsSignedIn(User))
+@if (SignInManager.IsSignedIn(User))
 {
     <span class="offset-6 col-1">
         <a asp-area="Identity" asp-page="/Account/Manage/Index" class="nav-link"><i class="fa fa-user" style="color: red"></i> <span class="text-white badge "> My Account</span></a>
+    </span>
+    <span class="col-1">
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@this.Url.Action("Index", "Home", new { area = string.Empty })">
+            <button style="color: white" type="submit" class="nav-link btn btn-link">Logout</button>
+        </form>
     </span>
 }
 else
 {
     <span class="offset-6 col-1">
         @*<a asp-area="Identity" asp-page="/Account/Register"><i class="fa fa-user" style="color: red"></i> <span class="text-white"> &nbsp; Register</span></a>*@
-        <a asp-area="Identity" asp-page="/Account/Register" class="nav-link"><i class="fa fa-user" style="color: red"></i> <span class="text-white badge "> Login</span></a>
+        <a asp-area="Identity" asp-page="/Account/Register" class="nav-link"><i class="fa fa-user" style="color: red"></i> <span class="text-white badge "> Register</span></a>
     </span>
+    @*<span class="col-1">
+        <a asp-area="Identity" asp-page="/Account/Login" class="nav-link"><i class="fa fa-user" style="color: red"></i> <span class="text-white badge "> Login</span></a>
+    </span>*@
 }

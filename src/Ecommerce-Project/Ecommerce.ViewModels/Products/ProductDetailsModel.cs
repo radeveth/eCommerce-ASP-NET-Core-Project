@@ -4,6 +4,7 @@
     using Ecommerce.Data.Models.Enums;
     using Ecommerce.ViewModels.Images;
     using Ecommerce.ViewModels.Review;
+    using Ganss.Xss;
 
     public class ProductDetailsModel
     {
@@ -19,6 +20,8 @@
 
         public string Description { get; set; }
 
+        public string SanitizedDescription => new HtmlSanitizer().Sanitize(this.Description);
+
         public int CategoryId { get; set; }
 
         public string Category { get; set; }
@@ -32,5 +35,9 @@
         public int TotalReviews { get; set; }
 
         public IEnumerable<ReviewViewModel> Reviews { get; set; }
+
+        public IEnumerable<ProductViewModel> RelatedProducts { get; set; }
+
+        public AddProductReviewModel AddProductReviewModel { get; set; }
     }
 }

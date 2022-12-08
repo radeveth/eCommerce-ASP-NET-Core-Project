@@ -32,6 +32,7 @@
 
         [FromForm]
         [NotMapped]
+        [Display(Name = "* Select Images: ")]
         public IFormFileCollection Images { get; set; }
 
         [Display(Name = "* Category: ")]

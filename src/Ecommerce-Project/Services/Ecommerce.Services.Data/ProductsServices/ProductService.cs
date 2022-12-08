@@ -166,18 +166,21 @@
         public async Task<ProductDetailsModel> Details(int id)
         {
             Product sourceProduct = await this.dbContext.Products.AsQueryable().FirstOrDefaultAsync(p => p.Id == id);
+            IEnumerable<Review> reviews = this.dbContext.Reviews.Where(r => r.ProductId == id);
 
             ProductDetailsModel detailsModel = new ProductDetailsModel()
             {
                 Id = sourceProduct.Id,
                 Name = sourceProduct.Name,
                 Images = this.mapper.Map<IEnumerable<ImageViewModel>>(this.dbContext.Images.Where(i => i.ProductId == id).ToList()),
-                TotalReviews = sourceProduct.Reviews.Count,
+                TotalReviews = reviews.Count(),
                 Price = sourceProduct.Price,
                 Status = sourceProduct.Status,
                 Description = sourceProduct.Description,
                 //Category = sourceProduct.Category.Name,
-                AverageReview = sourceProduct.Reviews.Count == 0 ? -1 : sourceProduct.Reviews.Sum(r => (int)r.ReviewScale) / sourceProduct.Reviews.Count,
+                //AverageReview = sourceProduct.Reviews.Count == 0 ? -1 : sourceProduct.Reviews.Sum(r => (int)r.ReviewScale) / sourceProduct.Reviews.Count,
+                AverageReview = reviews.Count() == 0 ? -1 : reviews.Select(r => (int)r.ReviewScale).Sum() / reviews.Count(),
+                RelatedProducts = new List<ProductViewModel>(),
             };
 
             return detailsModel;
