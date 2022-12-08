@@ -30,14 +30,8 @@
 
         public IEnumerable<ImageViewModel> Images { get; set; }
 
-        public decimal AverageReview { get; set; }
-
-        public int TotalReviews { get; set; }
-
-        public IEnumerable<ReviewViewModel> Reviews { get; set; }
+        public ProductReviewInputModel ProductReviewInputModel { get; set; }
 
         public IEnumerable<ProductViewModel> RelatedProducts { get; set; }
-
-        public AddProductReviewModel AddProductReviewModel { get; set; }
     }
 }

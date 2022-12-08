@@ -173,14 +173,21 @@
                 Id = sourceProduct.Id,
                 Name = sourceProduct.Name,
                 Images = this.mapper.Map<IEnumerable<ImageViewModel>>(this.dbContext.Images.Where(i => i.ProductId == id).ToList()),
-                TotalReviews = reviews.Count(),
                 Price = sourceProduct.Price,
                 Status = sourceProduct.Status,
                 Description = sourceProduct.Description,
                 //Category = sourceProduct.Category.Name,
-                //AverageReview = sourceProduct.Reviews.Count == 0 ? -1 : sourceProduct.Reviews.Sum(r => (int)r.ReviewScale) / sourceProduct.Reviews.Count,
-                AverageReview = reviews.Count() == 0 ? -1 : reviews.Select(r => (int)r.ReviewScale).Sum() / reviews.Count(),
                 RelatedProducts = new List<ProductViewModel>(),
+                ProductReviewInputModel = new ProductReviewInputModel()
+                {
+                    TotalReviews = reviews.Count(),
+                    AverageReview = reviews.Count() == 0 ? -1 : reviews.Select(r => (int)r.ReviewScale).Sum() / reviews.Count(),
+                    CountOfOneStarRating = reviews.Count(r => (int)r.ReviewScale == 1),
+                    CountOfTwoStarsRating = reviews.Count(r => (int)r.ReviewScale == 2),
+                    CountOfThreeStarsRating = reviews.Count(r => (int)r.ReviewScale == 3),
+                    CountOfFourStarsRating = reviews.Count(r => (int)r.ReviewScale == 4),
+                    CountOfFiveStarsRating = reviews.Count(r => (int)r.ReviewScale == 5),
+                },
             };
 
             return detailsModel;

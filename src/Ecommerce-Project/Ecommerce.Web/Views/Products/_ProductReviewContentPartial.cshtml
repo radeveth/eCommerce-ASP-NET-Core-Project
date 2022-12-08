@@ -1,0 +1,137 @@
+﻿@model ProductReviewInputModel
+
+<div class="container">
+    <div class="row">
+        <!-- Rating -->
+        <div class="col-md-3">
+            <div id="rating">
+                <div class="rating-avg">
+                    <span>@Model.AverageReview</span>
+                    <div class="rating-stars">
+                        @for (int i = 1; i <= Model.AverageReview; i++)
+                        {
+                            <i class="fa fa-star"></i>
+                        }
+                    </div>
+                </div>
+                <ul class="rating">
+                    <li>
+                        <div class="rating-stars">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="fa fa-star"></i>
+                            }
+                        </div>
+                        <div class="rating-progress">
+                            <div style="width: @((Model.CountOfFiveStarsRating / @Model.TotalReviews) * 100)%;"></div>
+                        </div>
+                        <span class="sum">@Model.CountOfFiveStarsRating</span>
+                    </li>
+                    <li>
+                        <div class="rating-stars">
+                            @for (int i = 1; i <= 4; i++)
+                            {
+                                <i class="fa fa-star"></i>
+                            }
+                        </div>
+                        <div class="rating-progress">
+                            <div style="width: @((Model.CountOfFourStarsRating / @Model.TotalReviews) * 100)%;"></div>
+                        </div>
+                        <span class="sum">@Model.CountOfFourStarsRating</span>
+                    </li>
+                    <li>
+                        <div class="rating-stars">
+                            @for (int i = 1; i <= 3; i++)
+                            {
+                                <i class="fa fa-star"></i>
+                            }
+                        </div>
+                        <div class="rating-progress">
+                            <div style="width: @((Model.CountOfThreeStarsRating / @Model.TotalReviews) * 100)%;"></div>
+                        </div>
+                        <span class="sum">@Model.CountOfThreeStarsRating</span>
+                    </li>
+                    <li>
+                        <div class="rating-stars">
+                            @for (int i = 1; i <= 2; i++)
+                            {
+                                <i class="fa fa-star"></i>
+                            }
+                        </div>
+                        <div class="rating-progress">
+                            <div style="width: @((Model.CountOfTwoStarsRating / @Model.TotalReviews) * 100)%;"></div>
+                        </div>
+                        <span class="sum">@Model.CountOfTwoStarsRating</span>
+                    </li>
+                    <li>
+                        <div class="rating-stars">
+                            @for (int i = 1; i <= 1; i++)
+                            {
+                                <i class="fa fa-star"></i>
+                            }
+                        </div>
+                        <div class="rating-progress">
+                            <div style="width: @((Model.CountOfOneStarRating / @Model.TotalReviews) * 100)%;"></div>
+                        </div>
+                        <span class="sum">@Model.CountOfOneStarRating</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div id="reviews">
+                <ul class="reviews">
+                    <li>
+                        <div class="review-heading">
+                            <h5 class="name">John</h5>
+                            <p class="date">27 DEC 2018, 8:0 PM</p>
+                            <div class="review-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o empty"></i>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <p>...</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-6 single-left">
+            <ul class="offset-0 col-3 reviews-pagination">
+                <li><a href="#"><i class="fa fa-angle-left"></i></a></li>
+                <li class="active">2</li>
+                <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+            </ul>
+        </div>
+        <div class="col-6 single-right">
+            <button id="create-review-button" style="background-color: #D10024" class="offset-9 col-3 btn rounded-pill">Add Review</button>
+        </div>
+    </div>
+
+    <div class="d-none" id="create-review-partial">
+        <partial name="_AddReviewPartial" model="@Model.AddProductReviewModel" />
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const createReviewButton = document.getElementById('create-review-button');
+        const createReviewPartialDivElement = document.getElementById('create-review-partial');
+
+        createReviewButton.addEventListener('click', (e) => {
+            createReviewPartialDivElement.classList.remove('d-none');
+
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#create-review-partial").offset().top
+            }, 50);
+        });
+    </script>    
+}

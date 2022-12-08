@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = $"{Model.Name} | Details";
+    var a = @Html.Raw(Model.SanitizedDescription);
 }
 
 
@@ -14,20 +15,20 @@
                 <div class="product-details">
                     <h2 class="product-name">product name goes here</h2>
                     <div>
-                        @if (Model.AverageReview != -1)
+                        @if (Model.ProductReviewInputModel.AverageReview != -1)
                         {
                             <div class="product-rating">
-                                @for (int i = 1; i <= Model.AverageReview; i++)
+                                @for (int i = 1; i <= Model.ProductReviewInputModel.AverageReview; i++)
                                 {
                                     <i class="fa fa-star"></i>
                                 }
-                                @for (int i = 1; i <= 5 - Model.AverageReview; i++)
+                                @for (int i = 1; i <= 5 - Model.ProductReviewInputModel.AverageReview; i++)
                                 {
                                     <i class="fa fa-star-o"></i>
                                 }
                             </div>
                             <span class="badge badge-secondary">
-                                @Model.TotalReviews Review(s) |
+                                @Model.ProductReviewInputModel.TotalReviews Review(s) |
                                 <a role="button" @*class="btn btn-neutral"*@ id="addReview">Add your review</a>
                             </span>
                         }
@@ -84,53 +85,132 @@
                         <li><a href="#"><i class="fab fa-google-plus"></i></a></li>
                         <li><a href="#"><i class="fab fa-envelope"></i></a></li>
                     </ul>
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <partial name="_AddReviewPartial" model="@Model.AddProductReviewModel" />
+<div class="container">
 
-    <div class="section">
-        <div class="container">
+    <div class="col-md-12">
+        <div id="product-tab">
+            <ul class="tab-nav">
+                <li class="active"><a role="button" id="description-partial">Description</a></li>
+                @*<li><a role="button" id="details-partial">Details</a></li>*@
+                <li><a role="button" id="reviews-partial">Reviews (@Model.ProductReviewInputModel.TotalReviews)</a></li>
+            </ul>
+        </div>
+
+        <div id="description-partial-content">
             <div class="row">
-
-                <div class="col-md-12">
-                    <div class="section-title text-center">
-                        <h3 class="title">Related Products</h3>
-                    </div>
+                <div class="col-5">
+                    <p>@a</p>
                 </div>
-
-                @*<partial name="_ProductCardPartial" model="@Model.RelatedProducts"/>*@
-
-                <div class="clearfix visible-sm visible-xs"></div>
             </div>
         </div>
+
+        <div id="reviews-partial-content">
+            <partial name="_ProductReviewContentPartial" model="@Model.ProductReviewInputModel"/>
+        </div>
+
+        @* <div id="details-partial-content" class="tab-pane fade in">
+        <div class="row">
+        <div class="col-md-12">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+        </div>
+        </div>*@
     </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h3 class="title">Related Products</h3>
+                </div>
+            </div>
+
+            @*<partial name="_ProductCardPartial" model="@Model.RelatedProducts"/>*@
+
+            <div class="clearfix visible-sm visible-xs"></div>
+        </div>
+    </div>
+</div>
 
 
 
-    @section Scripts {
-        <script>
-            new Glider(document.querySelector('.glider'), {
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                draggable: true,
-                dots: '.dots',
-                arrows: {
-                    prev: '.glider-prev',
-                    next: '.glider-next'
-                }
-            });
-        </script>
+@section Scripts {
+    <script>
+        new Glider(document.querySelector('.glider'), {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            draggable: true,
+            dots: '.dots',
+            arrows: {
+                prev: '.glider-prev',
+                next: '.glider-next'
+            }
+        });
+    </script>
 
-        <script>
-            const wishlistButtonElement = document.querySelector("#wishlist");
+    <script>
+        const descriptionPartialAElement = document.getElementById('description-partial');
+        const reviewsPartialAElement = document.getElementById('reviews-partial');
+        //const detailsPartialAElement = document.getElementById('details-partial');
 
-            wishlistButtonElement.addEventListener("click", (e) => {
-                $.get('/api/ApplicationUsersApi/AddProductToUserWishlist?ProductId=' + @Model.Id, (data) => {
+        const descriptionPartialContentDivElement = document.getElementById('description-partial-content');
+        const reviewPartialContentDivElement = document.getElementById('reviews-partial-content');
+        //const detailsPartialContentDivElement = document.getElementById('details-partial-content');
 
-                })
-            });
-        </script>
+        descriptionPartialAElement.addEventListener('click', (e) => {
+            descriptionPartialAElement.parentElement.classList.add('active');
+
+            //detailsPartialAElement.parentElement.classList.remove('active');
+            reviewsPartialAElement.parentElement.classList.remove('active');
+
+            descriptionPartialAElement.classList.remove('d-none');
+
+            //detailsPartialContentDivElement.classList.add('d-none');
+            reviewPartialContentDivElement.classList.add('d-none');
+        });
+
+        reviewsPartialAElement.addEventListener('click', (e) => {
+            reviewsPartialAElement.classList.add('active');
+
+            descriptionPartialAElement.parentElement.classList.remove('active');
+            //detailsPartialAElement.parentElement.classList.remove('active');
+
+            reviewPartialContentDivElement.classList.remove('d-none');
+
+            descriptionPartialContentDivElement.classList.add('d-none');
+            //detailsPartialContentDivElement.classList.add('d-none');
+        });
+
+        detailsPartialAElement.addEventListener('click', (e) => {
+            detailsPartialAElement.parentElement.classList.add('active');
+
+            descriptionPartialAElement.parentElement.classList.remove('active');
+            reviewsPartialAElement.parentElement.classList.remove('active');
+
+            detailsPartialContentDivElement.classList.remove('d-none');
+
+            descriptionPartialContentDivElement.classList.add('d-none');
+            reviewPartialContentDivElement.classList.add('d-none');
+        });
+    </script>
+
+    <script>
+        const wishlistButtonElement = document.querySelector("#wishlist");
+
+        wishlistButtonElement.addEventListener("click", (e) => {
+            $.get('/api/ApplicationUsersApi/AddProductToUserWishlist?ProductId=' + @Model.Id, (data) => {
+
+            })
+        });
+    </script>
     }
