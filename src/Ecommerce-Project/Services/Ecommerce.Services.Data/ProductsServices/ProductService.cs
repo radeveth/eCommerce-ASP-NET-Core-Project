@@ -5,9 +5,11 @@
     using Ecommerce.Data.Models;
     using Ecommerce.Data.Models.Enums;
     using Ecommerce.InputModels.Products;
+    using Ecommerce.Services.Data.ApplicationUsersServices;
     using Ecommerce.ViewModels.Images;
     using Ecommerce.ViewModels.Products;
     using Ecommerce.ViewModels.Products.Enums;
+    using Ecommerce.ViewModels.Review;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Http.Internal;
     using Microsoft.EntityFrameworkCore;
@@ -16,11 +18,13 @@
     {
         private readonly IMapper mapper;
         private readonly EcommerceDbContext dbContext;
+        private readonly IApplicationUserService applicationUserService;
 
-        public ProductService(EcommerceDbContext dbContext, IMapper mapper)
+        public ProductService(EcommerceDbContext dbContext, IMapper mapper, IApplicationUserService applicationUserService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.applicationUserService = applicationUserService;
         }
 
         public async Task<T> GetByIdAsync<T>(int id)
@@ -64,8 +68,11 @@
                 Status = productForm.Quantity > 0 ? Status.Available : Status.Unavailable,
                 Quantity = productForm.Quantity,
                 BrandId = productForm.BrandId,
+                Brand = await this.dbContext.Brands.FirstOrDefaultAsync(b => b.Id == productForm.BrandId),
                 UserId = productForm.UserId,
+                User = await this.applicationUserService.GetById(productForm.UserId),
                 CategoryId = productForm.CategoryId,
+                Category = await this.dbContext.Categories.FirstOrDefaultAsync(c => c.Id == productForm.CategoryId),
                 CreatedOn = DateTime.UtcNow,
                 IsDeleted = false,
             };
@@ -178,7 +185,7 @@
                 Description = sourceProduct.Description,
                 //Category = sourceProduct.Category.Name,
                 RelatedProducts = new List<ProductViewModel>(),
-                ProductReviewInputModel = new ProductReviewInputModel()
+                ProductReviewServiceModel = new ProductReviewServiceModel()
                 {
                     TotalReviews = reviews.Count(),
                     AverageReview = reviews.Count() == 0 ? -1 : reviews.Select(r => (int)r.ReviewScale).Sum() / reviews.Count(),
@@ -187,10 +194,35 @@
                     CountOfThreeStarsRating = reviews.Count(r => (int)r.ReviewScale == 3),
                     CountOfFourStarsRating = reviews.Count(r => (int)r.ReviewScale == 4),
                     CountOfFiveStarsRating = reviews.Count(r => (int)r.ReviewScale == 5),
+                    Reviews = this.mapper.Map<IEnumerable<ReviewViewModel>>(this.dbContext.Reviews.Where(r => r.ProductId == id)),
                 },
             };
 
             return detailsModel;
+        }
+
+        public async Task AddReviewForProduct(AddProductReviewModel productReviewModel)
+        {
+            Review review = new Review()
+            {
+                ReviewScale = productReviewModel.ReviewScale,
+                Comment = productReviewModel.Comment,
+                UserId = productReviewModel.UserId,
+                User = await this.dbContext.Users.FirstOrDefaultAsync(u => u.Id == productReviewModel.UserId),
+                ProductId = productReviewModel.ProductId,
+                Product = await this.dbContext.Products.FirstOrDefaultAsync(p => p.Id == productReviewModel.ProductId),
+                CreatedOn = DateTime.UtcNow,
+            };
+
+            await this.dbContext.Reviews.AddAsync(review);
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        private async Task<Product> GetByIdAsync(int id)
+        {
+            return await this.dbContext
+                .Products
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

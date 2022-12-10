@@ -7,12 +7,11 @@ namespace Ecommerce.RESTful_API
     using Ecommerce.Services.Data.BrandsServices;
     using Ecommerce.Services.Data.CategoriesServices;
     using Ecommerce.Services.Data.ProductsServices;
+    using Ecommerce.Services.Mappings;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
-
-    using static Ecommerce.Services.Mappings.ApplicationProfile;
 
     public class Program
     {
@@ -27,10 +26,7 @@ namespace Ecommerce.RESTful_API
 
             builder.Services.AddAutoMapper(config =>
             {
-                config.AddProfile<ProductsProfile>();
-                config.AddProfile<CategoriesProffile>();
-                config.AddProfile<ImageProfile>();
-                config.AddProfile<ApplicationUsersProffile>();
+                config.AddProfile<ApplicationProfile>();
             });
 
             // Add services to the container.

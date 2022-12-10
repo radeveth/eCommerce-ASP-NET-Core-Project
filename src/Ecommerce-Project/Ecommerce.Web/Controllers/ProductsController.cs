@@ -62,11 +62,37 @@
             return View(productServiceModel);
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, bool isHaveProductReviewError = false)
         {
             ProductDetailsModel productDetails = await this.productService.Details(id);
 
+            if (isHaveProductReviewError == true)
+            {
+                ViewData["IsHaveProductReviewError"] = true;
+            }
+            else
+            {
+                ViewData["IsHaveProductReviewError"] = false;
+            }
+
             return this.View(productDetails);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReviewForProduct(ProductDetailsModel productDetails)
+        {
+            if (productDetails.ProductReviewServiceModel.AddProductReviewModel.ReviewScale == 0)
+            {
+                return this.RedirectToAction(nameof(Details), new 
+                {
+                    id = productDetails.ProductReviewServiceModel.AddProductReviewModel.ProductId,
+                    isHaveProductReviewError = true,
+                });
+            }
+
+            await this.productService.AddReviewForProduct(productDetails.ProductReviewServiceModel.AddProductReviewModel);
+
+            return this.RedirectToAction(nameof(Details), new { id = productDetails.ProductReviewServiceModel.AddProductReviewModel.ProductId, });
         }
 
         private string GetUserId()

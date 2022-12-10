@@ -115,26 +115,6 @@
             this.userManager = userManager;
         }
 
-        public async Task<bool> AddProductToUserWishlist(string userId, int productId)
-        {
-            if (this.dbContext.ProductsWishlist.Any(p => p.UserId == userId && p.ProductId == productId) || !this.dbContext.Products.Any(p => p.Id == productId))
-            {
-                return false;
-            }
-
-            ApplicationUser applicationUser = await this.userManager.FindByIdAsync(userId);
-
-            await this.dbContext.ProductsWishlist.AddAsync(new ProductWishlist()
-            {
-                UserId = userId,
-                User = applicationUser,
-                ProductId = productId,
-                Product = this.dbContext.Products.FirstOrDefault(p => p.Id == productId),
-            });
-
-            return true;
-        }
-
         public string Authorization(ApplicationUserCred userCred)
         {
             throw new NotImplementedException();
@@ -150,9 +130,9 @@
             throw new NotImplementedException();
         }
 
-        public Task<ApplicationUserViewModel> GetById(string id)
+        public async Task<ApplicationUser> GetById(string id)
         {
-            throw new NotImplementedException();
+            return await this.dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

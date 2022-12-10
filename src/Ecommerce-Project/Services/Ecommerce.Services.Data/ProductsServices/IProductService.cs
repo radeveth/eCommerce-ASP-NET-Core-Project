@@ -20,5 +20,7 @@
         public Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string searchingName, string category, int currentPage = 1);
 
         public Task<ProductDetailsModel> Details(int id);
+
+        public Task AddReviewForProduct(AddProductReviewModel productReviewModel);
     }
 }

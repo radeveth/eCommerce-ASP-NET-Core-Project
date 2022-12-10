@@ -1,17 +1,16 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Ecommerce.Data;
 namespace Ecommerce.Web
 {
     using Ecommerce.Data;
     using Ecommerce.Data.Models;
     using Ecommerce.Data.Seeder;
+    using Ecommerce.Services.Data.ApplicationUsersServices;
     using Ecommerce.Services.Data.BrandsServices;
     using Ecommerce.Services.Data.CategoriesServices;
     using Ecommerce.Services.Data.HomeServices;
     using Ecommerce.Services.Data.ProductsServices;
+    using Ecommerce.Services.Data.ProductWishlistsServices;
+    using Ecommerce.Services.Mappings;
     using Microsoft.EntityFrameworkCore;
-    using static Ecommerce.Services.Mappings.ApplicationProfile;
 
     public class Program
     {
@@ -27,16 +26,15 @@ namespace Ecommerce.Web
 
             builder.Services.AddAutoMapper(config =>
             {
-                config.AddProfile<ProductsProfile>();
-                config.AddProfile<CategoriesProffile>();
-                config.AddProfile<ImageProfile>();
-                config.AddProfile<HomeProffile>();
+                config.AddProfile<ApplicationProfile>();
             });
 
+            builder.Services.AddTransient<IApplicationUserService, ApplicationUserService>();
             builder.Services.AddTransient<IBrandService, BrandService>();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IHomeService, HomeService>();
             builder.Services.AddTransient<IProductService, ProductService>();
+            builder.Services.AddTransient<IProductWishlistService, ProductWishlistService>();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
@@ -50,7 +48,6 @@ namespace Ecommerce.Web
             .AddEntityFrameworkStores<EcommerceDbContext>();
 
             builder.Services.AddControllersWithViews();
-
 
             var app = builder.Build();
 

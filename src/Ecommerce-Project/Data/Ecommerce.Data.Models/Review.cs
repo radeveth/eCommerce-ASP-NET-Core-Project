@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Diagnostics.CodeAnalysis;
     using Ecommerce.Data.Common.Models;
     using Ecommerce.Data.Models.Enums;
 
@@ -14,7 +15,8 @@
 
         public ReviewScale ReviewScale { get; set; }
 
-        public string Comment { get; set; }
+        [AllowNull]
+        public string? Comment { get; set; }
 
         [Required]
         [ForeignKey(nameof(Product))]

@@ -4,6 +4,12 @@
 
     public class ReviewViewModel
     {
-        public Status ReviewScale { get; set; }
+        public ReviewScale ReviewScale { get; set; }
+
+        public string Comment { get; set; }
+
+        public string CreateorCommentUserName { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

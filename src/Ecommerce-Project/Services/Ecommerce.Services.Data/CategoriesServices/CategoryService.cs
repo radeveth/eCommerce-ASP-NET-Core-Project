@@ -4,6 +4,7 @@
     using Ecommerce.Data;
     using Ecommerce.Data.Models;
     using Ecommerce.InputModels.Categories;
+    using Ecommerce.Services.Data.ApplicationUsersServices;
     using Ecommerce.ViewModels.Categories;
     using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +12,13 @@
     {
         private readonly IMapper mapper;
         private readonly EcommerceDbContext dbContext;
+        private readonly IApplicationUserService applicationUserService;
 
-        public CategoryService(EcommerceDbContext dbContext, IMapper mapper)
+        public CategoryService(EcommerceDbContext dbContext, IMapper mapper, IApplicationUserService applicationUserService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.applicationUserService = applicationUserService;
         }
 
         public async Task<CategoryViewModel> GetByIdAync(int id)
@@ -41,6 +44,9 @@
                 Name = categoryForm.Name,
                 Description = categoryForm.Description,
                 UserId = categoryForm.UserId,
+                User = await this.applicationUserService.GetById(categoryForm.UserId),
+                CreatedOn = DateTime.UtcNow,
+                IsDeleted = false,
             };
 
             await this.dbContext.Categories.AddAsync(category);

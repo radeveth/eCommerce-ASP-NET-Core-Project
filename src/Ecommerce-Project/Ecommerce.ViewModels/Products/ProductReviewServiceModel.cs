@@ -2,7 +2,7 @@
 {
     using Ecommerce.ViewModels.Review;
 
-    public class ProductReviewInputModel
+    public class ProductReviewServiceModel
     {
         public decimal AverageReview { get; set; }
 

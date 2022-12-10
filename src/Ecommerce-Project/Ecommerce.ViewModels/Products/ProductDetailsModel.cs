@@ -30,7 +30,7 @@
 
         public IEnumerable<ImageViewModel> Images { get; set; }
 
-        public ProductReviewInputModel ProductReviewInputModel { get; set; }
+        public ProductReviewServiceModel ProductReviewServiceModel { get; set; }
 
         public IEnumerable<ProductViewModel> RelatedProducts { get; set; }
     }

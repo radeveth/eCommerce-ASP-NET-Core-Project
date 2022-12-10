@@ -32,7 +32,6 @@
                 .HasForeignKey(p => p.OrderId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
-
         }
     }
 }
