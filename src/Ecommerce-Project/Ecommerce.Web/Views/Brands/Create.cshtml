@@ -12,6 +12,11 @@
             <span asp-validation-for="Name" class="small text-danger"></span>
         </div>
         <div class="offset-1 col-10 form-group form-margin mt-3">
+            <label asp-for="FounderName" style="margin-bottom: 3px"></label>
+            <input asp-for="FounderName" type="text" class="border border-secondary form-control rounded-pill" placeholder="" />
+            <span asp-validation-for="FounderName" class="small text-danger"></span>
+        </div>
+        <div class="offset-1 col-10 form-group form-margin mt-3">
             <label asp-for="YearOfFoundation" style="margin-bottom: 3px"></label>
             <input asp-for="YearOfFoundation" type="text" class="border border-secondary form-control rounded-pill" placeholder="1946" />
             <span asp-validation-for="YearOfFoundation" class="small text-danger"></span>

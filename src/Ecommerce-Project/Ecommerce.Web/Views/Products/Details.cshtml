@@ -7,6 +7,8 @@
 
 @{
     ViewData["Title"] = $"{Model.Name} | Details";
+    ViewData["ImageHeight"] = 330;
+
     ApplicationUser user = await userManagaer.GetUserAsync(this.User);
 }
 
@@ -194,59 +196,60 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div id="reviews">
-                                <ul class="reviews">
-                                    @foreach (var review in Model.ProductReviewServiceModel.Reviews)
-                                    {
-                                        var pastTime = DateTime.UtcNow.Subtract(review.CreatedOn);
-
-                                        var pastTimeToVisualizate = pastTime.Days == 1
-                                        ? $"{pastTime.Days} day ago" : pastTime.Days != 0 ? $"{pastTime.Days} days ago"
-                                        : pastTime.Hours == 1 ? $"{pastTime.Hours} hour ago" : pastTime.Hours != 0 ? $"{pastTime.Hours} hours ago"
-                                        : pastTime.Minutes == 1 ? $"{pastTime.Minutes} minute ago" : pastTime.Minutes != 0 ? $"{pastTime.Minutes} minutes ago"
-                                        : $"{pastTime.Seconds} seconds ago";
-                                        <li>
-                                            <div class="review-heading">
-                                                <h5 class="name">@review.CreateorCommentUserName</h5>
-                                                <p class="date">@pastTimeToVisualizate</p>
-                                                <div class="review-rating">
-                                                    @for (int i = 1; i <= (int)review.ReviewScale; i++)
+                        <div class="col-9">
+                            <div class="card-indigo">
+                                <div class="card-body" style="height: 400px; overflow-y: scroll">
+                                    <div class="container my-3 py-3">
+                                        <div class="row d-flex justify-content-center">
+                                            <div id="reviews">
+                                                <ul class="reviews">
+                                                    @foreach (var review in Model.ProductReviewServiceModel.Reviews.Where(r => r.Comment != null).OrderByDescending(r => r.CreatedOn).ThenByDescending(r => r.Comment))
                                                     {
-                                                        <i class="fa fa-star"></i>
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div class="review-body">
-                                                <p>@review.Comment</p>
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                                                        var pastTime = DateTime.UtcNow.Subtract(review.CreatedOn);
 
-                    <div class="row mt-4">
-                        <div class="col-6 single-left">
-                            <ul class="offset-0 col-3 reviews-pagination">
-                                <li><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                                <li class="active">2</li>
-                                <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                            </ul>
+                                                        var pastTimeToVisualizate = pastTime.Days == 1
+                                                        ? $"{pastTime.Days} day ago" : pastTime.Days != 0 ? $"{pastTime.Days} days ago"
+                                                        : pastTime.Hours == 1 ? $"{pastTime.Hours} hour ago" : pastTime.Hours != 0 ? $"{pastTime.Hours} hours ago"
+                                                        : pastTime.Minutes == 1 ? $"{pastTime.Minutes} minute ago" : pastTime.Minutes != 0 ? $"{pastTime.Minutes} minutes ago"
+                                                        : $"{pastTime.Seconds} seconds ago";
+                                                        <li>
+                                                            <div class="review-heading">
+                                                                <p class="date">@pastTimeToVisualizate</p>
+                                                                <div class="review-rating">
+                                                                    @for (int i = 1; i <= (int)review.ReviewScale; i++)
+                                                                    {
+                                                                        <i class="fa fa-star"></i>
+                                                                    }
+                                                                </div>
+                                                                <h6 class="name">@*review.CreateorCommentUserName*@Radoslav Radev</h6>
+                                                            </div>
+                                                            <div style="border-left: 2px solid gray; height: 100px;">
+                                                                <div class="review-body" style="margin-left: 13px">
+                                                                    <p>@review.Comment</p>
+                                                                    <div id="" style="position: absolute; right: 0;" class="mt-5 d-flex flex-row align-items-center">
+                                                                        <span role="button" onclick="VoteForReview(@review.Id, @true)">
+                                                                            <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                                                                        </span>
+                                                                        <p id="review-@review.Id-likes" class="small text-muted mb-0">@review.Likes</p>
+                                                                        <div style="margin-left:8px"></div>
+                                                                        <span role="button" onclick="VoteForReview(@review.Id, @false)">
+                                                                            <i class="far fa-thumbs-down mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                                                                        </span>
+                                                                        <p id="review-@review.Id-dislikes" class="small text-muted mb-0">@review.Dislikes</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <hr class="mb-4" />
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
-                        @if (signInManager.IsSignedIn(this.User))
-                        {
-                            <div class="col-6 single-right">
-                                <a id="create-review-button" role="button" style="background-color: #D10024; color: white" class="offset-9 col-3 btn rounded-pill">Add Review</a>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-6 single-right">
-                                <a role="button" style="background-color: #D10024; color: white" class="offset-8 col-4 btn rounded-pill" asp-area="Identity" asp-page="/Account/Login">Sign in and add review</a>
-                            </div>
-                        }
                     </div>
                 </div>
             }
@@ -255,51 +258,80 @@
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container text-center">
                         <h6 class="display-4">There are no reviews for @Model.Name</h6>
-                        @if (signInManager.IsSignedIn(this.User))
-                        {
-                            <a id="create-first-review-button" role="button" style="background-color: #D10024; color: white" class="btn col-3 rounded-pill mt-2">Be first by adding your review.</a>
-                        }
-                        else
-                        {
-                            <a asp-area="Identity" asp-page="/Account/Login" role="button" style="background-color: #D10024; color: white" class="btn col-4 rounded-pill mt-2">Sign in and Be first by adding your review.</a>
-                        }
                     </div>
                 </div>
             }
-            <div class="container mt-3 d-none" id="create-review-partial">
-                @if ((bool)ViewData["IsHaveProductReviewError"])
+            <div class="row mt-4">
+                @if (signInManager.IsSignedIn(this.User))
                 {
-                    <script type="text/javascript">
-                        window.onload = function () {
-                            alert("Error while adding your review!");
-                        };
-                    </script>
+                    <div class="col-12">
+                        @if (Model.ProductReviewServiceModel.TotalReviews != 0)
+                        {
+                            <a id="create-review-button" role="button" style="background-color: #D10024; color: white" class="col-2 btn rounded-pill">Add Review</a>
+                        }
+                        else
+                        {
+                            <a id="create-review-button" role="button" style="background-color: #D10024; color: white" class="offset-4 col-4 btn rounded-pill">Be first by adding your review</a>
+                        }
+                    </div>
+                    <div class="container mt-3 d-none" id="create-review-partial">
+                        @if ((bool)ViewData["IsHaveProductReviewError"])
+                        {
+                            <script type="text/javascript">
+                                window.onload = function () {
+                                    alert("Error while adding your review!");
+                                };
+                            </script>
+                        }
+                        <form method="post" asp-controller="Products" asp-action="AddReviewForProduct">
+
+                            <input asp-for="ProductReviewServiceModel.AddProductReviewModel.UserId" class="d-none" value="@user.Id" />
+                            <input asp-for="ProductReviewServiceModel.AddProductReviewModel.ProductId" class="d-none" value="@Model.Id" />
+
+                            <div class="form-group offset-4 col-4">
+                                <label asp-for="ProductReviewServiceModel.AddProductReviewModel.Comment" style="margin-bottom: 3px" class="d-none"></label>
+                                <textarea asp-for="ProductReviewServiceModel.AddProductReviewModel.Comment" class="input border border-secondary" placeholder="Your Comment (optional)"></textarea>
+                            </div>
+
+                            <div class="form-group offset-4 col-4 mt-3">
+                                <label asp-for="ProductReviewServiceModel.AddProductReviewModel.ReviewScale" class="d-none"></label>
+                                <select asp-for="ProductReviewServiceModel.AddProductReviewModel.ReviewScale" class="form-control border border-secondary">
+                                    <option selected disabled>Add Review ⭐</option>
+                                    <option value="1">@ReviewScale.VeryUnsatisfied (1 ⭐)</option>
+                                    <option value="2">@ReviewScale.Unsatisfied (2 ⭐)</option>
+                                    <option value="3">@ReviewScale.Neutral (3 ⭐)</option>
+                                    <option value="4">@ReviewScale.Satisfied (4 ⭐)</option>
+                                    <option value="5">@ReviewScale.VerySatisfied (5 ⭐)</option>
+                                </select>
+                                <span asp-validation-for="ProductReviewServiceModel.AddProductReviewModel.ReviewScale" class="small text-danger"></span>
+                            </div>
+
+                            <input id="add-review-btn" role="button" style="background-color: #D10024; color: white" class="btn offset-7 col-1 rounded-pill mt-3" type="submit" value="Add" />
+                        </form>
+                        <script>
+                            const addProductToWishlistButtonElement = document.getElementById('add-product-to-wishlist');
+
+                            addProductToWishlistButtonElement.addEventListener('click', (e) => {
+                                console.log('clicked');
+                                $.get('/api/ProductWishlistsApi?userId=' + @user.Id + '&productId=' + @Model.Id, (data) => {
+                                    alert(data);
+                                });
+                        </script>
+                    </div>
                 }
-                <form method="post" asp-controller="Products" asp-action="AddReviewForProduct">
-
-                    <input asp-for="ProductReviewServiceModel.AddProductReviewModel.UserId" class="d-none" value="@user.Id" />
-                    <input asp-for="ProductReviewServiceModel.AddProductReviewModel.ProductId" class="d-none" value="@Model.Id" />
-
-                    <div class="form-group offset-4 col-4">
-                        <label asp-for="ProductReviewServiceModel.AddProductReviewModel.Comment" style="margin-bottom: 3px" class="d-none"></label>
-                        <textarea asp-for="ProductReviewServiceModel.AddProductReviewModel.Comment" class="input border border-secondary" placeholder="Your Comment (optional)"></textarea>
+                else
+                {
+                    <div class="col-12">
+                        @if (Model.ProductReviewServiceModel.TotalReviews != 0)
+                        {
+                            <a role="button" style="background-color: #D10024; color: white" class="col-2 btn rounded-pill" asp-area="Identity" asp-page="/Account/Login">Sign in and add review</a>
+                        }
+                        else
+                        {
+                            <a asp-area="Identity" asp-page="/Account/Login" role="button" style="background-color: #D10024; color: white" class="offset-4 col-4 btn rounded-pill mt-2">Sign in and be first by adding your review</a>
+                        }
                     </div>
-
-                    <div class="form-group offset-4 col-4 mt-3">
-                        <label asp-for="ProductReviewServiceModel.AddProductReviewModel.ReviewScale" class="d-none"></label>
-                        <select asp-for="ProductReviewServiceModel.AddProductReviewModel.ReviewScale" class="form-control border border-secondary">
-                            <option selected disabled>Add Review ⭐</option>
-                            <option value="1">@ReviewScale.VeryUnsatisfied (1 ⭐)</option>
-                            <option value="2">@ReviewScale.Unsatisfied (2 ⭐)</option>
-                            <option value="3">@ReviewScale.Neutral (3 ⭐)</option>
-                            <option value="4">@ReviewScale.Satisfied (4 ⭐)</option>
-                            <option value="5">@ReviewScale.VerySatisfied (5 ⭐)</option>
-                        </select>
-                        <span asp-validation-for="ProductReviewServiceModel.AddProductReviewModel.ReviewScale" class="small text-danger"></span>
-                    </div>
-
-                    <input id="add-review-btn" role="button" style="background-color: #D10024; color: white" class="btn offset-7 col-1 rounded-pill mt-3" type="submit" value="Add" />
-                </form>
+                }
             </div>
         </div>
 
@@ -313,23 +345,50 @@
     </div>
 </div>
 
-<div class="section mt-4">
-    <hr class="offset-2 col-8" />
-    <div class="container">
-        <div class="row">
-
+@if (Model.RelatedProducts.Any())
+{
+    <div class="section mt-4">
+        <hr class="offset-2 col-8" />
+        <div class="container">
             <div class="col-md-12">
                 <div class="section-title text-center">
                     <h3 class="title">Related Products</h3>
                 </div>
             </div>
+            <div class="row">
+                @if (Model.RelatedProducts.Count() == 1)
+                {
+                    ViewData["ImageHeight"] = 400;
+                    <div class="offset-4 col-4">
+                        <partial name="_ProductCardPartial" model="@Model.RelatedProducts.FirstOrDefault()" />
+                    </div>
+                }
+                else if (Model.RelatedProducts.Count() == 2)
+                {
+                    @foreach (var product in Model.RelatedProducts)
+                    {
+                        <div class="offset-2 col-3">
+                            <partial name="_ProductCardPartial" model="@product" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="gliderRelatedProducts" style="height: 620px">
+                        @foreach (var product in Model.RelatedProducts)
+                        {
+                            <div class="@(Model.RelatedProducts.First() == product ? "" : "offset-1") col-3">
+                                <partial name="_ProductCardPartial" model="@product" />
+                            </div>
+                        }
+                    </div>
+                }
 
-            @*<partial name="_ProductCardPartial" model="@Model.RelatedProducts"/>*@
-
-            <div class="clearfix visible-sm visible-xs"></div>
+                <div class="clearfix visible-sm visible-xs"></div>
+            </div>
         </div>
     </div>
-</div>
+}
 
 
 
@@ -337,6 +396,19 @@
     <script>
         new Glider(document.querySelector('.glider'), {
             slidesToShow: 1,
+            slidesToScroll: 1,
+            draggable: true,
+            dots: '.dots',
+            arrows: {
+                prev: '.glider-prev',
+                next: '.glider-next'
+            }
+        });
+    </script>
+
+    <script>
+        new Glider(document.querySelector('.gliderRelatedProducts'), {
+            slidesToShow: 4,
             slidesToScroll: 1,
             draggable: true,
             dots: '.dots',
@@ -404,12 +476,11 @@
     </script>
 
     <script>
-        const addProductToWishlistButtonElement = document.getElementById('add-product-to-wishlist');
-
-        addProductToWishlistButtonElement.addEventListener('click', (e) => {
-            console.log('clicked');
-            $.get('/api/ProductWishlistsApi?userId=' + @user.Id + '&productId=' + @Model.Id, (data) => {
-                alert(data);
-        });
+        function VoteForReviewWithLike(reviewId, isLikeVote) {
+            $.get('/api/reviews/vote?ReviewId=' + reviewId + '&IsLikeVote=' + isLikeVote, (data) => {
+                $('#comment-' + commentId + '-likes').text(data.likes);
+                $('#comment-' + commentId + '-dislikes').text(data.dislikes);
+            })
+        };
     </script>
 }

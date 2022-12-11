@@ -13,13 +13,13 @@
     {
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
-        private readonly UserManager<ApplicationUser> user;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public ProductsController(IProductService productService, ICategoryService categoryService, UserManager<ApplicationUser> user)
         {
             this.productService = productService;
             this.categoryService = categoryService;
-            this.user = user;
+            this.userManager = user;
         }
 
         [HttpGet]
@@ -34,8 +34,7 @@
         // [Authorize]
         public async Task<IActionResult> CreateAsync([FromForm] ProductFormModel productForm)
         {
-            // productForm.UserId = this.GetUserId();
-            productForm.UserId = "46fca1c1-4608-42dd-8fb4-88d284690463";
+            productForm.UserId = this.GetUserId();
 
             if (!ModelState.IsValid)
             {
@@ -97,7 +96,7 @@
 
         private string GetUserId()
         {
-            return this.user.GetUserAsync(this.User).Result.Id;
+            return this.userManager.GetUserAsync(this.User).Result.Id;
         }
     }
 }

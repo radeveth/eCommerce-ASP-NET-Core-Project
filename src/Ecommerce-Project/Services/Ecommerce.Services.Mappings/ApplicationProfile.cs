@@ -40,7 +40,7 @@
 
             // Review Mappings
             this.CreateMap<Review, ReviewViewModel>()
-                .ForMember(x => x.CreateorCommentUserName, y => y.MapFrom(s => s.User.FullName));
+                .ForMember(x => x.CreatorCommentUserName, y => y.MapFrom(s => s.User.FullName));
         }
     }
 }

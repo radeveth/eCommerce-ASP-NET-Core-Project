@@ -183,8 +183,10 @@
                 Price = sourceProduct.Price,
                 Status = sourceProduct.Status,
                 Description = sourceProduct.Description,
-                //Category = sourceProduct.Category.Name,
-                RelatedProducts = new List<ProductViewModel>(),
+                CategoryId = sourceProduct.CategoryId,
+                Category = this.dbContext.Categories.FirstOrDefault(c => c.Id == sourceProduct.CategoryId).Name,
+                Brand = this.dbContext.Brands.FirstOrDefault(b => b.Id == sourceProduct.BrandId).Name,
+                RelatedProducts = this.GetAll().Where(p => p.CategoryId == sourceProduct.CategoryId && p.Id != sourceProduct.Id).OrderByDescending(p => p.AverageReview).ToList(),
                 ProductReviewServiceModel = new ProductReviewServiceModel()
                 {
                     TotalReviews = reviews.Count(),
@@ -194,7 +196,16 @@
                     CountOfThreeStarsRating = reviews.Count(r => (int)r.ReviewScale == 3),
                     CountOfFourStarsRating = reviews.Count(r => (int)r.ReviewScale == 4),
                     CountOfFiveStarsRating = reviews.Count(r => (int)r.ReviewScale == 5),
-                    Reviews = this.mapper.Map<IEnumerable<ReviewViewModel>>(this.dbContext.Reviews.Where(r => r.ProductId == id)),
+                    Reviews = this.dbContext.Reviews.Select(r => new ReviewViewModel()
+                    {
+                        Id = r.Id,
+                        ReviewScale = r.ReviewScale,
+                        Comment = r.Comment,
+                        CreatorCommentUserName = this.dbContext.Users.FirstOrDefault(u => u.Id == r.UserId).FullName,
+                        Likes = this.dbContext.ReviewVotes.Where(rv => rv.ReviewId == r.Id && rv.UserId == r.UserId).Count(r => r.Vote == Vote.Like),
+                        Dislikes = this.dbContext.ReviewVotes.Where(rv => rv.ReviewId == r.Id && rv.UserId == r.UserId).Count(r => r.Vote == Vote.Dislike),
+                        CreatedOn = r.CreatedOn,
+                    }),
                 },
             };
 

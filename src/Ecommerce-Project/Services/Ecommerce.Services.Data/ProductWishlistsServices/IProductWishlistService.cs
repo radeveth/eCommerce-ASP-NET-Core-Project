@@ -1,7 +1,7 @@
 ﻿namespace Ecommerce.Services.Data.ProductWishlistsServices
 {
-    using Ecommerce.ViewModels.ProductWishlists;
     using System.Collections.Generic;
+    using Ecommerce.ViewModels.ProductWishlists;
 
     public interface IProductWishlistService
     {
