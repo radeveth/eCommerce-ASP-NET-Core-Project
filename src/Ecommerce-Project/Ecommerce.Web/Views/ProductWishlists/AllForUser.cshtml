@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Your Wishlist | Commerce Park";
+    ViewData["ImageHeight"] = 400;
+}
+
+<div class="container">
+    @if (Model.Any())
+    {
+        <div class="row mt-4">
+            @foreach (var product in Model)
+            {
+                <div class="col-4 mt-4">
+                    <partial name="_ProductCardPartial" model="product" />
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <br />
+        <div class="jumbotron mt-5">
+            <h1 class="display-5 text-center">Your wishlist is empty</h1>
+            <hr class="my-4">
+            <p class="lead text-center">
+                <a asp-controller="Products" asp-action="All" asp-route-SearchCategory="@null" class="btn rounded-pill btn-lg" style="background-color: #D10024; color: white" role="button">Explore our products</a>
+            </p>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+    }
+</div>

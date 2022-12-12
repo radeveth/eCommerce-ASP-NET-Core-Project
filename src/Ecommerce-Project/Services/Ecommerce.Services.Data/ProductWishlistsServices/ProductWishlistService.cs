@@ -57,8 +57,19 @@
 
         public async Task<IEnumerable<ProductViewModel>> AllForUser(string userId)
         {
-            //return this.mapper.Map<IEnumerable<ProductWishlistViewModel>>(this.GetUnDeletedProductWishlists().Where(p => p.UserId == userId));
-            return this.productService.GetAll();
+            IEnumerable<int> searchingProductIds = this.GetUnDeletedProductWishlists().Where(p => p.UserId == userId).Select(p => p.ProductId);
+            IEnumerable<ProductViewModel> products = this.productService.GetAll();
+            List<ProductViewModel> resultProducts = new List<ProductViewModel>();
+
+            foreach (var product in products)
+            {
+                if (searchingProductIds.Contains(product.Id))
+                {
+                    resultProducts.Add(product);
+                }
+            }
+
+            return resultProducts;
         }
 
         public bool IsProductIsInUserWishlist(string userId, int productId)

@@ -2,6 +2,7 @@
 {
     using Ecommerce.Data.Models;
     using Ecommerce.Services.Data.ProductWishlistsServices;
+    using Ecommerce.ViewModels.Products;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +20,9 @@
         [HttpGet]
         public async Task<IActionResult> AllForUser()
         {
-            await this.productWishlistService.AllForUser(this.GetUserId());
+            IEnumerable<ProductViewModel> products = await this.productWishlistService.AllForUser(this.GetUserId());
 
-            return this.View();
+            return this.View(products);
         }
 
         private string GetUserId()
