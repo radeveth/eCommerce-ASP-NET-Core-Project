@@ -4,6 +4,8 @@
 
     public interface IReviewService
     {
-        public Task<ReviewVoteReturnModel> Vote(string userId, int reviewId, bool isLikeVote);
+        public Task Vote(string userId, int reviewId, bool isLikeVote);
+
+        public ReviewVoteReturnModel GetReviewVoteReturnModel(int reviewId);
     }
 }

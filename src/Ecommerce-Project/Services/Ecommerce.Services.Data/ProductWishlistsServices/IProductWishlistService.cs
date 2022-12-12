@@ -5,7 +5,11 @@
 
     public interface IProductWishlistService
     {
-        public Task<bool> AddProductToUserWishlist(string userId, int productId);
+        public Task AddProductToUserWishlist(string userId, int productId);
+
+        public Task RemoveProductFromUserWishlist(string userId, int productId);
+
+        public bool IsProductIsInUserWishlist(string userId, int productId);
 
         public Task<IEnumerable<ProductWishlistViewModel>> AllForUser(string userId);
     }

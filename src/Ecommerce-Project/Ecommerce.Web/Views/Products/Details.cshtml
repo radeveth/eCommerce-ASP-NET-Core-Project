@@ -78,9 +78,17 @@
                         <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
                     </div>
 
-                    <a id="add-product-to-wishlist" role="button" class="badge badge-secondary"><i class="fa fa-heart"></i> Add to wishlist</a>
-                    <a id="removeProductToWishlist" role="button" class="badge badge-secondary d-none"><i class="fa fa-heart"></i> Add to wishlist</a>
-                    <span class="badge badge-secondary">Category: <a role="button">Model.Category</a></span>
+                    @if ((bool)ViewData["IsProductIsInUserWishlist"])
+                    {
+                        <a id="remove-product-from-wishlist" role="button" class="badge badge-secondary" onclick="RemoveProductFromWishlist(@Model.Id)"><i style="color: #D10024" class="fa fa-heart"></i> Remove from wishlist</a>
+                        <a id="add-product-to-wishlist" role="button" class="badge badge-secondary d-none" onclick="AddProductToWishlist(@Model.Id)"><i style="color: #D10024" class="fa fa-heart"></i> Add to wishlist</a>
+                    }
+                    else
+                    {
+                        <a id="add-product-to-wishlist" role="button" class="badge badge-secondary" onclick="AddProductToWishlist(@Model.Id)"><i style="color: #D10024" class="fa fa-heart"></i> Add to wishlist</a>
+                        <a id="remove-product-from-wishlist" role="button" class="badge badge-secondary d-none" onclick="RemoveProductFromWishlist(@Model.Id)"><i style="color: #D10024" class="fa fa-heart"></i> Remove from wishlist</a>
+                    }
+                    <span style="margin-left: 13px" class="badge badge-secondary">Category: <a role="button">@Model.Category</a></span>
 
                     <ul class="product-links">
                         <li>Share:</li>
@@ -221,18 +229,18 @@
                                                                         <i class="fa fa-star"></i>
                                                                     }
                                                                 </div>
-                                                                <h6 class="name">@*review.CreateorCommentUserName*@Radoslav Radev</h6>
+                                                                <h6 class="name">@review.CreatorCommentUserName</h6>
                                                             </div>
                                                             <div style="border-left: 2px solid gray; height: 100px;">
                                                                 <div class="review-body" style="margin-left: 13px">
                                                                     <p>@review.Comment</p>
                                                                     <div id="" style="position: absolute; right: 0;" class="mt-5 d-flex flex-row align-items-center">
-                                                                        <span role="button" onclick="VoteForReview(@review.Id, @true)">
+                                                                        <span role="button" onclick="VoteForReview(@review.Id, true)">
                                                                             <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
                                                                         </span>
                                                                         <p id="review-@review.Id-likes" class="small text-muted mb-0">@review.Likes</p>
                                                                         <div style="margin-left:8px"></div>
-                                                                        <span role="button" onclick="VoteForReview(@review.Id, @false)">
+                                                                        <span role="button" onclick="VoteForReview(@review.Id, false)">
                                                                             <i class="far fa-thumbs-down mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
                                                                         </span>
                                                                         <p id="review-@review.Id-dislikes" class="small text-muted mb-0">@review.Dislikes</p>
@@ -476,10 +484,29 @@
     </script>
 
     <script>
-        function VoteForReviewWithLike(reviewId, isLikeVote) {
-            $.get('/api/reviews/vote?ReviewId=' + reviewId + '&IsLikeVote=' + isLikeVote, (data) => {
-                $('#comment-' + commentId + '-likes').text(data.likes);
-                $('#comment-' + commentId + '-dislikes').text(data.dislikes);
+        function VoteForReview(reviewId, isLikeVote) {
+            $.get('/api/reviewsapi/vote?ReviewId=' + reviewId + '&IsLikeVote=' + isLikeVote, (data) => {
+                $('#review-' + reviewId + '-likes').text(data.likes);
+                $('#review-' + reviewId + '-dislikes').text(data.dislikes);
+            })
+        };
+    </script>
+
+    <script>
+        let addProductToWishlistElement = document.getElementById('add-product-to-wishlist');
+        let removeProductFromWishlistElement = document.getElementById('remove-product-from-wishlist');
+
+        function AddProductToWishlist(productId) {
+            $.get('/api/productwishlistsapi/add/?productId=' + productId, (data) => {
+                addProductToWishlistElement.classList.add('d-none');
+                removeProductFromWishlistElement.classList.remove('d-none');
+            })
+        };
+
+        function RemoveProductFromWishlist(productId) {
+            $.get('/api/productwishlistsapi/remove/?productId=' + productId, (data) => {
+                addProductToWishlistElement.classList.remove('d-none');
+                removeProductFromWishlistElement.classList.add('d-none');
             })
         };
     </script>

@@ -14,11 +14,16 @@
             this.dbContext = dbContext;
         }
 
-        public async Task<ReviewVoteReturnModel> Vote(string userId, int reviewId, bool isLikeVote)
+        public async Task Vote(string userId, int reviewId, bool isLikeVote)
         {
-            if (this.dbContext.ReviewVotes.Any(rv => rv.UserId == userId && rv.ReviewId == reviewId))
+            ReviewVote reviewVote = this.dbContext.ReviewVotes.FirstOrDefault(rv => rv.UserId == userId && rv.ReviewId == reviewId);
+
+            if (reviewVote != null)
             {
-                return this.GetReviewVoteReturnModel();
+                reviewVote.Vote = isLikeVote ? Ecommerce.Data.Models.Enums.Vote.Like : Ecommerce.Data.Models.Enums.Vote.Dislike;
+                reviewVote.ModifiedOn = DateTime.UtcNow;
+
+                return;
             }
 
             ReviewVote vote = new ReviewVote()
@@ -32,11 +37,9 @@
 
             await this.dbContext.ReviewVotes.AddAsync(vote);
             await this.dbContext.SaveChangesAsync();
-
-            return this.GetReviewVoteReturnModel();
         }
 
-        private ReviewVoteReturnModel GetReviewVoteReturnModel()
+        public ReviewVoteReturnModel GetReviewVoteReturnModel(int reviewId)
         {
             List<ReviewVote> reviewVotes = this.dbContext
                     .ReviewVotes

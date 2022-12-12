@@ -5,47 +5,70 @@
     using AutoMapper;
     using Ecommerce.Data;
     using Ecommerce.Data.Models;
+    using Ecommerce.Services.Data.ProductsServices;
+    using Ecommerce.ViewModels.Products;
     using Ecommerce.ViewModels.ProductWishlists;
     using Microsoft.AspNetCore.Identity;
 
     public class ProductWishlistService : IProductWishlistService
     {
         private readonly EcommerceDbContext dbContext;
+        private readonly IProductService productService;
         private readonly IMapper mapper;
-        private readonly UserManager<ApplicationUser> userManager;
 
-        public ProductWishlistService(EcommerceDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public ProductWishlistService(EcommerceDbContext dbContext, UserManager<ApplicationUser> userManager, IMapper mapper, IProductService productService)
         {
             this.dbContext = dbContext;
-            this.userManager = userManager;
             this.mapper = mapper;
+            this.productService = productService;
         }
 
-        public async Task<bool> AddProductToUserWishlist(string userId, int productId)
+        public async Task AddProductToUserWishlist(string userId, int productId)
         {
-            if (this.dbContext.ProductsWishlist.Any(p => p.UserId == userId && p.ProductId == productId) || !this.dbContext.Products.Any(p => p.Id == productId))
+            if (this.GetUnDeletedProductWishlists().Any(p => p.UserId == userId && p.ProductId == productId))
             {
-                return false;
+                return;
             }
 
-            ApplicationUser applicationUser = await this.userManager.FindByIdAsync(userId);
-
-            await this.dbContext.ProductsWishlist.AddAsync(new ProductWishlist()
+            ProductWishlist productWishlist = new ProductWishlist()
             {
                 UserId = userId,
-                User = applicationUser,
                 ProductId = productId,
-                Product = this.dbContext.Products.FirstOrDefault(p => p.Id == productId),
                 CreatedOn = DateTime.Now,
                 IsDeleted = false,
-            });
+            };
 
-            return true;
+            await this.dbContext.ProductsWishlist.AddAsync(productWishlist);
+            await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ProductWishlistViewModel>> AllForUser(string userId)
+        public async Task RemoveProductFromUserWishlist(string userId, int productId)
         {
-            return this.mapper.Map<IEnumerable<ProductWishlistViewModel>>(this.dbContext.ProductsWishlist.Where(p => p.UserId == userId));
+            ProductWishlist productWishlist = this.GetUnDeletedProductWishlists().FirstOrDefault(p => p.UserId == userId && p.ProductId == productId);
+
+            if (productWishlist == null)
+            {
+                return;
+            }
+
+            this.dbContext.ProductsWishlist.Remove(productWishlist);
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ProductViewModel>> AllForUser(string userId)
+        {
+            //return this.mapper.Map<IEnumerable<ProductWishlistViewModel>>(this.GetUnDeletedProductWishlists().Where(p => p.UserId == userId));
+            return this.productService.GetAll();
+        }
+
+        public bool IsProductIsInUserWishlist(string userId, int productId)
+        {
+            return this.GetUnDeletedProductWishlists().Any(pw => pw.UserId == userId && pw.ProductId == productId);
+        }
+
+        private IEnumerable<ProductWishlist> GetUnDeletedProductWishlists()
+        {
+            return this.dbContext.ProductsWishlist.Where(pw => pw.IsDeleted == false);
         }
     }
 }

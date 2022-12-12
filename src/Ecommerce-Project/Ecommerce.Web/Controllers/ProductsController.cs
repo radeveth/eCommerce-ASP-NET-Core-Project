@@ -4,6 +4,7 @@
     using Ecommerce.InputModels.Products;
     using Ecommerce.Services.Data.CategoriesServices;
     using Ecommerce.Services.Data.ProductsServices;
+    using Ecommerce.Services.Data.ProductWishlistsServices;
     using Ecommerce.ViewModels.Products;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -13,13 +14,15 @@
     {
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
+        private readonly IProductWishlistService productWishlistService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public ProductsController(IProductService productService, ICategoryService categoryService, UserManager<ApplicationUser> user)
+        public ProductsController(IProductService productService, ICategoryService categoryService, UserManager<ApplicationUser> user, IProductWishlistService productWishlistService)
         {
             this.productService = productService;
             this.categoryService = categoryService;
             this.userManager = user;
+            this.productWishlistService = productWishlistService;
         }
 
         [HttpGet]
@@ -31,7 +34,7 @@
         }
 
         [HttpPost]
-        // [Authorize]
+        [Authorize]
         public async Task<IActionResult> CreateAsync([FromForm] ProductFormModel productForm)
         {
             productForm.UserId = this.GetUserId();
@@ -74,6 +77,7 @@
                 ViewData["IsHaveProductReviewError"] = false;
             }
 
+            ViewData["IsProductIsInUserWishlist"] = this.productWishlistService.IsProductIsInUserWishlist(this.GetUserId(), id);
             return this.View(productDetails);
         }
 

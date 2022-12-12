@@ -34,25 +34,6 @@
 
 @section Scripts {
     <script>
-        $('.owl-carousel').owlCarousel({
-            loop: true,
-            margin: 10,
-            nav: true,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                600: {
-                    items: 3
-                },
-                1000: {
-                    items: 5
-                }
-            }
-        })
-    </script>
-
-    <script>
         new Glider(document.querySelector('.glider'), {
             slidesToShow: 4,
             slidesToScroll: 1,
@@ -63,5 +44,13 @@
                 next: '.glider-next'
             }
         });
+    </script>
+
+    <script>
+        function AddProductToWishlist(productId) {
+            $.get('/api/productwishlistsapi/add/?productId=' + productId, (data) => {
+                alert("Successfully added o wishlist!");
+            }
+        }
     </script>
 }

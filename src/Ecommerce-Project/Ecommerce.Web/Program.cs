@@ -9,6 +9,7 @@ namespace Ecommerce.Web
     using Ecommerce.Services.Data.HomeServices;
     using Ecommerce.Services.Data.ProductsServices;
     using Ecommerce.Services.Data.ProductWishlistsServices;
+    using Ecommerce.Services.Data.ReviewsServices;
     using Ecommerce.Services.Mappings;
     using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,7 @@ namespace Ecommerce.Web
             builder.Services.AddTransient<IHomeService, HomeService>();
             builder.Services.AddTransient<IProductService, ProductService>();
             builder.Services.AddTransient<IProductWishlistService, ProductWishlistService>();
+            builder.Services.AddTransient<IReviewService, ReviewService>();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
