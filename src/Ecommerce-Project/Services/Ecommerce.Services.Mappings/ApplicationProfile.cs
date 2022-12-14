@@ -19,6 +19,11 @@
                 .ForMember(x => x.Image, y => y.MapFrom(s => s.Images.FirstOrDefault()))
                 .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Sum(r => (int)r.ReviewScale)))
                 .ForMember(x => x.Category, y => y.MapFrom(s => s.Category.Name));
+            this.CreateMap<Product, HomeProductViewModel>()
+                .ForMember(x => x.Image, y => y.MapFrom(s => s.Images.FirstOrDefault()))
+                .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Count() == 0 ? -1 : s.Reviews.Select(r => (int)r.ReviewScale).Sum() / s.Reviews.Count()))
+                .ForMember(x => x.Category, y => y.MapFrom(s => s.Category.Name))
+                .ForMember(x => x.IsProductIsInWishlist, y => y.MapFrom(s => s.ProductsWishlist.));
 
             // Brand Mappings
             this.CreateMap<Brand, ProductBrandFormModel>();

@@ -109,9 +109,9 @@
     <div class="col-md-12">
         <div id="product-tab">
             <ul class="tab-nav">
-                <li class="active"><a role="button" id="description-partial">Description</a></li>
+                <li class="active"><a role="button" id="description-partial" onclick="VisualizateDescriptionPartial()">Description</a></li>
                 @*<li><a role="button" id="details-partial">Details</a></li>*@
-                <li><a role="button" id="reviews-partial">Reviews (@Model.ProductReviewServiceModel.TotalReviews)</a></li>
+                <li><a role="button" id="reviews-partial" onclick="VisualizateReviewsPartial()">Reviews (@Model.ProductReviewServiceModel.TotalReviews)</a></li>
             </ul>
         </div>
 
@@ -434,25 +434,21 @@
         const descriptionPartialContentDivElement = document.getElementById('description-partial-content');
         const reviewPartialContentDivElement = document.getElementById('reviews-partial-content');
 
-        descriptionPartialAElement.addEventListener('click', (e) => {
+        function VisualizateDescriptionPartial() {
             descriptionPartialAElement.parentElement.classList.add('active');
-
             reviewsPartialAElement.parentElement.classList.remove('active');
 
-            descriptionPartialAElement.classList.remove('d-none');
-
             reviewPartialContentDivElement.classList.add('d-none');
-        });
+            descriptionPartialContentDivElement.classList.remove('d-none');
+        }
 
-        reviewsPartialAElement.addEventListener('click', (e) => {
+        function VisualizateReviewsPartial() {
             reviewsPartialAElement.classList.add('active');
-
             descriptionPartialAElement.parentElement.classList.remove('active');
 
             reviewPartialContentDivElement.classList.remove('d-none');
-
             descriptionPartialContentDivElement.classList.add('d-none');
-        });
+        }
     </script>
 
     <script>

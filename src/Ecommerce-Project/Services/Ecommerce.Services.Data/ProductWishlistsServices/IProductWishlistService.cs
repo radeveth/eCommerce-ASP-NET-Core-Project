@@ -13,5 +13,7 @@
         public bool IsProductIsInUserWishlist(string userId, int productId);
 
         public Task<IEnumerable<ProductViewModel>> AllForUser(string userId);
+
+        public int GetCountOfUserWishlit(string userId);
     }
 }

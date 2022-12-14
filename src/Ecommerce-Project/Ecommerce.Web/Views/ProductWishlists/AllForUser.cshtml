@@ -12,7 +12,7 @@
             @foreach (var product in Model)
             {
                 <div class="col-4 mt-4">
-                    <partial name="_ProductCardPartial" model="product" />
+                    <partial name="_WishlistProductCardPartial" model="product" />
                 </div>
             }
         </div>
@@ -33,3 +33,13 @@
         <br />
     }
 </div>
+
+@section Scripts {
+    <script>
+        function RemoveProductFromWishlist(productId) {
+            $.get('/api/productwishlistsapi/remove?productId=' + productId, (data) => {
+                window.location = window.location.href;
+            });
+        }
+    </script>
+}

@@ -16,13 +16,15 @@
         private readonly ICategoryService categoryService;
         private readonly IProductWishlistService productWishlistService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public ProductsController(IProductService productService, ICategoryService categoryService, UserManager<ApplicationUser> user, IProductWishlistService productWishlistService)
+        public ProductsController(IProductService productService, ICategoryService categoryService, UserManager<ApplicationUser> user, IProductWishlistService productWishlistService, SignInManager<ApplicationUser> signInManager)
         {
             this.productService = productService;
             this.categoryService = categoryService;
             this.userManager = user;
             this.productWishlistService = productWishlistService;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
@@ -77,7 +79,15 @@
                 ViewData["IsHaveProductReviewError"] = false;
             }
 
-            ViewData["IsProductIsInUserWishlist"] = this.productWishlistService.IsProductIsInUserWishlist(this.GetUserId(), id);
+            if (this.signInManager.IsSignedIn(this.User))
+            {
+                ViewData["IsProductIsInUserWishlist"] = this.productWishlistService.IsProductIsInUserWishlist(this.GetUserId(), id);
+            }
+            else
+            {
+                ViewData["IsProductIsInUserWishlist"] = false;
+            }
+
             return this.View(productDetails);
         }
 
@@ -86,7 +96,7 @@
         {
             if (productDetails.ProductReviewServiceModel.AddProductReviewModel.ReviewScale == 0)
             {
-                return this.RedirectToAction(nameof(Details), new 
+                return this.RedirectToAction(nameof(Details), new
                 {
                     id = productDetails.ProductReviewServiceModel.AddProductReviewModel.ProductId,
                     isHaveProductReviewError = true,

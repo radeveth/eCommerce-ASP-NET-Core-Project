@@ -21,11 +21,10 @@
             @foreach (var product in category.Products)
             {
                 <div class="@(category.Products.FirstOrDefault() == product ? "" : "offset-1") col-3">
-                    <partial name="_ProductCardPartial" model="product" />
+                    <partial name="_HomeProductCardPartial" model="product" />
                 </div>
             }
         </div>
-        <br />
         <br />
         <br />
         <br />
@@ -48,8 +47,10 @@
 
     <script>
         function AddProductToWishlist(productId) {
+            console.log('clicked');
+
             $.get('/api/productwishlistsapi/add/?productId=' + productId, (data) => {
-                alert("Successfully added o wishlist!");
+                alert("Successfully added to wishlist!");
             }
         }
     </script>

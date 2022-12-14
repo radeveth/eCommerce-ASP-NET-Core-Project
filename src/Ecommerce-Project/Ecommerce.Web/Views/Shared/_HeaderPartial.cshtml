@@ -1,4 +1,10 @@
 ﻿@using Ecommerce.Common
+@using Ecommerce.Services.Data.ProductWishlistsServices;
+@using Microsoft.AspNetCore.Identity;
+
+@inject IProductWishlistService productWishlistService;
+@inject UserManager<ApplicationUser> userManagaer;
+@inject SignInManager<ApplicationUser> signInManager;
 
 <div>
     <div class="row" style="background-color: #2B2D42; height: 40px">
@@ -37,20 +43,24 @@
 
             <div class="col-md-3 clearfix">
                 <div class="header-ctn">
-                    <div>
-                        <a asp-controller="ProductWishlists" asp-action="AllForUser" style="margin-top: 10px" class="nav-link">
-                            <i style="color: red" class="fa fa-heart"></i>
-                            <span>Wishlist</span>
-                            <div class="qty">2</div>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#" style="margin-top: 10px" class="nav-link">
-                            <i style="color: red" class="fa fa-shopping-cart"></i>
-                            <span>Your Cart</span>
-                            <div class="qty">3</div>
-                        </a>
-                    </div>
+                    @if (signInManager.IsSignedIn(this.User))
+                    {
+                        int wishlistProductsCount = productWishlistService.GetCountOfUserWishlit(userManagaer.GetUserAsync(this.User).Result.Id);
+                        <div>
+                            <a asp-controller="ProductWishlists" asp-action="AllForUser" style="margin-top: 10px" class="nav-link">
+                                <i style="color: red" class="fa fa-heart"></i>
+                                <span>Wishlist</span>
+                                <div class="qty">@wishlistProductsCount</div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="#" style="margin-top: 10px" class="nav-link">
+                                <i style="color: red" class="fa fa-shopping-cart"></i>
+                                <span>Your Cart</span>
+                                <div class="qty">3</div>
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

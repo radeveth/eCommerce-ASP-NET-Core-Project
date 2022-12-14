@@ -43,12 +43,13 @@
                 foreach (var product in products)
                 {
                     product.Images = this.dbContext.Images.Where(i => i.ProductId == product.Id).ToList();
+                    product.Reviews = this.dbContext.Reviews.Where(r => r.ProductId == product.Id).ToList();
                 }
 
                 categoriesView.Add(new HomeCategoryViewModel()
                 {
                     Name = category.Name,
-                    Products = this.mapper.Map<IEnumerable<ProductViewModel>>(products),
+                    Products = this.mapper.Map<IEnumerable<HomeProductViewModel>>(products),
                 });
             }
 

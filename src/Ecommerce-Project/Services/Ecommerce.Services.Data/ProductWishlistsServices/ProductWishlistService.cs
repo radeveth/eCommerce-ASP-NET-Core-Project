@@ -77,6 +77,11 @@
             return this.GetUnDeletedProductWishlists().Any(pw => pw.UserId == userId && pw.ProductId == productId);
         }
 
+        public int GetCountOfUserWishlit(string userId)
+        {
+            return this.dbContext.ProductsWishlist.Count(pw => pw.UserId == userId);
+        }
+
         private IEnumerable<ProductWishlist> GetUnDeletedProductWishlists()
         {
             return this.dbContext.ProductsWishlist.Where(pw => pw.IsDeleted == false);

@@ -1,19 +1,15 @@
-﻿namespace Ecommerce.ViewModels.Products
+﻿namespace Ecommerce.ViewModels.Home
 {
     using Ecommerce.Data.Models.Enums;
     using Ecommerce.ViewModels.Images;
 
-    public class ProductViewModel
+    public class HomeProductViewModel
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
         public decimal Price { get; set; }
-
-        public Status Status { get; set; }
-
-        public int CategoryId { get; set; }
 
         public string Category { get; set; }
 

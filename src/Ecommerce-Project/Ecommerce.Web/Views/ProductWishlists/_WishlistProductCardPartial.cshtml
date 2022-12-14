@@ -26,7 +26,7 @@
                             }
                         </div>
                         <div class="product-btns">
-                            <a onclick="AddProductToWishlist(@Model.Id)" role="button" class="add-to-wishlist col-2"><i style="color: #D10024" class="fa fa-heart"></i><span class="tooltipp">add to wishlist</span></a>
+                            <a onclick="RemoveProductFromWishlist(@Model.Id)" role="button" class="col-2"><i style="color: #D10024" class="fa fa-times"></i><span class="tooltipp">remove</span></a>
                             <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id" class="offset-1 col-2 quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></a>
                         </div>
                     </div>
