@@ -1,8 +1,12 @@
-﻿@model HomeServiceModel
+﻿@using Microsoft.AspNetCore.Identity;
+@model HomeServiceModel
+@inject SignInManager<ApplicationUser> signInManager;
 
 @{
     ViewData["Title"] = "Home | Commerce Park";
     ViewData["ImageHeight"] = 330;
+
+    bool isSingIn = signInManager.IsSignedIn(this.User);
 }
 
 <h1 class="text-center mt-4">Top Products</h1>
@@ -21,7 +25,7 @@
             @foreach (var product in category.Products)
             {
                 <div class="@(category.Products.FirstOrDefault() == product ? "" : "offset-1") col-3">
-                    <partial name="_HomeProductCardPartial" model="product" />
+                    <partial name="_ProductCardPartial" model="product" />
                 </div>
             }
         </div>
@@ -46,12 +50,28 @@
     </script>
 
     <script>
+        function AddProductToWishlistForUnsignedUsers() {
+            alert('Sign In to access your wishlist.');
+        }
+
         function AddProductToWishlist(productId) {
-            console.log('clicked');
+            let addProductToWishlistElement = document.getElementById('add-product-to-wishlist-' + productId);
+            let removeProductFromWishlistElement = document.getElementById('remove-product-from-wishlist-' + productId);
 
             $.get('/api/productwishlistsapi/add/?productId=' + productId, (data) => {
-                alert("Successfully added to wishlist!");
-            }
-        }
+                addProductToWishlistElement.classList.add('d-none');
+                removeProductFromWishlistElement.classList.remove('d-none');
+            })
+        };
+
+        function RemoveProductFromWishlist(productId) {
+            let addProductToWishlistElement = document.getElementById('add-product-to-wishlist-' + productId);
+            let removeProductFromWishlistElement = document.getElementById('remove-product-from-wishlist-' + productId);
+
+            $.get('/api/productwishlistsapi/remove/?productId=' + productId, (data) => {
+                addProductToWishlistElement.classList.remove('d-none');
+                removeProductFromWishlistElement.classList.add('d-none');
+            })
+        };
     </script>
 }

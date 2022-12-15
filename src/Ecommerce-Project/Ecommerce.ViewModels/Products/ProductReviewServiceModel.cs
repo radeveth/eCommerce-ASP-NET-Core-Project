@@ -4,9 +4,9 @@
 
     public class ProductReviewServiceModel
     {
-        public decimal AverageReview { get; set; }
-
         public int TotalReviews { get; set; }
+
+        public decimal AverageReview { get; set; }
 
         public int CountOfOneStarRating { get; set; }
 

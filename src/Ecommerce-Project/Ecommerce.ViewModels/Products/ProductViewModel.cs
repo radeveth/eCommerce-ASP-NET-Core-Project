@@ -15,7 +15,7 @@
 
         public int CategoryId { get; set; }
 
-        public string Category { get; set; }
+        public string CategoryName { get; set; }
 
         public ImageViewModel Image { get; set; }
 
@@ -23,6 +23,6 @@
 
         public DateTime CreatedOn { get; set; }
 
-        public bool IsProductIsInWishlist { get; set; }
+        public bool IsProductIsInCurrentUserWishlist { get; set; }
     }
 }

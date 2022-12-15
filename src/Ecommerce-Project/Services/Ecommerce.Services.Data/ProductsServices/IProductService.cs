@@ -7,20 +7,26 @@
 
     public interface IProductService
     {
-        public Task<T> GetByIdAsync<T>(int id);
-
-        public IEnumerable<ProductViewModel> GetAll();
-
+        // Create
         public Task CreateAsync(ProductFormModel productForm);
 
-        public Task<IEnumerable<ProductViewModel>> GetByAllProductsForCategory(string category);
+        public Task AddReviewForProduct(AddProductReviewModel productReviewModel);
+
+        // Read
+        public Task<T> GetByIdAsync<T>(int id);
+
+        public IEnumerable<ProductViewModel> GetAll(string userId = null);
+
+        public Task<IEnumerable<ProductViewModel>> GetAllByCategory(string category, string userId = null);
+
+        public Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string searchingName, string category, int currentPage = 1, string userId = null);
+
+        public Task<ProductDetailsModel> Details(int id, string userId = null);
 
         public ProductFormModel GetProductFormModel();
 
-        public Task<ProductsServiceModel> GetProductsServiceModel(ProductsSorting productsSorting, string searchingName, string category, int currentPage = 1);
+        // Update
 
-        public Task<ProductDetailsModel> Details(int id);
-
-        public Task AddReviewForProduct(AddProductReviewModel productReviewModel);
+        // Delete
     }
 }

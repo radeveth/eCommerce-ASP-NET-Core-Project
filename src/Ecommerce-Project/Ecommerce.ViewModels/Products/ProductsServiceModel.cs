@@ -23,7 +23,5 @@
         public decimal CheapestProduct { get; set; }
 
         public IEnumerable<ProductViewModel> Products { get; set; }
-
-        public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
     }
 }

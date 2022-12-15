@@ -4,23 +4,25 @@
     using AutoMapper;
     using Ecommerce.Data;
     using Ecommerce.Data.Models;
+    using Ecommerce.Services.Data.ProductsServices;
     using Ecommerce.ViewModels.Home;
-    using Ecommerce.ViewModels.Products;
 
     public class HomeService : IHomeService
     {
         private readonly EcommerceDbContext dbContext;
+        private readonly IProductService productService;
         private readonly IMapper mapper;
 
-        public HomeService(EcommerceDbContext dbContext, IMapper mapper)
+        public HomeService(EcommerceDbContext dbContext, IMapper mapper, IProductService productService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.productService = productService;
         }
 
-        public async Task<HomeServiceModel> GetHomeServiceModel(int countOfProductsPerCategory)
+        public async Task<HomeServiceModel> GetHomeServiceModel(int countOfProductsPerCategory, string userId = null)
         {
-            ICollection<HomeCategoryViewModel> categories = this.GetCategories(countOfProductsPerCategory);
+            ICollection<HomeCategoryViewModel> categories = await this.GetCategories(countOfProductsPerCategory, userId);
 
             HomeServiceModel serviceModel = new HomeServiceModel()
             {
@@ -30,7 +32,7 @@
             return serviceModel;
         }
 
-        private ICollection<HomeCategoryViewModel> GetCategories(int countOfProductsPerCategory)
+        private async Task<ICollection<HomeCategoryViewModel>> GetCategories(int countOfProductsPerCategory, string userId = null)
         {
             ICollection<HomeCategoryViewModel> categoriesView = new List<HomeCategoryViewModel>();
 
@@ -38,18 +40,10 @@
 
             foreach (var category in categories)
             {
-                IEnumerable<Product> products = this.dbContext.Products.Where(p => p.CategoryId == category.Id).Take(countOfProductsPerCategory);
-
-                foreach (var product in products)
-                {
-                    product.Images = this.dbContext.Images.Where(i => i.ProductId == product.Id).ToList();
-                    product.Reviews = this.dbContext.Reviews.Where(r => r.ProductId == product.Id).ToList();
-                }
-
                 categoriesView.Add(new HomeCategoryViewModel()
                 {
                     Name = category.Name,
-                    Products = this.mapper.Map<IEnumerable<HomeProductViewModel>>(products),
+                    Products = await this.productService.GetAllByCategory(category.Name, userId),
                 });
             }
 

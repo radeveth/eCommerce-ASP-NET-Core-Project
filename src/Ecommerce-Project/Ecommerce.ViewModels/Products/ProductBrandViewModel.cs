@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.InputModels.Products
+﻿namespace Ecommerce.ViewModels.Products
 {
     public class ProductBrandViewModel
     {

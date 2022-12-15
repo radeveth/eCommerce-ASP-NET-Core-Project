@@ -21,7 +21,10 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
+        [Required]
         public decimal Price { get; set; }
+
+        public decimal DiscountPrice { get; set; }
 
         [Required]
         public Status Status { get; set; }

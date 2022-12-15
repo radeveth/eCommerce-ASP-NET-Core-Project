@@ -17,19 +17,14 @@
             // Product Mappings
             this.CreateMap<Product, ProductViewModel>()
                 .ForMember(x => x.Image, y => y.MapFrom(s => s.Images.FirstOrDefault()))
-                .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Sum(r => (int)r.ReviewScale)))
-                .ForMember(x => x.Category, y => y.MapFrom(s => s.Category.Name));
-            this.CreateMap<Product, HomeProductViewModel>()
-                .ForMember(x => x.Image, y => y.MapFrom(s => s.Images.FirstOrDefault()))
-                .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Count() == 0 ? -1 : s.Reviews.Select(r => (int)r.ReviewScale).Sum() / s.Reviews.Count()))
-                .ForMember(x => x.Category, y => y.MapFrom(s => s.Category.Name))
-                .ForMember(x => x.IsProductIsInWishlist, y => y.MapFrom(s => s.ProductsWishlist.));
+                .ForMember(x => x.AverageReview, y => y.MapFrom(s => s.Reviews.Count() == 0 ? -1 : s.Reviews.Select(r => (int)r.ReviewScale).Sum() / s.Reviews.Count()));
 
-            // Brand Mappings
+            this.CreateMap<Product, ProductDetailsModel>();
+
             this.CreateMap<Brand, ProductBrandFormModel>();
+            this.CreateMap<Category, ProductCategoryFormModel>();
 
             // Category Mappings
-            this.CreateMap<Category, ProductCategoryFormModel>();
             this.CreateMap<Category, CategoryViewModel>()
                 .ForMember(x => x.Image, y => y.MapFrom(s => s.Products
                 .OrderByDescending(p => p.Reviews.Count)

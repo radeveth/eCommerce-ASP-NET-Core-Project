@@ -4,6 +4,6 @@
 
     public interface IHomeService
     {
-        public Task<HomeServiceModel> GetHomeServiceModel(int countOfProductsPerCategory);
+        public Task<HomeServiceModel> GetHomeServiceModel(int countOfProductsPerCategory, string userId);
     }
 }

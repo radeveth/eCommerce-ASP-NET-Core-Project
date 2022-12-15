@@ -7,7 +7,6 @@
     using Ecommerce.Data.Models;
     using Ecommerce.Services.Data.ProductsServices;
     using Ecommerce.ViewModels.Products;
-    using Ecommerce.ViewModels.ProductWishlists;
     using Microsoft.AspNetCore.Identity;
 
     public class ProductWishlistService : IProductWishlistService

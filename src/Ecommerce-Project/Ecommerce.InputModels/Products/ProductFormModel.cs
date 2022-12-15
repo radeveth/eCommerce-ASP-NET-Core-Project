@@ -18,6 +18,9 @@
         [Required(ErrorMessage = "Price field is required.")]
         public decimal Price { get; set; }
 
+        [Display(Name = "Discount Price: ")]
+        public decimal DiscountPrice { get; set; }
+
         [Required(ErrorMessage = "Status field is required.")]
         public Status Status { get; set; }
 

@@ -24,9 +24,9 @@
 
         public int CategoryId { get; set; }
 
-        public string Category { get; set; }
+        public string CategoryName { get; set; }
 
-        public string Brand { get; set; }
+        public string BrandName { get; set; }
 
         public IEnumerable<ImageViewModel> Images { get; set; }
 

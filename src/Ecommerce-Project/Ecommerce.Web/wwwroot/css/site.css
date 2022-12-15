@@ -169,14 +169,14 @@ Table OF Contents
     position: relative;
 }
 
-.for_slick_slider .items .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 350px;
-    height: 250px;
-    background: rgba(0, 0, 0, 0.64);
-}
+    .for_slick_slider .items .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 350px;
+        height: 250px;
+        background: rgba(0, 0, 0, 0.64);
+    }
 
 .for_slick_slider .slick-center .overlay {
     opacity: 0;
@@ -1094,9 +1094,21 @@ textarea.input {
                 z-index: 10;
             }
 
-                .product .product-body .product-rating > i.fa-star {
-                    color: #ef233c;
-                }
+            .product .product-body .product-rating > span {
+                position: relative;
+                margin-right: -4px;
+                background: #FFF;
+                color: #E4E7ED;
+                z-index: 10;
+            }
+
+            .product .product-body .product-rating > i.fa-star {
+                color: #ef233c;
+            }
+
+            .product .product-body .product-rating > span.badge {
+                color: #ef233c;
+            }
 
             .product .product-body .product-rating:after {
                 content: "";

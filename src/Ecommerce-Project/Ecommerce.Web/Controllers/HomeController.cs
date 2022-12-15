@@ -1,28 +1,38 @@
 ﻿namespace Ecommerce.Web.Controllers
 {
+    using Ecommerce.Data.Models;
     using Ecommerce.Services.Data.HomeServices;
     using Ecommerce.ViewModels.Home;
+    using Ecommerce.Web.Infrastructure;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
 
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> logger;
         private readonly IHomeService homeService;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
+        public HomeController(ILogger<HomeController> logger, IHomeService homeService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+            : base(userManager, signInManager)
         {
             this.logger = logger;
             this.homeService = homeService;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            HomeServiceModel serviceModel = await this.homeService.GetHomeServiceModel(6);
+            HomeServiceModel serviceModel = await this.homeService.GetHomeServiceModel(6, this.GetUserId());
 
             return View(serviceModel);
         }
 
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();

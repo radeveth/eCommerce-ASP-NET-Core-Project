@@ -5,12 +5,12 @@
     ViewData["ImageHeight"] = 400;
 
     SearchingProductsCriteria searchingProductsCriteriaModel = new SearchingProductsCriteria()
-    {
-        SearchCategory = Model.SearchCategory,
-        CheapestProduct = Model.CheapestProduct,
-        ProductsSorting = Model.ProductsSorting,
-        SearchNameCriteria = Model.SearchNameCriteria,
-    };
+            {
+                SearchCategory = Model.SearchCategory,
+                CheapestProduct = Model.CheapestProduct,
+                ProductsSorting = Model.ProductsSorting,
+                SearchNameCriteria = Model.SearchNameCriteria,
+            };
 }
 
 <div class="container-fluid">
@@ -31,28 +31,8 @@
 <br />
 
 <div class="container-fluid">
-    <div class="row" style="margin-left: 35px">
-        <div class="col-2 single-left">
-            @*<div class="aside">
-            <h3 class="aside-title">Categories</h3>
-            <div class="checkbox-filter">
-            @foreach (var category in Model.Categories)
-            {
-            <div class="input-checkbox">
-            <input type="checkbox" id="category-1">
-            <label for="category-1">
-            <a asp-controller="Products" asp-action="All" asp-route-SearchCategory="@category.Name" class="btn btn-neutral">
-            <span></span>@category.Name <small> (@category.ProductsCount)</small>
-            </a>
-            </label>
-            </div>
-            }
-            </div>
-            </div>*@
-        </div>
-
-
-        <div class="col-md-8 single-right" style="margin-right: 35px">
+    <div class="row">
+        <div class="offset-2 col-8" style="margin-right: 35px">
             @if (Model.Products.Any())
             {
                 <partial name="_SearchAndSortProductsPartail" model="searchingProductsCriteriaModel" />
@@ -74,5 +54,32 @@
             }
         </div>
     </div>
-
 </div>
+
+@section Scripts {
+    <script>
+        function AddProductToWishlistForUnsignedUsers() {
+            alert('Sign In to access your wishlist.');
+        }
+
+        function AddProductToWishlist(productId) {
+            let addProductToWishlistElement = document.getElementById('add-product-to-wishlist-' + productId);
+            let removeProductFromWishlistElement = document.getElementById('remove-product-from-wishlist-' + productId);
+
+            $.get('/api/productwishlistsapi/add/?productId=' + productId, (data) => {
+                addProductToWishlistElement.classList.add('d-none');
+                removeProductFromWishlistElement.classList.remove('d-none');
+            })
+        };
+
+        function RemoveProductFromWishlist(productId) {
+            let addProductToWishlistElement = document.getElementById('add-product-to-wishlist-' + productId);
+            let removeProductFromWishlistElement = document.getElementById('remove-product-from-wishlist-' + productId);
+
+            $.get('/api/productwishlistsapi/remove/?productId=' + productId, (data) => {
+                addProductToWishlistElement.classList.remove('d-none');
+                removeProductFromWishlistElement.classList.add('d-none');
+            })
+        };
+    </script>
+}

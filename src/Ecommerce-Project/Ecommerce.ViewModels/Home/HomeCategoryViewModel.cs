@@ -6,6 +6,6 @@
     {
         public string Name { get; set; }
 
-        public IEnumerable<HomeProductViewModel> Products { get; set; }
+        public IEnumerable<ProductViewModel> Products { get; set; }
     }
 }

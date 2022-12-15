@@ -1,4 +1,6 @@
-﻿@model ProductViewModel
+﻿@using Microsoft.AspNetCore.Identity;
+@model ProductViewModel
+@inject SignInManager<ApplicationUser> signInManager;
 
 <div class="row">
     <div class="products-tabs">
@@ -16,17 +18,44 @@
                         </div>
                     </div>
                     <div class="product-body">
-                        <p class="product-category">@Model.Category</p>
+                        <p class="product-category">@Model.CategoryName</p>
                         <h3 class="product-name"><span class="badge badge-secondary">@Model.Name</span></h3>
                         <h4 class="product-price">$@($"{Model.Price:f2}") <del class="product-old-price">$@($"{Model.Price:f2}")</del></h4>
                         <div class="product-rating">
-                            @for (int i = 1; i <= Model.AverageReview; i++)
+                            @if (Model.AverageReview != -1)
                             {
-                                <i class="fa fa-star"></i>
+                                @for (int i = 1; i <= Model.AverageReview; i++)
+                                {
+                                    <i class="fa fa-star"></i>
+                                }
+                                @for (int i = (int)Model.AverageReview + 1; i <= 5; i++)
+                                {
+                                    <i class="fa fa-star-o"></i>
+                                }
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary">No reviews</span>
                             }
                         </div>
                         <div class="product-btns">
-                            <a onclick="AddProductToWishlist(@Model.Id)" role="button" class="add-to-wishlist col-2"><i style="color: #D10024" class="fa fa-heart"></i><span class="tooltipp">add to wishlist</span></a>
+                            @if (signInManager.IsSignedIn(this.User))
+                            {
+                                if (Model.IsProductIsInCurrentUserWishlist)
+                                {
+                                    <a onclick="RemoveProductFromWishlist(@Model.Id)" role="button" id="remove-product-from-wishlist-@Model.Id" class="remove-from-wishlist col-2"><i style="color: #D10024" class="fa fa-heart"></i><span class="tooltipp">remove from wishlist</span></a>
+                                    <a onclick="AddProductToWishlist(@Model.Id)" role="button" id="add-product-to-wishlist-@Model.Id" class="add-to-wishlist col-2 d-none"><i style="color: #D10024" class="fa fa-heart-o"></i><span class="tooltipp">remove from wishlist</span></a>
+                                }
+                                else
+                                {
+                                    <a onclick="AddProductToWishlist(@Model.Id)" role="button" id="add-product-to-wishlist-@Model.Id" class="add-to-wishlist col-2"><i style="color: #D10024" class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></a>
+                                    <a onclick="RemoveProductFromWishlist(@Model.Id)" role="button" id="remove-product-from-wishlist-@Model.Id" class="remove-from-wishlist col-2 d-none"><i style="color: #D10024" class="fa fa-heart"></i><span class="tooltipp">remove from wishlist</span></a>
+                                }
+                            }
+                            else
+                            {
+                                <a onclick="AddProductToWishlistForUnsignedUsers()" role="button" id="add-product-to-wishlist" class="add-to-wishlist col-2"><i style="color: #D10024" class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></a>
+                            }
                             <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id" class="offset-1 col-2 quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></a>
                         </div>
                     </div>
