@@ -16,20 +16,26 @@
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
         private readonly IProductWishlistService productWishlistService;
+
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+		
+        private readonly ILogger<ProductsController> logger;
 
-        public ProductsController(IProductService productService, ICategoryService categoryService, IProductWishlistService productWishlistService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
-            : base(userManager, signInManager)
-        {
-            this.productService = productService;
-            this.categoryService = categoryService;
-            this.productWishlistService = productWishlistService;
+		public ProductsController(IProductService productService, ICategoryService categoryService, IProductWishlistService productWishlistService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ILogger<ProductsController> logger)
+			: base(userManager, signInManager)
+		{
+			this.productService = productService;
+			this.categoryService = categoryService;
+			this.productWishlistService = productWishlistService;
+			
             this.signInManager = signInManager;
-            this.userManager = userManager;
-        }
+			this.userManager = userManager;
+			
+            this.logger = logger;
+		}
 
-        [HttpGet]
+		[HttpGet]
         [Authorize]
         public IActionResult Create()
         {

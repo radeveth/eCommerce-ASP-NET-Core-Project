@@ -10,7 +10,10 @@
                     <div class="product-img" style="height: @($"{ViewData["ImageHeight"]}px")">
                         <img src="@Model.Image.Src" alt="">
                         <div class="product-label">
-                            @*<span class="sale">-30%</span>*@
+                            @if (Model.IsHaveDiscount)
+                            {
+                                <span class="sale">@Model.DiscountPercentage%</span>
+                            }
                             @if (DateTime.UtcNow.Subtract(Model.CreatedOn).Days <= 7)
                             {
                                 <span class="new">NEW</span>
@@ -20,7 +23,14 @@
                     <div class="product-body">
                         <p class="product-category">@Model.CategoryName</p>
                         <h3 class="product-name"><span class="badge badge-secondary">@Model.Name</span></h3>
-                        <h4 class="product-price">$@($"{Model.Price:f2}") <del class="product-old-price">$@($"{Model.Price:f2}")</del></h4>
+                        @if (Model.IsHaveDiscount)
+                        {
+                            <h4 class="product-price">$@($"{Math.Floor(Model.Price - Model.Price * Model.DiscountPercentage / 100):f2}") <del class="product-old-price">$@($"{Model.Price:f2}")</del></h4>
+                        }
+                        else
+                        {
+                            <h4 class="product-price">$@($"{Model.Price:f2}")</h4>
+                        }
                         <div class="product-rating">
                             @if (Model.AverageReview != -1)
                             {

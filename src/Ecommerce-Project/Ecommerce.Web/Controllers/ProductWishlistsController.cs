@@ -6,28 +6,32 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    public class ProductWishlistsController : Controller
+    public class ProductWishlistsController : BaseController
     {
         private readonly IProductWishlistService productWishlistService;
+
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public ProductWishlistsController(IProductWishlistService productWishlistService, UserManager<ApplicationUser> userManager)
-        {
-            this.productWishlistService = productWishlistService;
-            this.userManager = userManager;
-        }
+		private readonly ILogger<ProductWishlistsController> logger;
 
-        [HttpGet]
+		public ProductWishlistsController(IProductWishlistService productWishlistService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<ProductWishlistsController> logger)
+			: base(userManager, signInManager)
+		{
+			this.productWishlistService = productWishlistService;
+
+			this.userManager = userManager;
+			this.signInManager = signInManager;
+			
+            this.logger = logger;
+		}
+
+		[HttpGet]
         public async Task<IActionResult> AllForUser()
         {
             IEnumerable<ProductViewModel> products = await this.productWishlistService.AllForUser(this.GetUserId());
 
             return this.View(products);
-        }
-
-        private string GetUserId()
-        {
-            return this.userManager.GetUserAsync(this.User).Result.Id;
         }
     }
 }

@@ -36,9 +36,8 @@
                         <li><a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="Fashion" class="dropdown-item">Fashion</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" role="button"><strong class="text-white">Hot Deals</strong></a></li>
-                <li class="nav-item"><a class="nav-link" role="button"><strong class="text-white">About Us</strong></a></li>
-                <li class="nav-item"><a class="nav-link" role="button"><strong class="text-white">About Us</strong></a></li>
+                @*<li class="nav-item"><a class="nav-link" role="button"><strong class="text-white">Hot Deals</strong></a></li>*@
+                <li class="nav-item"><a asp-controller="Home" asp-action="AboutUs" class="nav-link" role="button"><strong class="text-white">About Us</strong></a></li>
             </ul>
 
             <div class="col-md-3 clearfix">

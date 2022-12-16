@@ -11,6 +11,10 @@
 
         public decimal Price { get; set; }
 
+        public bool IsHaveDiscount { get; set; }
+
+        public decimal DiscountPercentage { get; set; }
+
         public Status Status { get; set; }
 
         public int CategoryId { get; set; }

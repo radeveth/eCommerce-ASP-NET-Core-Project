@@ -15,8 +15,8 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
 
-        public HomeController(ILogger<HomeController> logger, IHomeService homeService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-            : base(userManager, signInManager)
+        public HomeController(IHomeService homeService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<HomeController> logger)
+            : base(userManager, signInManager, logger)
         {
             this.logger = logger;
             this.homeService = homeService;
@@ -30,6 +30,12 @@
             HomeServiceModel serviceModel = await this.homeService.GetHomeServiceModel(6, this.GetUserId());
 
             return View(serviceModel);
+        }
+
+        [HttpGet]
+        public IActionResult AboutUs()
+        {
+            return this.View();
         }
 
         [HttpGet]

@@ -399,10 +399,13 @@ namespace Ecommerce.Data.Migrations
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("DiscountPrice")
+                    b.Property<decimal>("DiscountPercentage")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHaveDiscount")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")

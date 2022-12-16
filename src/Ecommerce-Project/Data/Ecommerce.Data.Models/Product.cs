@@ -24,7 +24,9 @@
         [Required]
         public decimal Price { get; set; }
 
-        public decimal DiscountPrice { get; set; }
+        public bool IsHaveDiscount { get; set; }
+
+        public decimal DiscountPercentage { get; set; }
 
         [Required]
         public Status Status { get; set; }

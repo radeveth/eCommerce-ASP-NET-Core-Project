@@ -9,13 +9,13 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
 
-        public BaseController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-        {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-        }
+		public BaseController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		{
+			this.userManager = userManager;
+			this.signInManager = signInManager;
+		}
 
-        public string GetUserId()
+		public string GetUserId()
         {
             return this.signInManager.IsSignedIn(this.User) == true ? this.userManager.GetUserId(this.User) : null;
         }
