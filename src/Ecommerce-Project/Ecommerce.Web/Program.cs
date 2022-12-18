@@ -11,6 +11,8 @@ namespace Ecommerce.Web
     using Ecommerce.Services.Data.ProductWishlistsServices;
     using Ecommerce.Services.Data.ReviewsServices;
     using Ecommerce.Services.Mappings;
+    using Ecommerce.Web.Areas.AdminPanel.Mappings;
+    using Ecommerce.Web.Areas.AdminPanel.Services.AdminServices;
     using Microsoft.EntityFrameworkCore;
 
     public class Program
@@ -28,6 +30,7 @@ namespace Ecommerce.Web
             builder.Services.AddAutoMapper(config =>
             {
                 config.AddProfile<ApplicationProfile>();
+                config.AddProfile<AdminPanelProfile>();
             });
 
             builder.Services.AddTransient<IApplicationUserService, ApplicationUserService>();
@@ -37,6 +40,8 @@ namespace Ecommerce.Web
             builder.Services.AddTransient<IProductService, ProductService>();
             builder.Services.AddTransient<IProductWishlistService, ProductWishlistService>();
             builder.Services.AddTransient<IReviewService, ReviewService>();
+
+            builder.Services.AddTransient<IAdminService, AdminService>();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {

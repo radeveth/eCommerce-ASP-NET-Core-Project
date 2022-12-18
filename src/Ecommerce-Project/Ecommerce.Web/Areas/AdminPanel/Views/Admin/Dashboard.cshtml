@@ -1,0 +1,51 @@
+﻿@model ProductsStatisticsServiceModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard | Commerce Park";
+    int i = 0;
+}
+
+<div class="container">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Qantity</th>
+                <th scope="col">Status</th>
+                <th scope="col">Percentage of Discount</th>
+                <th scope="col">Is On Discount</th>
+                <th scope="col">Is Deleted</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var product in Model.Products)
+                {
+                    i += 1;
+                    <tr>
+                        <th scope="row">@i</th>
+                        <td>@product.Name</td>
+                        <td>@product.Price</td>$
+                        <td>@product.Quantity</td>
+                        <td>@product.Status</td>
+                        <td>@product.DiscountPercentage</td>%
+                        <td>@product.IsHaveDiscount</td>
+                        <td>@product.IsDeleted</td>
+                        @if (product.IsDeleted == true)
+                        {
+                            <td><a asp-area="AdminPanel" asp-controller="Products" asp-action="Restore" asp-route-id="@product.Id" class="btn btn-primary rounded-pill">Restore</a></td>
+                        }
+                        else
+                        {
+                            <td><a asp-area="AdminPanel" asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger rounded-pill">Delete</a></td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+

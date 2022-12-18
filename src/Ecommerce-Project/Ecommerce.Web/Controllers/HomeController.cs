@@ -10,13 +10,15 @@
 
     public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> logger;
         private readonly IHomeService homeService;
+
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        
+        private readonly ILogger<HomeController> logger;
 
         public HomeController(IHomeService homeService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<HomeController> logger)
-            : base(userManager, signInManager, logger)
+            : base(userManager, signInManager)
         {
             this.logger = logger;
             this.homeService = homeService;
