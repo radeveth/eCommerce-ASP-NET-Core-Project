@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Web.Areas.AdminPanel.Models.Admin
+﻿namespace Ecommerce.ViewModels.Admin
 {
 	using Ecommerce.Data.Models.Enums;
 

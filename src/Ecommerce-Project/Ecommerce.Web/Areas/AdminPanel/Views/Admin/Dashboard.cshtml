@@ -5,7 +5,16 @@
     int i = 0;
 }
 
-<div class="container">
+<div class="jumbotron mt-5 mb-5">
+    <h1 class="display-4 text-center">Admin Dashboard</h1>
+    <div class="row mt-4">
+        <span class="offset-2 col-3 badge badge-primary">Total Products: @Model.ProductsCount</span>
+        <span class="offset-2 col-3 badge badge-primary">Total Categories: @Model.CategoriesCount</span>
+    </div>
+    <hr class="my-4">
+</div>
+
+<div class="">
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -17,7 +26,9 @@
                 <th scope="col">Percentage of Discount</th>
                 <th scope="col">Is On Discount</th>
                 <th scope="col">Is Deleted</th>
-                <th scope="col">Action</th>
+                <th scope="col">Delete / Restore</th>
+                <th scope="col">Update</th>
+                <th scope="col">Set Discount</th>
             </tr>
         </thead>
         <tbody>
@@ -36,12 +47,52 @@
                         <td>@product.IsDeleted</td>
                         @if (product.IsDeleted == true)
                         {
-                            <td><a asp-area="AdminPanel" asp-controller="Products" asp-action="Restore" asp-route-id="@product.Id" class="btn btn-primary rounded-pill">Restore</a></td>
+                            <td><a asp-area="AdminPanel" asp-controller="Products" asp-action="RestoreAsync" asp-route-id="@product.Id" class="btn btn-light rounded-pill">Restore</a></td>
                         }
                         else
                         {
-                            <td><a asp-area="AdminPanel" asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger rounded-pill">Delete</a></td>
+                            <td><a asp-area="AdminPanel" asp-controller="Products" asp-action="DeleteAsync" asp-route-id="@product.Id" class="btn btn-danger rounded-pill">Delete</a></td>
                         }
+                        <td><a role="button" asp-area="AdminPanel" asp-controller="Products" asp-action="Update" asp-route-id="@product.Id" class="btn btn-light rounded-pill">Update</a></td>
+                        <td><a role="button" asp-area="AdminPanel" asp-controller="Products" asp-action="Update" asp-route-id="@product.Id" class="btn btn-light rounded-pill">Update</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="mt-5"></div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Count of Product</th>
+                <th scope="col">Is Deleted</th>
+                <th scope="col">Delete / Restore</th>
+                <th scope="col">Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var category in Model.Categories)
+                {
+                    i += 1;
+                    <tr>
+                        <th scope="row">@i</th>
+                        <td>@category.Name</td>
+                        <td>@category.ProductsCount</td>
+                        <td>@category.IsDeleted</td>
+                        @if (category.IsDeleted == true)
+                        {
+                            <td><a asp-area="AdminPanel" asp-controller="Cateories" asp-action="RestoreAsync" asp-route-id="@category.Id" class="btn btn-light rounded-pill">Restore</a></td>
+                        }
+                        else
+                        {
+                            <td><a asp-area="AdminPanel" asp-controller="Cateories" asp-action="DeleteAsync" asp-route-id="@category.Id" class="btn btn-danger rounded-pill">Delete</a></td>
+                        }
+                        <td><a role="button" asp-area="AdminPanel" asp-controller="Cateories" asp-action="Update" asp-route-id="@category.Id" class="btn btn-light rounded-pill">Update</a></td>
                     </tr>
                 }
             }

@@ -5,10 +5,20 @@
 
     public interface ICategoryService
     {
-        public Task<CategoryViewModel> GetByIdAync(int id);
+        // Create
+        public Task CreateAsync(CategoryFormModel categoryFoem);
+
+        // Read
+        public CategoryViewModel GetViewModelById(int id);
 
         public IEnumerable<CategoryViewModel> GetAll();
 
-        public Task CreateAsync(CategoryFormModel categoryFoem);
+        // Update
+        public Task UpdateAsync(int id, CategoryFormModel categoryForm);
+
+        public Task RestoreAsync(int id);
+
+        // Delete
+        public Task DeleteAsync(int id);
     }
 }

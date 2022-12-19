@@ -23,7 +23,7 @@
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetByIdAsync"));
 
-            return await this.categoryService.GetByIdAync(id);
+            return this.categoryService.GetViewModelById(id);
         }
 
         [HttpGet]

@@ -13,7 +13,7 @@
         public Task AddReviewForProduct(AddProductReviewModel productReviewModel);
 
         // Read
-        public Task<T> GetByIdAsync<T>(int id);
+        public T GetByIdAsync<T>(int id);
 
         public IEnumerable<ProductViewModel> GetAll(string userId = null);
 
@@ -24,5 +24,21 @@
         public Task<ProductDetailsModel> Details(int id, string userId = null);
 
         public ProductFormModel GetProductFormModel();
+
+        public ProductFormModel GetProductFormModelForUpdating(int id);
+
+        // Update
+        public Task UpdateAsync(int id, ProductFormModel productForm);
+
+        public Task RestoreAsync(int id);
+
+        public Task SetDiscountToProduct(int id, decimal discount);
+
+        public Task UpdateDiscountStatusOfProduct(int id, bool discountStatus);
+
+        public Task UpdateQuantityOfProduct(int id, int quantity);
+
+        // Delete
+        public Task DeleteAsync(int id);
     }
 }

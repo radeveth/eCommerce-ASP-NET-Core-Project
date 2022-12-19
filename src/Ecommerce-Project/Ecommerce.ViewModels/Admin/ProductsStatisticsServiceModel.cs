@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Web.Areas.AdminPanel.Models.Admin
+﻿namespace Ecommerce.ViewModels.Admin
 {
 	public class ProductsStatisticsServiceModel
 	{
@@ -8,10 +8,12 @@
 
 		public IEnumerable<string> ProductsOrderedByPriceDescending => this.Products.OrderByDescending(p => p.Price).Select(p => p.Name);
 
-		public int TotalProducts => this.Products.Count();
+		public int ProductsCount => this.Products.Count();
 
 		public IEnumerable<CategoryStatisticsViewModel> Categories { get; set; }
 
 		public IEnumerable<string> CategoriesOrderedByProductsCount => this.Categories.OrderByDescending(c => c.ProductsCount).Select(c => c.Name);
+
+		public int CategoriesCount => this.Categories.Count();
 	}
 }

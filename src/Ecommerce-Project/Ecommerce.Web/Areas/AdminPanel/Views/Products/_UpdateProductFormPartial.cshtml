@@ -1,0 +1,67 @@
+﻿@model ProductFormModel
+
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="Brands" class="form-control d-none" value="@Model.Brands" />
+    <input asp-for="Categories" class="form-control d-none" value="@Model.Categories" />
+    <input asp-for="UserId" class="form-control d-none" value="46fca1c1-4608-42dd-8fb4-88d284690463" />
+
+    <div class="row mt-3">
+        <div class="offset-1 col-4 form-group form-margin">
+            <label asp-for="Name" style="margin-bottom: 3px"></label>
+            <input asp-for="Name" type="text" class="border border-secondary form-control rounded-pill" placeholder="Sony Playstation 5" />
+            <span asp-validation-for="Name" class="small text-danger"></span>
+        </div>
+        <div class="offset-2 col-4 form-group form-margin">
+            <label asp-for="Quantity" class="text-center" style="margin-bottom: 3px"></label>
+            <input asp-for="Quantity" type="number" class="border border-secondary form-control rounded-pill" placeholder="" />
+            <span asp-validation-for="Quantity" class="small text-danger"></span>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="offset-1 col-4 form-group form-margin">
+            <label asp-for="Price" class="text-center" style="margin-bottom: 3px"></label>
+            <input asp-for="Price" type="text" class="border border-secondary form-control rounded-pill" placeholder="1099" />
+            <span asp-validation-for="Price" class="small text-danger"></span>
+        </div>
+        <div class="offset-2 col-4 form-group form-margin">
+            <label asp-for="DiscountPercentage" class="text-center" style="margin-bottom: 3px"></label>
+            <input asp-for="DiscountPercentage" type="text" class="border border-secondary form-control rounded-pill" placeholder="" />
+            <span asp-validation-for="DiscountPercentage" class="small text-danger"></span>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="offset-1 col-4 form-group form-margin">
+            <label asp-for="BrandId" class="form-label"></label>
+            <select asp-for="BrandId" class="border border-secondary form-control rounded-pill">
+                @foreach (var brand in Model.Brands)
+                {
+                    <option value="@brand.Id">@brand.Name</option>
+                }
+            </select>
+        </div>
+        <div class="offset-2 col-4 form-group form-margin">
+            <label asp-for="CategoryId" class="form-label"></label>
+            <select asp-for="CategoryId" class="border border-secondary form-control rounded-pill">
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row mt-0">
+        <a asp-controller="Brands" asp-action="Create" class="btn btn-neutral offset-1 col-4"><span class="badge badge-secondary rounded-pill">It haven't matching brand? Create new</span></a>
+        <a asp-controller="Categories" asp-action="Create" class="btn btn-neutral offset-2 col-4"><span class="badge badge-secondary rounded-pill">It haven't matching category? Create new</span></a>
+    </div>
+    <div class="offset-1 col-10 form-group form-margin mt-3">
+        <label asp-for="Description" style="margin-bottom: 3px"></label>
+        <textarea asp-for="Description" id="mytextarea"></textarea>
+        <span asp-validation-for="Description" class="small text-danger"></span>
+    </div>
+    <div class="offset-1 col-10 form-group form-margin mt-3">
+        <label asp-for="Images" style="margin-bottom: 3px"></label>
+        <input asp-for="Images" type="file" class="form-control-file" />
+    </div>
+
+    <input type="submit" value="Create" class="mt-5 offset-5 col-2 btn btn-secondary rounded-pill" />
+</form>

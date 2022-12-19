@@ -1,6 +1,7 @@
 ﻿namespace Ecommerce.Web.Areas.AdminPanel.Controllers
 {
-    using Ecommerce.Web.Areas.AdminPanel.Services.ProductsServices;
+    using Ecommerce.InputModels.Products;
+    using Ecommerce.Services.Data.ProductsServices;
     using Microsoft.AspNetCore.Mvc;
 
     [Area("AdminPanel")]
@@ -13,18 +14,36 @@
             this.productService = productService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             await this.productService.DeleteAsync(id);
 
-            return this.RedirectToAction();
+            return this.RedirectToAction("Dashboard", "Admin");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RestoreAsync(int id)
+        {
+            await this.productService.RestoreAsync(id);
+
+            return this.RedirectToAction("Dashboard", "Admin");
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            ProductFormModel productForm = this.productService.GetProductFormModelForUpdating(id);
+
+            return this.View(productForm);
         }
 
         [HttpPost]
-        public IActionResult Restore(int id)
+        public async Task<IActionResult> UpdateAsync(int id, ProductFormModel productForm)
         {
-            return this.RedirectToAction();
+            await this.productService.UpdateAsync(id, productForm);
+
+            return this.RedirectToAction("Dashboard", "Admin");
         }
     }
 }

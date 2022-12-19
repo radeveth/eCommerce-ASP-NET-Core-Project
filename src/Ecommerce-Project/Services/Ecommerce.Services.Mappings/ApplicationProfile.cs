@@ -3,6 +3,7 @@
     using AutoMapper;
     using Ecommerce.Data.Models;
     using Ecommerce.InputModels.Products;
+    using Ecommerce.ViewModels.Admin;
     using Ecommerce.ViewModels.ApplicationUsers;
     using Ecommerce.ViewModels.Categories;
     using Ecommerce.ViewModels.Home;
@@ -24,12 +25,18 @@
             this.CreateMap<Brand, ProductBrandFormModel>();
             this.CreateMap<Category, ProductCategoryFormModel>();
 
+            this.CreateMap<Product, ProductStatisticsViewModel>();
+
+            this.CreateMap<Product, ProductFormModel>();
+
             // Category Mappings
             this.CreateMap<Category, CategoryViewModel>()
                 .ForMember(x => x.Image, y => y.MapFrom(s => s.Products
                 .OrderByDescending(p => p.Reviews.Count)
                 .FirstOrDefault().Images.FirstOrDefault()));
             this.CreateMap<Category, HomeCategoryViewModel>();
+
+            this.CreateMap<Category, CategoryStatisticsViewModel>();
 
             // Image Mappings
             this.CreateMap<Image, ImageViewModel>()

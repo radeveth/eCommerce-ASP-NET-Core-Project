@@ -1,6 +1,6 @@
-﻿namespace Ecommerce.Web.Areas.AdminPanel.Services.AdminServices
+﻿namespace Ecommerce.Services.Data.AdminServices
 {
-    using Ecommerce.Web.Areas.AdminPanel.Models.Admin;
+    using Ecommerce.ViewModels.Admin;
 
     public interface IAdminService
     {

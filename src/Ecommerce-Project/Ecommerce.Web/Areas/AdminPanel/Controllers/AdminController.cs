@@ -1,7 +1,7 @@
 ﻿namespace Ecommerce.Web.Areas.Administartion.Controllers
 {
-	using Ecommerce.Web.Areas.AdminPanel.Models.Admin;
-	using Ecommerce.Web.Areas.AdminPanel.Services.AdminServices;
+	using Ecommerce.Services.Data.AdminServices;
+	using Ecommerce.ViewModels.Admin;
 	using Microsoft.AspNetCore.Mvc;
 
 	[Area("AdminPanel")]

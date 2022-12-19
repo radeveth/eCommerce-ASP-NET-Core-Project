@@ -24,7 +24,7 @@
         {
             this.logger.LogInformation(LogRequestInformation(this.HttpContext.Request.Method, "GetByIdAsync"));
 
-            return await this.productService.GetByIdAsync<ProductViewModel>(id);
+            return this.productService.GetByIdAsync<ProductViewModel>(id);
         }
 
         [HttpGet("all")]

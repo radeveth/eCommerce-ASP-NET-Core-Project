@@ -6,37 +6,22 @@
     using Ecommerce.InputModels.Categories;
     using Ecommerce.Services.Data.ApplicationUsersServices;
     using Ecommerce.ViewModels.Categories;
-    using Microsoft.EntityFrameworkCore;
 
-    public class CategoryService : ICategoryService
+    public class CategoryService : BaseService, ICategoryService
     {
         private readonly IMapper mapper;
         private readonly EcommerceDbContext dbContext;
         private readonly IApplicationUserService applicationUserService;
 
         public CategoryService(EcommerceDbContext dbContext, IMapper mapper, IApplicationUserService applicationUserService)
+            : base(dbContext)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.applicationUserService = applicationUserService;
         }
 
-        public async Task<CategoryViewModel> GetByIdAync(int id)
-        {
-            Category category = await this.dbContext
-                .Categories
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            return this.mapper.Map<CategoryViewModel>(category);
-        }
-
-        public IEnumerable<CategoryViewModel> GetAll()
-        {
-            IEnumerable<Category> categories = this.dbContext.Categories;
-
-            return this.mapper.Map<IEnumerable<CategoryViewModel>>(categories);
-        }
-
+        // Create
         public async Task CreateAsync(CategoryFormModel categoryForm)
         {
             Category category = new Category()
@@ -51,6 +36,63 @@
 
             await this.dbContext.Categories.AddAsync(category);
             await this.dbContext.SaveChangesAsync();
+        }
+
+        // Read
+        public CategoryViewModel GetViewModelById(int id)
+        {
+            Category category = this.GetUnDeletedCategories()
+                .FirstOrDefault(c => c.Id == id);
+
+            return this.mapper.Map<CategoryViewModel>(category);
+        }
+
+        public IEnumerable<CategoryViewModel> GetAll()
+        {
+            IEnumerable<Category> categories = this.GetUnDeletedCategories();
+
+            return this.mapper.Map<IEnumerable<CategoryViewModel>>(categories);
+        }
+
+        // Update
+        public async Task UpdateAsync(int id, CategoryFormModel categoryForm)
+        {
+            Category category = this.GetById(id);
+
+            category.Name = categoryForm.Name;
+            category.Description = categoryForm.Description;
+            category.ModifiedOn = DateTime.UtcNow;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task RestoreAsync(int id)
+        {
+            Category category = this.GetById(id);
+
+            category.IsDeleted = false;
+            category.ModifiedOn = DateTime.UtcNow;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        // Delete
+        public async Task DeleteAsync(int id)
+        {
+            Category category = this.GetById(id);
+
+            category.IsDeleted = true;
+            category.DeletedOn = DateTime.UtcNow;
+            category.ModifiedOn = DateTime.UtcNow;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        // Useful methods
+        private Category GetById(int id)
+        {
+            return this.GetUnDeletedCategories()
+                       .FirstOrDefault(c => c.Id == id);
         }
     }
 }

@@ -105,7 +105,7 @@
 		}
 
 		// Read
-		public async Task<T> GetByIdAsync<T>(int id)
+		public T GetByIdAsync<T>(int id)
 		{
 			Product product = this.GetUnDeletedProducts()
 				.FirstOrDefault(p => p.Id == id);
@@ -233,5 +233,96 @@
 				Categories = this.mapper.Map<IEnumerable<ProductCategoryFormModel>>(this.GetUnDeletedCategories()),
 			};
 		}
-	}
+
+        public ProductFormModel GetProductFormModelForUpdating(int id)
+		{
+			ProductFormModel productForm = this.GetProductFormModel();
+
+			ProductFormModel productFormResult = this.mapper.Map<ProductFormModel>(this.GetById(id));
+			productFormResult.Categories = productForm.Categories;
+			productFormResult.Brands = productForm.Brands;
+
+            return productFormResult;
+		}
+
+        // Update
+        public async Task UpdateAsync(int id, ProductFormModel productForm)
+        {
+            Product product = this.GetById(id);
+
+            product.Name = productForm.Name;
+            product.Quantity = productForm.Quantity;
+            product.DiscountPercentage = productForm.DiscountPercentage;
+            product.BrandId = productForm.BrandId;
+            product.CategoryId = productForm.CategoryId;
+            product.Description = productForm.Description;
+            product.Price = productForm.Price;
+            product.Status = productForm.Status;
+            product.ModifiedOn = DateTime.UtcNow;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task RestoreAsync(int id)
+        {
+            Product product = this.GetById(id);
+
+            product.IsDeleted = false;
+            product.ModifiedOn = DateTime.UtcNow;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task SetDiscountToProduct(int id, decimal discount)
+        {
+            Product product = this.GetUnDeletedProducts().FirstOrDefault(p => p.Id == id);
+
+            product.DiscountPercentage = discount;
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateDiscountStatusOfProduct(int id, bool discountStatus)
+        {
+            Product product = this.GetUnDeletedProducts().FirstOrDefault(p => p.Id == id);
+
+            product.IsHaveDiscount = discountStatus;
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateQuantityOfProduct(int id, int quantity)
+        {
+            Product product = this.GetById(id);
+            product.Quantity = quantity;
+
+            if (product.Quantity == 0)
+            {
+                product.Status = Status.Unavailable;
+            }
+            else if (product.Quantity != 0)
+            {
+                product.Status = Status.Available;
+            }
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        // Delete
+        public async Task DeleteAsync(int id)
+        {
+            Product product = this.GetById(id);
+
+            product.DeletedOn = DateTime.Now;
+            product.IsDeleted = true;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        // Usefull Methods
+        private Product GetById(int id)
+        {
+            return this
+                .GetUnDeletedProducts()
+                .FirstOrDefault(p => p.Id == id);
+        }
+    }
 }

@@ -1,0 +1,18 @@
+﻿@model ProductFormModel
+
+@{
+    ViewData["Title"] = $"Updating {Model.Name} - Admin Panel | Commerce Park";
+}
+<div class="container">
+    <partial name="_UpdateProductFormPartial" model="Model" />
+</div>
+
+@section Scripts {
+    <script src="~/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+    </script>
+}
