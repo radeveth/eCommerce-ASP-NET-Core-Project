@@ -6,6 +6,7 @@
     using Ecommerce.Services.Data.CategoriesServices;
     using Microsoft.AspNetCore.Mvc;
 
+    [Area("AdminPanel")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService categoryService;
@@ -22,6 +23,13 @@
 
             return this.RedirectToAction("Dashboard", "Admin");
         }
+        
+
+        [HttpGet]
+        public async Task ApiDeleteAsync(int id)
+        {
+            await this.categoryService.DeleteAsync(id);
+        }
 
         [HttpGet]
         public async Task<IActionResult> RestoreAsync(int id)
@@ -29,6 +37,12 @@
             await this.categoryService.RestoreAsync(id);
 
             return this.RedirectToAction("Dashboard", "Admin");
+        }
+
+        [HttpGet]
+        public async Task ApiRestoreAsync(int id)
+        {
+            await this.categoryService.RestoreAsync(id);
         }
 
         [HttpGet]

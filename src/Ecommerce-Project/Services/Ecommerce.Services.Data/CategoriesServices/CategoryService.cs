@@ -57,7 +57,7 @@
         // Update
         public async Task UpdateAsync(int id, CategoryFormModel categoryForm)
         {
-            Category category = this.GetById(id);
+            Category category = this.GetUndeletedCategoryById(id);
 
             category.Name = categoryForm.Name;
             category.Description = categoryForm.Description;
@@ -79,7 +79,7 @@
         // Delete
         public async Task DeleteAsync(int id)
         {
-            Category category = this.GetById(id);
+            Category category = this.GetUndeletedCategoryById(id);
 
             category.IsDeleted = true;
             category.DeletedOn = DateTime.UtcNow;
@@ -89,9 +89,16 @@
         }
 
         // Useful methods
-        private Category GetById(int id)
+        private Category GetUndeletedCategoryById(int id)
         {
             return this.GetUnDeletedCategories()
+                       .FirstOrDefault(c => c.Id == id);
+        }
+
+        private Category GetById(int id)
+        {
+            return this.dbContext
+                       .Categories
                        .FirstOrDefault(c => c.Id == id);
         }
     }

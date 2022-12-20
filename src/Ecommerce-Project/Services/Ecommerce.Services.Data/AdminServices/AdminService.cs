@@ -19,8 +19,8 @@
 
         public async Task<ProductsStatisticsServiceModel> GetApplicationProductsStatistics()
         {
-            IEnumerable<Product> products = this.GetUnDeletedProducts().AsQueryable();
-            IEnumerable<Category> categories = this.GetUnDeletedCategories().AsQueryable();
+            IEnumerable<Product> products = this.dbContext.Products.AsQueryable();
+            IEnumerable<Category> categories = this.dbContext.Categories.AsQueryable();
 
             foreach (var category in categories)
             {

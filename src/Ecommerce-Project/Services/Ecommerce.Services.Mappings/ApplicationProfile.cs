@@ -10,6 +10,7 @@
     using Ecommerce.ViewModels.Images;
     using Ecommerce.ViewModels.Products;
     using Ecommerce.ViewModels.Review;
+    using Microsoft.AspNetCore.Http;
 
     public class ApplicationProfile : Profile
     {
@@ -27,7 +28,8 @@
 
             this.CreateMap<Product, ProductStatisticsViewModel>();
 
-            this.CreateMap<Product, ProductFormModel>();
+            this.CreateMap<Product, ProductFormModel>()
+                .ForMember(x => x.Images, y => y.MapFrom(s => new List<IFormFile>() { s.Images.First() }));
 
             // Category Mappings
             this.CreateMap<Category, CategoryViewModel>()

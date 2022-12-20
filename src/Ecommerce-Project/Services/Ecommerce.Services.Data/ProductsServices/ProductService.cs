@@ -238,7 +238,7 @@
 		{
 			ProductFormModel productForm = this.GetProductFormModel();
 
-			ProductFormModel productFormResult = this.mapper.Map<ProductFormModel>(this.GetById(id));
+			ProductFormModel productFormResult = this.mapper.Map<ProductFormModel>(this.GetByIdUndeletedProduct(id));
 			productFormResult.Categories = productForm.Categories;
 			productFormResult.Brands = productForm.Brands;
 
@@ -248,7 +248,7 @@
         // Update
         public async Task UpdateAsync(int id, ProductFormModel productForm)
         {
-            Product product = this.GetById(id);
+            Product product = this.GetByIdUndeletedProduct(id);
 
             product.Name = productForm.Name;
             product.Quantity = productForm.Quantity;
@@ -291,7 +291,7 @@
 
         public async Task UpdateQuantityOfProduct(int id, int quantity)
         {
-            Product product = this.GetById(id);
+            Product product = this.GetByIdUndeletedProduct(id);
             product.Quantity = quantity;
 
             if (product.Quantity == 0)
@@ -309,7 +309,7 @@
         // Delete
         public async Task DeleteAsync(int id)
         {
-            Product product = this.GetById(id);
+            Product product = this.GetByIdUndeletedProduct(id);
 
             product.DeletedOn = DateTime.Now;
             product.IsDeleted = true;
@@ -318,10 +318,19 @@
         }
 
         // Usefull Methods
-        private Product GetById(int id)
+        private Product GetByIdUndeletedProduct(int id)
         {
             return this
                 .GetUnDeletedProducts()
+				.AsQueryable()
+                .FirstOrDefault(p => p.Id == id);
+        }
+
+        private Product GetById(int id)
+        {
+            return this.dbContext
+				.Products
+				.AsQueryable()
                 .FirstOrDefault(p => p.Id == id);
         }
     }
