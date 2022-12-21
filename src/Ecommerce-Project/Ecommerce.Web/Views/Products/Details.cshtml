@@ -96,7 +96,7 @@
                         <a id="add-product-to-wishlist" role="button" class="badge badge-secondary" onclick="AddProductToWishlist(@Model.Id)"><i style="color: #D10024" class="fa fa-heart-o"></i> Add to wishlist</a>
                         <a id="remove-product-from-wishlist" role="button" class="badge badge-secondary d-none" onclick="RemoveProductFromWishlist(@Model.Id)"><i style="color: #D10024" class="fa fa-heart"></i> Remove from wishlist</a>
                     }
-                    <span style="margin-left: 13px" class="badge badge-secondary">Category: <a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="Gaming" role="button">@Model.CategoryName</a></span>
+                    <span style="margin-left: 13px" class="badge badge-secondary">Category: <a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="@Model.CategoryName" role="button">@Model.CategoryName</a></span>
 
                     <ul class="product-links">
                         <li>Share:</li>

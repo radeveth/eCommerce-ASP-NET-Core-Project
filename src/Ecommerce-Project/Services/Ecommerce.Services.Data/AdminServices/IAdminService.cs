@@ -5,5 +5,7 @@
     public interface IAdminService
     {
         public Task<ProductsStatisticsServiceModel> GetApplicationProductsStatistics();
+
+        public Task<UsersStatistsicsServiceModel> GetApplicationUsersStatistics();
     }
 }

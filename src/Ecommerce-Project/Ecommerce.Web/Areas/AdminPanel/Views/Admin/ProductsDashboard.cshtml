@@ -2,12 +2,12 @@
 @model ProductsStatisticsServiceModel
 
 @{
-    ViewData["Title"] = "Admin Dashboard | Commerce Park";
+    ViewData["Title"] = "Products Dashboard | Commerce Park";
     int i = 0;
 }
 
 <div class="jumbotron mt-5 mb-5">
-    <h1 class="display-4 text-center">Admin Dashboard</h1>
+    <h1 class="display-4 text-center">Products Dashboard</h1>
     <div class="row mt-4">
         <span class="offset-2 col-3 badge badge-primary">Total Products: @Model.ProductsCount</span>
         <span class="offset-2 col-3 badge badge-primary">Total Categories: @Model.CategoriesCount</span>
@@ -16,6 +16,8 @@
 </div>
 
 <div class="">
+    @*<div class="row"> <hr class="mt-4 col-5" /> <h1 class="col-2">&nbsp;Products</h1> <hr class="mt-4 col-5" /> </div>*@
+    <h2 class="text-center mb-4 mt-5">Products</h2>
     <table class="table table-bordered table-striped">
         <thead>
             <tr class="text-center">
@@ -40,7 +42,14 @@
                     i += 1;
                     <tr class="text-center">
                         <th scope="row">@i</th>
-                        <td>@product.Name</td>
+                        @if (product.IsDeleted)
+                        {
+                            <td>@product.Name</td>
+                        }
+                        else
+                        {
+                            <td><a asp-area="" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">@product.Name</a></td>
+                        }
                         <td>@product.Price</td>$
                         <td id="@product.Id-quantity-field">@product.Quantity</td>
                         <td id="@product.Id-status-field">@product.Status</td>
@@ -66,6 +75,7 @@
 
     <div class="mt-5"></div>
 
+    <h2 class="text-center mb-4 mt-5">Categories</h2>
     <table class="table table-bordered table-striped">
         <thead>
             <tr class="text-center">
@@ -84,7 +94,14 @@
                     i += 1;
                     <tr class="text-center">
                         <th scope="row">@i</th>
-                        <td>@category.Name</td>
+                        @if (category.IsDeleted)
+                        {
+                            <td>@category.Name</td>
+                        }
+                        else
+                        {
+                            <td><a asp-area="" asp-controller="Products" asp-action="All" asp-route-SearchCategory="@category.Name.Trim()">@category.Name</a></td>
+                        }
                         <td>@category.ProductsCount</td>
                         <td>@category.IsDeleted</td>
                         @if (category.IsDeleted == true)
@@ -96,6 +113,58 @@
                             <td><a onclick="DeleteCategory(@category.Id)" class="btn btn-danger rounded-pill">Delete</a></td>
                         }
                         <td><a role="button" asp-area="AdminPanel" asp-controller="Cateories" asp-action="Update" asp-route-id="@category.Id" class="btn btn-light rounded-pill">Update</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2 class="text-center mb-4 mt-5">Most Expensive Products</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                i = 0;
+                foreach (var product in Model.ProductsOrderedByPriceDescending)
+                {
+                    i += 1;
+                    <tr class="text-center">
+                        <th scope="row">@i</th>
+                        <td><a asp-area="" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">@product.Name</a></td>
+                        <td>@product.Price</td>$
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <h2 class="text-center mb-4 mt-5">Cheapest Products</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                i = 0;
+                foreach (var product in Model.ProductsOrderedByPriceAscending)
+                {
+                    i += 1;
+                    <tr class="text-center">
+                        <th scope="row">@i</th>
+                        <td><a asp-area="" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">@product.Name</a></td>
+                        <td>@product.Price</td>$
                     </tr>
                 }
             }

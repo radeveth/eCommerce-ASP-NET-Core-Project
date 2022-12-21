@@ -43,6 +43,8 @@
 
             // User Mappings
             this.CreateMap<ApplicationUser, ApplicationUserViewModel>();
+            this.CreateMap<ApplicationUser, UsersStatistsicsServiceModel>();
+            this.CreateMap<ApplicationUser, AdminStatisticsViewModel>();
 
             // Review Mappings
             this.CreateMap<Review, ReviewViewModel>()

@@ -14,11 +14,18 @@
 			this.adminService = adminService;
 		}
 
-		public async Task<IActionResult> Dashboard()
+		[HttpGet]
+		public async Task<IActionResult> ProductsDashboard()
 		{
 			ProductsStatisticsServiceModel serviceModel = await this.adminService.GetApplicationProductsStatistics();
 
 			return this.View(serviceModel);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> UsersDashboard()
+		{
+			return this.View();
 		}
 	}
 }
