@@ -25,7 +25,21 @@
 		[HttpGet]
 		public async Task<IActionResult> UsersDashboard()
 		{
-			return this.View();
+			UsersStatistsicsServiceModel serviceModel = await this.adminService.GetApplicationUsersStatistics();
+
+			return this.View(serviceModel);
+		}
+
+		[HttpGet]
+		public async Task DeleteUser(string id)
+		{
+			await this.adminService.DeleteUser(id);
+		}
+
+		[HttpGet]
+		public async Task RestoreUser(string id)
+		{
+			await this.adminService.RestoreUser(id);
 		}
 	}
 }

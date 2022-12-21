@@ -4,6 +4,13 @@
 
     public class AdminStatisticsViewModel : UserStatistsicsViewModel
     {
-        public ICollection<IdentityUserRole<string>> Roles { get; set; }
+        public IEnumerable<AdminRoleViewModel> Roles { get; set; }
+    }
+
+    public class AdminRoleViewModel
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
     }
 }

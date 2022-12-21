@@ -1,12 +1,111 @@
-﻿@{
+﻿@model UsersStatistsicsServiceModel
+
+@{
     ViewData["Title"] = "Users Dashboard | Commerce Park";
+    int i = 0;
 }
 
 <div class="jumbotron mt-5 mb-5">
     <h1 class="display-4 text-center">Users Dashboard</h1>
     <div class="row mt-4">
-        <span class="offset-2 col-3 badge badge-primary">Total Products: @Model.UsersCount</span>
-        <span class="offset-2 col-3 badge badge-primary">Total Categories: @Model.AdminsCount</span>
+        <span class="offset-2 col-3 badge badge-primary">Total Users: @Model.UsersCount</span>
+        <span class="offset-2 col-3 badge badge-primary">Total Administrators: @Model.AdminsCount</span>
     </div>
     <hr class="my-4">
 </div>
+
+<div>
+    <h2 class="text-center mb-4 mt-5">Users</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Email Confirmed</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Orders Created Count</th>
+                <th scope="col">Reviews Created Count</th>
+                <th scope="col">Is Deleted</th>
+                <th scope="col">Delete / Restore</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var user in Model.Users)
+                {
+                    i += 1;
+                    <tr class="text-center">
+                        <th scope="row">@i</th>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>@user.EmailConfirmed</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>@user.OrdersCount</td>
+                        <td>@user.ReviewsCount</td>
+                        <td>@user.IsDeleted</td>
+                        @if (user.IsDeleted == true)
+                        {
+                            <td><a onclick="RestoreUser(@user.Id)" class="btn btn-primary rounded-pill">Restore</a></td>
+                        }
+                        else
+                        {
+                            <td><a onclick="DeleteUser(@user.Id)" class="btn btn-danger rounded-pill">Delete</a></td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <h2 class="text-center mb-4 mt-5">Administrators</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Email Confirmed</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Orders Created Count</th>
+                <th scope="col">Reviews Created Count</th>
+                <th scope="col">Roles</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                i = 0;
+                foreach (var admin in Model.Admins)
+                {
+                    i += 1;
+                    <tr class="text-center">
+                        <th scope="row">@i</th>
+                        <td>@admin.FullName</td>
+                        <td>@admin.Email</td>
+                        <td>@admin.EmailConfirmed</td>
+                        <td>@admin.PhoneNumber</td>
+                        <td>@admin.OrdersCount</td>
+                        <td>@admin.ReviewsCount</td>
+                        <td>@(string.Join(", ", admin.Roles.Select(r => r.Name)))</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        function DeleteUser(id) {
+            $.get('adminarea/admin/deleteuser?id=' + id, (data) => {
+                window.location.reload();
+            })
+        }
+
+        function RestoreUser(id) {
+            $.get('adminarea/admin/restoreuser?id=' + id, (data) => {
+                window.location.reload();
+            })
+        }
+    </script>
+}

@@ -2,9 +2,9 @@
 {
     public class UsersStatistsicsServiceModel
     {
-        public int UsersCount { get; set; }
+        public int UsersCount => this.Users.Count();
 
-        public int AdminsCount { get; set; }
+        public int AdminsCount => this.Admins.Count();
 
         public IEnumerable<UserStatistsicsViewModel> Users { get; set; }
 

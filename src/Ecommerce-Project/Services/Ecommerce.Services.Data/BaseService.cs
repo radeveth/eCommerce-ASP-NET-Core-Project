@@ -51,10 +51,5 @@
         {
             return this.dbContext.Images.Where(p => p.IsDeleted == false);
         }
-
-        public IEnumerable<ApplicationUser> GetUnDeletedUsers()
-        {
-            return this.dbContext.Users.Where(u => u.IsDeleted == false);
-        }
     }
 }

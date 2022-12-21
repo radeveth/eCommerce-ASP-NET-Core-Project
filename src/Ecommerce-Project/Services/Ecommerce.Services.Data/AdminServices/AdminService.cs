@@ -8,23 +8,25 @@
     using Ecommerce.ViewModels.Admin;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Identity.Client;
 
     public class AdminService : BaseService, IAdminService
     {
         private readonly EcommerceDbContext dbContext;
-        private readonly UserManager userManager;
-        private readonly IServiceProvider serviceProvider;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IMapper mapper;
 
-        public AdminService(EcommerceDbContext dbContext, IMapper mapper, IServiceProvider serviceProvider, Microsoft.AspNetCore.Identity.UserManager userManager)
+        public AdminService(EcommerceDbContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
             : base(dbContext)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
-            this.serviceProvider = serviceProvider;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
+        // Read
         public async Task<ProductsStatisticsServiceModel> GetApplicationProductsStatistics()
         {
             IEnumerable<Product> products = this.dbContext.Products.AsQueryable();
@@ -46,11 +48,8 @@
 
         public async Task<UsersStatistsicsServiceModel> GetApplicationUsersStatistics()
         {
-            var a = await this.userManager.GetUsersInRoleAsync();
-            RoleManager<ApplicationRole> roleManager = this.serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            IEnumerable<ApplicationUser> users = this.GetUnDeletedUsers();
-
-            ApplicationRole adminRole = await roleManager.FindByNameAsync("Administrator");
+            IEnumerable<ApplicationUser> users = this.userManager.Users;
+            IEnumerable<ApplicationUser> admins = await this.userManager.GetUsersInRoleAsync("Administrator");
 
             foreach (var user in users)
             {
@@ -58,11 +57,51 @@
                 user.Reviews = this.dbContext.Reviews.Where(r => r.UserId == user.Id).ToList();
             }
 
-            return new UsersStatistsicsServiceModel()
+            UsersStatistsicsServiceModel usersStatistsicsServiceModel = new UsersStatistsicsServiceModel()
             {
                 Users = this.mapper.Map<IEnumerable<UserStatistsicsViewModel>>(users),
-                Admins
+                Admins = this.mapper.Map<IEnumerable<AdminStatisticsViewModel>>(admins),
             };
+
+            foreach (var admin in usersStatistsicsServiceModel.Admins)
+            {
+                IEnumerable<string> userRoles = this.dbContext.UserRoles
+                    .Where(ur => ur.UserId == admin.Id)
+                    .Select(ur => ur.RoleId)
+                    .ToList();
+
+                admin.Roles = this.roleManager.Roles
+                    .Where(r => userRoles.Contains(r.Id))
+                    .Select(r => new AdminRoleViewModel()
+                        {
+                            Id = r.Id,
+                            Name = r.Name,
+                        });
+            }
+
+            return usersStatistsicsServiceModel;
+        }
+
+        // Update
+        public async Task DeleteUser(string id)
+        {
+            ApplicationUser user = this.userManager.Users.FirstOrDefault(u => u.Id == id);
+
+            user.IsDeleted = true;
+            user.DeletedOn = DateTime.UtcNow;
+            user.ModifiedOn = DateTime.UtcNow;
+
+        }
+
+        public async Task RestoreUser(string id)
+        {
+            ApplicationUser user = this.userManager.Users.FirstOrDefault(u => u.Id == id);
+
+            user.IsDeleted = false;
+            user.DeletedOn = null;
+            user.ModifiedOn = DateTime.UtcNow;
+
+            await this.dbContext.SaveChangesAsync();
         }
     }
 }
