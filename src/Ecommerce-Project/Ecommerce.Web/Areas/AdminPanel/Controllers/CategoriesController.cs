@@ -4,9 +4,12 @@
     using Ecommerce.InputModels.Categories;
     using Ecommerce.InputModels.Products;
     using Ecommerce.Services.Data.CategoriesServices;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System.Data;
 
     [Area("AdminPanel")]
+    [Authorize(Roles = "Administrator")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService categoryService;

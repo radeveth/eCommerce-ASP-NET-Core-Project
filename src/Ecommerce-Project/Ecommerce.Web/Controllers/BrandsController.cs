@@ -3,8 +3,10 @@
     using Ecommerce.Data.Models;
     using Ecommerce.InputModels.Brands;
     using Ecommerce.Services.Data.BrandsServices;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using System.Data;
 
     public class BrandsController : BaseController
     {
@@ -27,12 +29,14 @@
 		}
 
 		[HttpGet]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return this.View(new BrandFormModel());
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateAsync(BrandFormModel brandFormModel)
         {
             if (!ModelState.IsValid)

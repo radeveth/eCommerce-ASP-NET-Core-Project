@@ -46,7 +46,7 @@
 		}
 
 		[HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ProductFormModel productForm = this.productService.GetProductFormModel();
@@ -55,7 +55,7 @@
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateAsync([FromForm] ProductFormModel productForm)
         {
             foreach (var image in productForm.Images)

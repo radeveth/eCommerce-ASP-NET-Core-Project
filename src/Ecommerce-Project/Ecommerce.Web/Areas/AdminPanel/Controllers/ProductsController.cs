@@ -3,9 +3,12 @@
     using Ecommerce.InputModels.Products;
     using Ecommerce.Services.Data.ProductsServices;
     using Ecommerce.ViewModels.Admin;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System.Data;
 
     [Area("AdminPanel")]
+    [Authorize(Roles = "Administrator")]
     public class ProductsController : Controller
     {
         private readonly IProductService productService;

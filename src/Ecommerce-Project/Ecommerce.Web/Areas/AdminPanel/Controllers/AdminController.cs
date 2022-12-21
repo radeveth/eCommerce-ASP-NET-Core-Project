@@ -2,10 +2,12 @@
 {
 	using Ecommerce.Services.Data.AdminServices;
 	using Ecommerce.ViewModels.Admin;
+	using Microsoft.AspNetCore.Authorization;
 	using Microsoft.AspNetCore.Mvc;
 
 	[Area("AdminPanel")]
-	public class AdminController : Controller
+	[Authorize(Roles = "Administrator")]
+    public class AdminController : Controller
 	{
 		private readonly IAdminService adminService;
 

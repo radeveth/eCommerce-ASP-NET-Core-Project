@@ -3,6 +3,7 @@
     using Ecommerce.Data.Models;
     using Ecommerce.Services.Data.ProductWishlistsServices;
     using Ecommerce.ViewModels.Products;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,7 @@
 		}
 
 		[HttpGet]
+        [Authorize]
         public async Task<IActionResult> AllForUser()
         {
             IEnumerable<ProductViewModel> products = await this.productWishlistService.AllForUser(this.GetUserId());

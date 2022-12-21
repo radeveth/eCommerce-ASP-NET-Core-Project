@@ -3,6 +3,7 @@
     using Ecommerce.Data.Models;
     using Ecommerce.InputModels.Categories;
     using Ecommerce.Services.Data.CategoriesServices;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +23,14 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return this.View(new CategoryFormModel());
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateAsync(CategoryFormModel categoryFormModel)
         {
             categoryFormModel.UserId = this.GetUserId();
