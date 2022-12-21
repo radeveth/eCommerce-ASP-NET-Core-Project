@@ -58,9 +58,9 @@
         <textarea asp-for="Description" id="mytextarea"></textarea>
         <span asp-validation-for="Description" class="small text-danger"></span>
     </div>
-    <div class="offset-1 col-10 form-group form-margin mt-3">
+    <div class="offset-1 col-10 form-group form-margin mt-3" id="images-form-model">
         <label asp-for="Images" style="margin-bottom: 3px"></label>
-        <input asp-for="Images" type="file" class="form-control-file" />
+        <input asp-for="Images" type="file" multiple class="form-control-file" />
     </div>
 
     <input type="submit" value="Create" class="mt-5 offset-5 col-2 btn btn-secondary rounded-pill" />

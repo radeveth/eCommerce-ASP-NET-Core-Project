@@ -28,9 +28,6 @@
 
             this.CreateMap<Product, ProductStatisticsViewModel>();
 
-            this.CreateMap<Product, ProductFormModel>()
-                .ForMember(x => x.Images, y => y.MapFrom(s => new List<IFormFile>() { s.Images.First() }));
-
             // Category Mappings
             this.CreateMap<Category, CategoryViewModel>()
                 .ForMember(x => x.Image, y => y.MapFrom(s => s.Products

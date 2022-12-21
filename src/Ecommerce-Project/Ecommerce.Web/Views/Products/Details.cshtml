@@ -3,6 +3,7 @@
 
 @inject UserManager<ApplicationUser> userManagaer;
 @inject SignInManager<ApplicationUser> signInManager;
+
 @model ProductDetailsModel
 
 @{
@@ -47,7 +48,14 @@
 
                     </div>
                     <div>
-                        <h3 class="product-price">@Model.Price</h3>
+                        @if (Model.IsHaveDiscount)
+                        {
+                            <h3 class="product-price">@($"{Math.Round(Model.Price - (Model.Price * (Model.DiscountPercentage / 100))):f2}") <del class="product-old-price">@Model.Price</del></h3>
+                        }
+                        else
+                        {
+                            <h3 class="product-price">@Model.Price</h3>
+                        }
                         <span class="product-available">@Model.Status</span>
                     </div>
 

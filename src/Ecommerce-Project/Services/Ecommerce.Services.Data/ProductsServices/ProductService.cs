@@ -237,10 +237,18 @@
         public ProductFormModel GetProductFormModelForUpdating(int id)
 		{
 			ProductFormModel productForm = this.GetProductFormModel();
+			Product product = this.GetByIdUndeletedProduct(id);
 
-			ProductFormModel productFormResult = this.mapper.Map<ProductFormModel>(this.GetByIdUndeletedProduct(id));
-			productFormResult.Categories = productForm.Categories;
-			productFormResult.Brands = productForm.Brands;
+			ProductFormModel productFormResult = new ProductFormModel()
+			{
+				Name = product.Name,
+				Price = product.Price,
+				Quantity = product.Quantity,
+				DiscountPercentage = product.DiscountPercentage,
+				Description = product.Description,
+				Categories = productForm.Categories,
+				Brands = productForm.Brands
+			};
 
             return productFormResult;
 		}

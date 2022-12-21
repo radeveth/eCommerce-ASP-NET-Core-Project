@@ -1,16 +1,24 @@
 ﻿namespace Ecommerce.Web.Controllers
 {
+    using Ecommerce.Data.Models;
     using Ecommerce.InputModels.Categories;
     using Ecommerce.Services.Data.CategoriesServices;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    public class CategoriesController : Controller
+    public class CategoriesController : BaseController
     {
         private readonly ICategoryService categoryService;
 
-        public CategoriesController(ICategoryService categoryService)
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        public CategoriesController(ICategoryService categoryService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+            : base(userManager, signInManager)
         {
             this.categoryService = categoryService;
+
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
@@ -22,6 +30,8 @@
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CategoryFormModel categoryFormModel)
         {
+            categoryFormModel.UserId = this.GetUserId();
+
             if (!ModelState.IsValid)
             {
                 return this.View(categoryFormModel);

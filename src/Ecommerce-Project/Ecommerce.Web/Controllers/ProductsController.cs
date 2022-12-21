@@ -13,6 +13,8 @@
 
     public class ProductsController : BaseController
     {
+        private readonly IEnumerable<string> imageExtensions;
+
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
         private readonly IProductWishlistService productWishlistService;
@@ -25,7 +27,15 @@
 		public ProductsController(IProductService productService, ICategoryService categoryService, IProductWishlistService productWishlistService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ILogger<ProductsController> logger)
 			: base(userManager, signInManager)
 		{
-			this.productService = productService;
+            this.imageExtensions = new List<string>()
+            {
+                ".jpg",
+                ".png",
+                ".webp",
+                ".gif",
+            };
+
+            this.productService = productService;
 			this.categoryService = categoryService;
 			this.productWishlistService = productWishlistService;
 			
@@ -48,6 +58,17 @@
         [Authorize]
         public async Task<IActionResult> CreateAsync([FromForm] ProductFormModel productForm)
         {
+            foreach (var image in productForm.Images)
+            {
+                string imageext = Path.GetExtension(image.FileName).ToLower();
+
+                if (!this.imageExtensions.Contains(imageext))
+                {
+                    ModelState.AddModelError("Images", $"Please upload only the {string.Join(", ", this.imageExtensions)} image files only!");
+                    break;
+                }
+            }
+
             productForm.UserId = ClaimsPrincipalExtensions.GetUserId(this.User);
 
             if (!ModelState.IsValid)
