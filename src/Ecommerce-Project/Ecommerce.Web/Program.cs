@@ -46,7 +46,7 @@ namespace Ecommerce.Web
             builder.Services.AddTransient<IOrderService, OrderService>();
             builder.Services.AddTransient<IShoppingCardService, ShoppingCardService>();
 
-            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            //builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
@@ -87,7 +87,7 @@ namespace Ecommerce.Web
 
             app.UseRouting();
 
-            StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+            //StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
             app.UseAuthentication();
             app.UseAuthorization();

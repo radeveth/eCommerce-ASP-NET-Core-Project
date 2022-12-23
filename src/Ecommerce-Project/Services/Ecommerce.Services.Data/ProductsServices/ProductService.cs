@@ -247,7 +247,7 @@
 				DiscountPercentage = product.DiscountPercentage,
 				Description = product.Description,
 				Categories = productForm.Categories,
-				Brands = productForm.Brands
+				Brands = productForm.Brands,
 			};
 
             return productFormResult;

@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using Ecommerce.Data.Common.Models;
 
-    public class ProductWishlist : MappingModel
+    public class ProductWishlist : MappingDeleteableModel
     {
         [Required]
         [ForeignKey(nameof(ApplicationUser))]

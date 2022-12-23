@@ -37,6 +37,8 @@
 
         public DbSet<ShoppingCard> ShoppingCards { get; set; }
 
+        public DbSet<ShoppingCardProduct> ShoppingCardProducts { get; set; }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
             this.SaveChangesAsync(true, cancellationToken);
 
@@ -57,6 +59,7 @@
             modelBuilder.ApplyConfiguration(new ShoppingCardConfiguration());
             modelBuilder.ApplyConfiguration(new OrderAddressConfiguration());
             modelBuilder.ApplyConfiguration(new ProductWishlistConfiguration());
+            modelBuilder.ApplyConfiguration(new ShoppingCardProductConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

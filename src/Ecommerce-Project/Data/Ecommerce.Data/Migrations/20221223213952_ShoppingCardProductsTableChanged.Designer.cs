@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Data.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20221223143813_Refresh")]
-    partial class Refresh
+    [Migration("20221223213952_ShoppingCardProductsTableChanged")]
+    partial class ShoppingCardProductsTableChanged
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,6 +129,9 @@ namespace Ecommerce.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ShoppingCardId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -145,6 +148,9 @@ namespace Ecommerce.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("ShoppingCardId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -530,6 +536,56 @@ namespace Ecommerce.Data.Migrations
                     b.ToTable("ReviewVotes");
                 });
 
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShoppingCards");
+                });
+
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCardProduct", b =>
+                {
+                    b.Property<int>("ShoppingCardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ShoppingCardId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCardProducts");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -649,6 +705,17 @@ namespace Ecommerce.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Ecommerce.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Ecommerce.Data.Models.ShoppingCard", "ShoppingCard")
+                        .WithOne("User")
+                        .HasForeignKey("Ecommerce.Data.Models.ApplicationUser", "ShoppingCardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ShoppingCard");
                 });
 
             modelBuilder.Entity("Ecommerce.Data.Models.Category", b =>
@@ -784,6 +851,25 @@ namespace Ecommerce.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCardProduct", b =>
+                {
+                    b.HasOne("Ecommerce.Data.Models.Product", "Product")
+                        .WithMany("ShoppingCardProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Ecommerce.Data.Models.ShoppingCard", "ShoppingCard")
+                        .WithMany("ShoppingCardProducts")
+                        .HasForeignKey("ShoppingCardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ShoppingCard");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Ecommerce.Data.Models.ApplicationRole", null)
@@ -892,11 +978,21 @@ namespace Ecommerce.Data.Migrations
                     b.Navigation("ProductsWishlist");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("ShoppingCardProducts");
                 });
 
             modelBuilder.Entity("Ecommerce.Data.Models.Review", b =>
                 {
                     b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
+                {
+                    b.Navigation("ShoppingCardProducts");
+
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

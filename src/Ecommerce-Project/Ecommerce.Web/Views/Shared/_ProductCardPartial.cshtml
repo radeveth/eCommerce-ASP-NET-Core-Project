@@ -70,7 +70,14 @@
                         </div>
                     </div>
                     <div class="add-to-cart">
-                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                        @if (this.signInManager.IsSignedIn(this.User))
+                        {
+                            <button onclick="AddProductToUserShoppingCard(@Model.Id)" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                        }
+                        else
+                        {
+                            <a role="button" asp-area="Identity" asp-page="/Account/Login" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</a>
+                        }
                     </div>
                 </div>
             </div>

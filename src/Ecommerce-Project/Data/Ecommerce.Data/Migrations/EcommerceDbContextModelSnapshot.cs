@@ -529,11 +529,11 @@ namespace Ecommerce.Data.Migrations
 
             modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -544,14 +544,40 @@ namespace Ecommerce.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ShoppingCards");
+                });
+
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCardProduct", b =>
+                {
+                    b.Property<int>("ShoppingCardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserId", "ProductId");
+                    b.HasKey("ShoppingCardId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ShoppingCards");
+                    b.ToTable("ShoppingCardProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -810,21 +836,32 @@ namespace Ecommerce.Data.Migrations
 
             modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
                 {
+                    b.HasOne("Ecommerce.Data.Models.ApplicationUser", "User")
+                        .WithOne("ShoppingCard")
+                        .HasForeignKey("Ecommerce.Data.Models.ShoppingCard", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCardProduct", b =>
+                {
                     b.HasOne("Ecommerce.Data.Models.Product", "Product")
-                        .WithMany("ShoppingCards")
+                        .WithMany("ShoppingCardProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Ecommerce.Data.Models.ApplicationUser", "User")
-                        .WithMany("ShoppingCards")
-                        .HasForeignKey("UserId")
+                    b.HasOne("Ecommerce.Data.Models.ShoppingCard", "ShoppingCard")
+                        .WithMany("ShoppingCardProducts")
+                        .HasForeignKey("ShoppingCardId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Product");
 
-                    b.Navigation("User");
+                    b.Navigation("ShoppingCard");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -910,7 +947,8 @@ namespace Ecommerce.Data.Migrations
 
                     b.Navigation("Roles");
 
-                    b.Navigation("ShoppingCards");
+                    b.Navigation("ShoppingCard")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ecommerce.Data.Models.Brand", b =>
@@ -938,12 +976,17 @@ namespace Ecommerce.Data.Migrations
 
                     b.Navigation("Reviews");
 
-                    b.Navigation("ShoppingCards");
+                    b.Navigation("ShoppingCardProducts");
                 });
 
             modelBuilder.Entity("Ecommerce.Data.Models.Review", b =>
                 {
                     b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
+                {
+                    b.Navigation("ShoppingCardProducts");
                 });
 #pragma warning restore 612, 618
         }

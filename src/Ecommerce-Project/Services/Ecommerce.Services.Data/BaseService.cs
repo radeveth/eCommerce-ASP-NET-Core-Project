@@ -51,5 +51,10 @@
         {
             return this.dbContext.Images.Where(p => p.IsDeleted == false);
         }
+
+        public IEnumerable<ShoppingCard> GetUnDeletedShoppingCards()
+        {
+            return this.dbContext.ShoppingCards.Where(p => p.IsDeleted == false);
+        }
     }
 }

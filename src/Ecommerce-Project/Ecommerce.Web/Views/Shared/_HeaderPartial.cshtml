@@ -1,8 +1,10 @@
 ﻿@using Ecommerce.Common
 @using Ecommerce.Services.Data.ProductWishlistsServices;
+@using Ecommerce.Services.Data.ShoppingCardsServices;
 @using Microsoft.AspNetCore.Identity;
 
 @inject IProductWishlistService productWishlistService;
+@inject IShoppingCardService shoppingCardService;
 @inject UserManager<ApplicationUser> userManagaer;
 @inject SignInManager<ApplicationUser> signInManager;
 
@@ -46,6 +48,8 @@
                     @if (signInManager.IsSignedIn(this.User))
                     {
                         int wishlistProductsCount = productWishlistService.GetCountOfUserWishlit(userManagaer.GetUserAsync(this.User).Result.Id);
+                        int shoppingCardProductsCount = shoppingCardService.GetUserShoppingCard(userManagaer.GetUserAsync(this.User).Result.Id).Products.Count();
+
                         <div>
                             <a asp-controller="ProductWishlists" asp-action="AllForUser" style="margin-top: 10px" class="nav-link">
                                 <i style="color: red" class="fa fa-heart"></i>
@@ -54,10 +58,10 @@
                             </a>
                         </div>
                         <div>
-                            <a href="#" style="margin-top: 10px" class="nav-link">
+                            <a asp-controller="ShoppingCard" asp-action="UserShoppingCard" style="margin-top: 10px" class="nav-link">
                                 <i style="color: red" class="fa fa-shopping-cart"></i>
                                 <span>Your Cart</span>
-                                <div class="qty">3</div>
+                                <div class="qty">@shoppingCardProductsCount</div>
                             </a>
                         </div>
                     }

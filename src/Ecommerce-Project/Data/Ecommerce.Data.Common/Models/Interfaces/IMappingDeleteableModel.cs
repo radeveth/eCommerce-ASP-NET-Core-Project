@@ -1,9 +1,6 @@
-﻿namespace Ecommerce.Data.Common.Models
+﻿namespace Ecommerce.Data.Common.Models.Interfaces
 {
-    using System;
-    using Ecommerce.Data.Common.Models.Interfaces;
-
-    public class MappingModel : IMappingModel
+    public interface IMappingDeleteableModel
     {
         public DateTime CreatedOn { get; set; }
 

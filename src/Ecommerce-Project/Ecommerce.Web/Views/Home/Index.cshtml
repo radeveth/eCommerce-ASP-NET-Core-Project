@@ -74,4 +74,10 @@
             })
         };
     </script>
+
+    <script>
+        function AddProductToUserShoppingCard(productId) {
+            $.get('shoppingcard/addProducttoUsershoppingcard?productId=' + productId, (data) => {});
+        }
+    </script>
 }

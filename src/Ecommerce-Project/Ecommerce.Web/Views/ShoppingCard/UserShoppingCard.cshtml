@@ -1,0 +1,29 @@
+﻿@model ShoppingCardServiceModel
+
+@{
+    ViewData["Title"] = "Your Shopping Card";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="offset-2 col-8" style="margin-right: 35px">
+            @if (Model.Products.Any())
+            {
+                <div class="row mt-4">
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col-4 mt-4">
+                            <partial name="_ProductCardPartial" model="product" />
+                        </div>
+                    }
+                </div>
+
+                <partial name="_PaginationPartial" model="Model" />
+            }
+            else
+            {
+                
+            }
+        </div>
+    </div>
+</div>

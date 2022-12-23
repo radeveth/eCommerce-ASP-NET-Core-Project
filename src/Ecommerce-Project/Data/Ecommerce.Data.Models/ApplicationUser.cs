@@ -1,6 +1,7 @@
 ﻿namespace Ecommerce.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using Ecommerce.Data.Common.Models;
     using Ecommerce.Data.Common.Models.Interfaces;
     using Ecommerce.Data.Models.Enums;
@@ -23,7 +24,6 @@
             this.Orders = new HashSet<Order>();
             this.ProductsWishlist = new HashSet<ProductWishlist>();
             this.ReviewVotes = new HashSet<ReviewVote>();
-            this.ShoppingCards = new HashSet<ShoppingCard>();
         }
 
         [Required]
@@ -58,6 +58,6 @@
 
         public virtual ICollection<ReviewVote> ReviewVotes { get; set; }
 
-        public virtual ICollection<ShoppingCard> ShoppingCards { get; set; }
+        public ShoppingCard ShoppingCard { get; set; }
     }
 }
