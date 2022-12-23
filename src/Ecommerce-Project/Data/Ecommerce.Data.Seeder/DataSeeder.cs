@@ -78,35 +78,35 @@
                 new Category()
                 {
                     Name = "Smartphones",
-                    Description = "",
+                    Description = string.Empty,
                     CreatedOn = DateTime.UtcNow,
                     IsDeleted = false,
                 },
                 new Category()
                 {
                     Name = "Electric Appliances",
-                    Description = "",
+                    Description = string.Empty,
                     CreatedOn = DateTime.UtcNow,
                     IsDeleted = false,
                 },
                 new Category()
                 {
                     Name = "Fashion",
-                    Description = "",
+                    Description = string.Empty,
                     CreatedOn = DateTime.UtcNow,
                     IsDeleted = false,
                 },
                 new Category()
                 {
                     Name = "Sports",
-                    Description = "",
+                    Description = string.Empty,
                     CreatedOn = DateTime.UtcNow,
                     IsDeleted = false,
                 },
                 new Category()
                 {
                     Name = "Gaming",
-                    Description = "",
+                    Description = string.Empty,
                     CreatedOn = DateTime.UtcNow,
                     IsDeleted = false,
                 },

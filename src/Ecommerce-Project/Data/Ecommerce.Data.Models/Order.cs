@@ -9,23 +9,15 @@
 
     public class Order : BaseDeleteableModel<string>
     {
-        public Order()
-        {
-            this.Products = new HashSet<Product>();
-        }
-
         [ForeignKey(nameof(ApplicationUser))]
         public string UserId { get; set; }
 
         public ApplicationUser User { get; set; }
 
-        [MaxLength(CountryMaxLength)]
-        public string Country { get; set; }
+        [ForeignKey(nameof(ProductId))]
+        public int ProductId { get; set; }
 
-        [MaxLength(CityMaxLength)]
-        public string City { get; set; }
-
-        public string PostalCode { get; set; }
+        public Product Product { get; set; }
 
         [ForeignKey(nameof(OrderAddress))]
         public int AddressId { get; set; }
@@ -41,7 +33,5 @@
         public PaymentMethod PaymentMethod { get; set; }
 
         public bool IsDelivered { get; set; }
-
-        public virtual ICollection<Product> Products { get; set; }
     }
 }

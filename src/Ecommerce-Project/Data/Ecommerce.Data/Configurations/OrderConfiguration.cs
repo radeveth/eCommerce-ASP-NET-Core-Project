@@ -19,6 +19,12 @@
                 .WithMany(a => a.Orders)
                 .HasForeignKey(o => o.AddressId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            orderBuilder
+                .HasOne(o => o.Product)
+                .WithMany(p => p.Orders)
+                .HasForeignKey(o => o.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

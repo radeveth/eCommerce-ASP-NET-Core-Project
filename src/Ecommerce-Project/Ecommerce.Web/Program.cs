@@ -8,11 +8,15 @@ namespace Ecommerce.Web
     using Ecommerce.Services.Data.BrandsServices;
     using Ecommerce.Services.Data.CategoriesServices;
     using Ecommerce.Services.Data.HomeServices;
+    using Ecommerce.Services.Data.OrdersServices;
     using Ecommerce.Services.Data.ProductsServices;
     using Ecommerce.Services.Data.ProductWishlistsServices;
     using Ecommerce.Services.Data.ReviewsServices;
+    using Ecommerce.Services.Data.ShoppingCardsServices;
     using Ecommerce.Services.Mappings;
+    using Ecommerce.Web.Settings;
     using Microsoft.EntityFrameworkCore;
+    using Stripe;
 
     public class Program
     {
@@ -35,10 +39,14 @@ namespace Ecommerce.Web
             builder.Services.AddTransient<IBrandService, BrandService>();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IHomeService, HomeService>();
-            builder.Services.AddTransient<IProductService, ProductService>();
+            builder.Services.AddTransient<IProductService, Ecommerce.Services.Data.ProductsServices.ProductService>();
             builder.Services.AddTransient<IProductWishlistService, ProductWishlistService>();
-            builder.Services.AddTransient<IReviewService, ReviewService>();
+            builder.Services.AddTransient<IReviewService, Ecommerce.Services.Data.ReviewsServices.ReviewService>();
             builder.Services.AddTransient<IAdminService, AdminService>();
+            builder.Services.AddTransient<IOrderService, OrderService>();
+            builder.Services.AddTransient<IShoppingCardService, ShoppingCardService>();
+
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
@@ -78,6 +86,8 @@ namespace Ecommerce.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
             app.UseAuthentication();
             app.UseAuthorization();

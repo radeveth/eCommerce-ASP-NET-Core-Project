@@ -12,9 +12,11 @@
     {
         public Product()
         {
+            this.Orders = new HashSet<Order>();
             this.Reviews = new HashSet<Review>();
             this.Images = new HashSet<Image>();
             this.ProductsWishlist = new HashSet<ProductWishlist>();
+            this.ShoppingCards = new HashSet<ShoppingCard>();
         }
 
         [Required]
@@ -55,16 +57,15 @@
 
         public ApplicationUser User { get; set; }
 
-        [AllowNull]
-        [ForeignKey(nameof(Order))]
-        public string? OrderId { get; set; }
-
-        public Order Order { get; set; }
-
         public virtual ICollection<Image> Images { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
 
         public virtual ICollection<ProductWishlist> ProductsWishlist { get; set; }
+
+        public virtual ICollection<ShoppingCard> ShoppingCards { get; set; }
+
     }
 }

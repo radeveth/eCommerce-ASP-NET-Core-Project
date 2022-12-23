@@ -4,6 +4,7 @@ using Ecommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Data.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    partial class EcommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221223143431_OrderAndProductEntitiesChanged")]
+    partial class OrderAndProductEntitiesChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -527,33 +530,6 @@ namespace Ecommerce.Data.Migrations
                     b.ToTable("ReviewVotes");
                 });
 
-            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("UserId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ShoppingCards");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -808,25 +784,6 @@ namespace Ecommerce.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
-                {
-                    b.HasOne("Ecommerce.Data.Models.Product", "Product")
-                        .WithMany("ShoppingCards")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Data.Models.ApplicationUser", "User")
-                        .WithMany("ShoppingCards")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Ecommerce.Data.Models.ApplicationRole", null)
@@ -909,8 +866,6 @@ namespace Ecommerce.Data.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("Roles");
-
-                    b.Navigation("ShoppingCards");
                 });
 
             modelBuilder.Entity("Ecommerce.Data.Models.Brand", b =>
@@ -937,8 +892,6 @@ namespace Ecommerce.Data.Migrations
                     b.Navigation("ProductsWishlist");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("ShoppingCards");
                 });
 
             modelBuilder.Entity("Ecommerce.Data.Models.Review", b =>

@@ -4,6 +4,26 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+    ApplicationUser user = await UserManager.GetUserAsync(this.User);
+    bool isAdministrator = await UserManager.IsInRoleAsync(user, "Administrator");
+
+    if (isAdministrator)
+    {
+        <span class="offset-5 col-1">
+            <a asp-area="AdminPanel" asp-controller="Admin" asp-action="Dashboard" class="nav-link">
+                <img src="./images/admin-home-icon.png" width="15px" height="15px" />
+                <span class="text-white badge"> Admin Panel</span>
+            </a>
+        </span>
+        <span class="col-1">
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="nav-link"><i class="fa fa-user" style="color: red"></i> <span class="text-white badge"> My Account</span></a>
+        </span>
+        <span class="col-1">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@this.Url.Action("Index", "Home", new { area = string.Empty })">
+                <button style="color: white" type="submit" class="nav-link btn btn-link"><i class="fa fa-sign-out" style="color: red"></i> Logout</button>
+            </form>
+        </span>
+    }
     <span class="offset-6 col-1">
         <a asp-area="Identity" asp-page="/Account/Manage/Index" class="nav-link"><i class="fa fa-user" style="color: red"></i> <span class="text-white badge"> My Account</span></a>
     </span>

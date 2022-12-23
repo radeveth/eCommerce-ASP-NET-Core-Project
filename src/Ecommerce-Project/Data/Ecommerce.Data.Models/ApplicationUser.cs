@@ -23,6 +23,7 @@
             this.Orders = new HashSet<Order>();
             this.ProductsWishlist = new HashSet<ProductWishlist>();
             this.ReviewVotes = new HashSet<ReviewVote>();
+            this.ShoppingCards = new HashSet<ShoppingCard>();
         }
 
         [Required]
@@ -56,5 +57,7 @@
         public virtual ICollection<ProductWishlist> ProductsWishlist { get; set; }
 
         public virtual ICollection<ReviewVote> ReviewVotes { get; set; }
+
+        public virtual ICollection<ShoppingCard> ShoppingCards { get; set; }
     }
 }

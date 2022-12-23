@@ -16,7 +16,12 @@
 			this.adminService = adminService;
 		}
 
-		[HttpGet]
+		public IActionResult Dashboard()
+		{
+			return this.View();
+		}
+
+        [HttpGet]
 		public async Task<IActionResult> ProductsDashboard()
 		{
 			ProductsStatisticsServiceModel serviceModel = await this.adminService.GetApplicationProductsStatistics();

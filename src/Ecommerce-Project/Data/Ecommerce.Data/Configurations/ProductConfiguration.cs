@@ -25,13 +25,6 @@
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            productBuilder
-                .HasOne(p => p.Order)
-                .WithMany(o => o.Products)
-                .HasForeignKey(p => p.OrderId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
