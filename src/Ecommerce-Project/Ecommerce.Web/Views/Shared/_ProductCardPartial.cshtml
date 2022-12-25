@@ -10,6 +10,10 @@
                     <div class="product-img" style="height: @($"{ViewData["ImageHeight"]}px")">
                         <img src="@Model.Image.Src" alt="">
                         <div class="product-label">
+                            @if (Model.AddedTimeToShoppingCard != null)
+                            {
+                                <span class="sale">x @Model.AddedTimeToShoppingCard</span>
+                            }
                             @if (Model.IsHaveDiscount)
                             {
                                 <span class="sale">@Model.DiscountPercentage%</span>
@@ -69,16 +73,19 @@
                             <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id" class="offset-1 col-2 quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></a>
                         </div>
                     </div>
-                    <div class="add-to-cart">
-                        @if (this.signInManager.IsSignedIn(this.User))
-                        {
-                            <button onclick="AddProductToUserShoppingCard(@Model.Id)" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                        }
-                        else
-                        {
-                            <a role="button" asp-area="Identity" asp-page="/Account/Login" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</a>
-                        }
-                    </div>
+                    @if (ViewBag.UserIsInShoppingCard == null)
+                    {
+                        <div class="add-to-cart">
+                            @if (this.signInManager.IsSignedIn(this.User))
+                            {
+                                <button onclick="AddProductToUserShoppingCard(@Model.Id)" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                            }
+                            else
+                            {
+                                <button role="button" asp-area="Identity" asp-page="/Account/Login" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
             <div id="slick-nav-1" class="products-slick-nav"></div>

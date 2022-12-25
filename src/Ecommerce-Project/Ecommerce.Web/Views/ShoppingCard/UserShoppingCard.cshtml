@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Your Shopping Card";
+    ViewData["ImageHeight"] = 400;
+    ViewBag.UserIsInShoppingCard = true;
 }
 
 <div class="container-fluid">
@@ -22,8 +24,15 @@
             }
             else
             {
-                
+
             }
         </div>
     </div>
+</div>
+
+<div class="row mt-3">
+    <a role="button" class="offset-5 col-2 btn" style="background-color: #D10024; color: white">
+        <i class="fa fa-forward" aria-hidden="true"></i>
+        Continue
+    </a>
 </div>

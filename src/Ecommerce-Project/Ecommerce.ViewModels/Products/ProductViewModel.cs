@@ -28,5 +28,7 @@
         public DateTime CreatedOn { get; set; }
 
         public bool IsProductIsInCurrentUserWishlist { get; set; }
+
+        public int? AddedTimeToShoppingCard { get; set; } = null;
     }
 }

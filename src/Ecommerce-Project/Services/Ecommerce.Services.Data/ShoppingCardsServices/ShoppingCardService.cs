@@ -42,13 +42,25 @@
                 shoppingCard = await this.CreateAsync(userId, productId);
             }
 
-            ShoppingCardProduct shoppingCardProduct = new ShoppingCardProduct()
-            {
-                ShoppingCardId = shoppingCard.Id,
-                ProductId = productId,
-            };
+            ShoppingCardProduct shoppingCardProduct = this.GetShoppingCradProduct(shoppingCard.Id, productId);
 
-            await this.dbContext.ShoppingCardProducts.AddAsync(shoppingCardProduct);
+            if (shoppingCardProduct != null)
+            {
+                shoppingCardProduct.Count++;
+                shoppingCardProduct.ModifiedOn = DateTime.UtcNow;
+            }
+            else
+            {
+                shoppingCardProduct = new ShoppingCardProduct()
+                {
+                    ShoppingCardId = shoppingCard.Id,
+                    ProductId = productId,
+                    Count = 1,
+                };
+
+                await this.dbContext.ShoppingCardProducts.AddAsync(shoppingCardProduct);
+            }
+
             await this.dbContext.SaveChangesAsync();
         }
 
@@ -67,6 +79,7 @@
             {
                 if (productIds.Contains(product.Id))
                 {
+                    product.AddedTimeToShoppingCard = this.GetShoppingCradProduct(shoppingCard.Id, product.Id).Count;
                     products.Add(product);
                 }
             }
@@ -81,6 +94,7 @@
             };
         }
 
+        // Usefull methods
         private ShoppingCard GetById(int id)
         {
             return this.GetUnDeletedShoppingCards()
@@ -91,6 +105,12 @@
         {
             return this.GetUnDeletedShoppingCards()
                        .FirstOrDefault(sc => sc.UserId == id);
+        }
+
+        private ShoppingCardProduct GetShoppingCradProduct(int shoppingCardId, int productId)
+        {
+            return this.dbContext.ShoppingCardProducts
+                .FirstOrDefault(scp => scp.ShoppingCardId == shoppingCardId && scp.ProductId == productId);
         }
     }
 }
