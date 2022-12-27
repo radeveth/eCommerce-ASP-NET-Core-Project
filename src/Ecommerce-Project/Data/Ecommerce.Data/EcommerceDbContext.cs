@@ -35,9 +35,9 @@
 
         public DbSet<ReviewVote> ReviewVotes { get; set; }
 
-        public DbSet<ShoppingCard> ShoppingCards { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
-        public DbSet<ShoppingCardProduct> ShoppingCardProducts { get; set; }
+        public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
             this.SaveChangesAsync(true, cancellationToken);

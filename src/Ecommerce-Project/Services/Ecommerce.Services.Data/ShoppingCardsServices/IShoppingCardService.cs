@@ -2,16 +2,17 @@
 {
     using Ecommerce.Data.Models;
     using Ecommerce.ViewModels.Products;
-    using Ecommerce.ViewModels.ShoppingCard;
+    using Ecommerce.ViewModels.ShoppingCart;
+    using Ecommerce.ViewModels.ShoppingCart;
 
     public interface IShoppingCardService
     {
         // Create
-        public Task<ShoppingCard> CreateAsync(string userId, int productId);
+        public Task<ShoppingCart> CreateAsync(string userId, int productId);
 
         public Task AddProductToUserShoppingCardAsync(string userId, int productId);
 
         // Read
-        public ShoppingCardServiceModel GetUserShoppingCard(string userId, int currentPage = 1);
+        public ShoppingCartServiceModel GetUserShoppingCard(string userId, int currentPage = 1);
     }
 }

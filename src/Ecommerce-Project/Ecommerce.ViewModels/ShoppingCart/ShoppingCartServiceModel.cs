@@ -1,8 +1,8 @@
-﻿namespace Ecommerce.ViewModels.ShoppingCard
+﻿namespace Ecommerce.ViewModels.ShoppingCart
 {
     using Ecommerce.ViewModels.Products;
 
-    public class ShoppingCardServiceModel
+    public class ShoppingCartServiceModel
     {
         public const int ProductsPerPage = 12;
 

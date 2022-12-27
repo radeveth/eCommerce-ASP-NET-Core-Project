@@ -4,9 +4,9 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class ShoppingCardConfiguration : IEntityTypeConfiguration<ShoppingCard>
+    public class ShoppingCardConfiguration : IEntityTypeConfiguration<ShoppingCart>
     {
-        public void Configure(EntityTypeBuilder<ShoppingCard> shoppingCardBuilder)
+        public void Configure(EntityTypeBuilder<ShoppingCart> shoppingCardBuilder)
         {
             shoppingCardBuilder
                 .HasOne(s => s.User)

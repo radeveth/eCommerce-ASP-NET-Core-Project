@@ -10,9 +10,9 @@
                     <div class="product-img" style="height: @($"{ViewData["ImageHeight"]}px")">
                         <img src="@Model.Image.Src" alt="">
                         <div class="product-label">
-                            @if (Model.AddedTimeToShoppingCard != null)
+                            @if (Model.AddedTimesToShoppingCart != null)
                             {
-                                <span class="sale">x @Model.AddedTimeToShoppingCard</span>
+                                <span class="sale">x @Model.AddedTimesToShoppingCart</span>
                             }
                             @if (Model.IsHaveDiscount)
                             {

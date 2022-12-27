@@ -1,19 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
-using Ecommerce.Data.Models;
-using Ecommerce.Data.Models.Enums;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using static Ecommerce.Data.Common.DataValidation.ApplicationUserValidation;
-
-
-namespace Ecommerce.Web.Areas.Identity.Pages.Account
+﻿namespace Ecommerce.Web.Areas.Identity.Pages.Account
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Text;
+    using System.Text.Encodings.Web;
+    using Ecommerce.Data.Models;
+    using Ecommerce.Data.Models.Enums;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.AspNetCore.WebUtilities;
+    using static Ecommerce.Data.Common.DataValidation.ApplicationUserValidation;
+
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

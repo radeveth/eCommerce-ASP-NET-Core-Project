@@ -3,11 +3,11 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using Ecommerce.Data.Common.Models;
 
-    public class ShoppingCard : BaseDeleteableModel<int>
+    public class ShoppingCart : BaseDeleteableModel<int>
     {
-        public ShoppingCard()
+        public ShoppingCart()
         {
-            this.ShoppingCardProducts = new HashSet<ShoppingCardProduct>();
+            this.ShoppingCardProducts = new HashSet<ShoppingCartProduct>();
         }
 
         [ForeignKey(nameof(ApplicationUser))]
@@ -15,6 +15,6 @@
 
         public ApplicationUser User { get; set; }
 
-        public virtual ICollection<ShoppingCardProduct> ShoppingCardProducts { get; set; }
+        public virtual ICollection<ShoppingCartProduct> ShoppingCardProducts { get; set; }
     }
 }

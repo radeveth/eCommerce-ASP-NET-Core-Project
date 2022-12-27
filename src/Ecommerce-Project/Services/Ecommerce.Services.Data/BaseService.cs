@@ -52,9 +52,9 @@
             return this.dbContext.Images.Where(p => p.IsDeleted == false);
         }
 
-        public IEnumerable<ShoppingCard> GetUnDeletedShoppingCards()
+        public IEnumerable<ShoppingCart> GetUnDeletedShoppingCards()
         {
-            return this.dbContext.ShoppingCards.Where(p => p.IsDeleted == false);
+            return this.dbContext.ShoppingCarts.Where(p => p.IsDeleted == false);
         }
     }
 }

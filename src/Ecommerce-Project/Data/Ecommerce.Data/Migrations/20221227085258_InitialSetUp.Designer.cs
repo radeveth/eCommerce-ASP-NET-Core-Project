@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Data.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20221223232027_UsersTableChanged")]
-    partial class UsersTableChanged
+    [Migration("20221227085258_InitialSetUp")]
+    partial class InitialSetUp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -530,7 +530,7 @@ namespace Ecommerce.Data.Migrations
                     b.ToTable("ReviewVotes");
                 });
 
-            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -559,15 +559,18 @@ namespace Ecommerce.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ShoppingCards");
+                    b.ToTable("ShoppingCarts");
                 });
 
-            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCardProduct", b =>
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCartProduct", b =>
                 {
                     b.Property<int>("ShoppingCardId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -580,7 +583,7 @@ namespace Ecommerce.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ShoppingCardProducts");
+                    b.ToTable("ShoppingCartProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -837,18 +840,18 @@ namespace Ecommerce.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCart", b =>
                 {
                     b.HasOne("Ecommerce.Data.Models.ApplicationUser", "User")
                         .WithOne("ShoppingCard")
-                        .HasForeignKey("Ecommerce.Data.Models.ShoppingCard", "UserId")
+                        .HasForeignKey("Ecommerce.Data.Models.ShoppingCart", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCardProduct", b =>
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCartProduct", b =>
                 {
                     b.HasOne("Ecommerce.Data.Models.Product", "Product")
                         .WithMany("ShoppingCardProducts")
@@ -856,7 +859,7 @@ namespace Ecommerce.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Ecommerce.Data.Models.ShoppingCard", "ShoppingCard")
+                    b.HasOne("Ecommerce.Data.Models.ShoppingCart", "ShoppingCard")
                         .WithMany("ShoppingCardProducts")
                         .HasForeignKey("ShoppingCardId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -987,7 +990,7 @@ namespace Ecommerce.Data.Migrations
                     b.Navigation("Votes");
                 });
 
-            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCard", b =>
+            modelBuilder.Entity("Ecommerce.Data.Models.ShoppingCart", b =>
                 {
                     b.Navigation("ShoppingCardProducts");
                 });

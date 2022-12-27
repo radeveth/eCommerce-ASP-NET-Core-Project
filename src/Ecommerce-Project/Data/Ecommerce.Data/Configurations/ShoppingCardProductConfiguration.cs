@@ -4,9 +4,9 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class ShoppingCardProductConfiguration : IEntityTypeConfiguration<ShoppingCardProduct>
+    public class ShoppingCardProductConfiguration : IEntityTypeConfiguration<ShoppingCartProduct>
     {
-        public void Configure(EntityTypeBuilder<ShoppingCardProduct> shoppingCardProductBuilder)
+        public void Configure(EntityTypeBuilder<ShoppingCartProduct> shoppingCardProductBuilder)
         {
             shoppingCardProductBuilder
                 .HasKey(s => new { s.ShoppingCardId, s.ProductId });

@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Ecommerce.Data.Models;
-
-namespace Ecommerce.Web.Areas.Identity.Pages.Account
+﻿namespace Ecommerce.Web.Areas.Identity.Pages.Account
 {
+    using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Ecommerce.Data.Models;
+
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

@@ -5,7 +5,8 @@
     using Ecommerce.Data.Models;
     using Ecommerce.Services.Data.ProductsServices;
     using Ecommerce.ViewModels.Products;
-    using Ecommerce.ViewModels.ShoppingCard;
+    using Ecommerce.ViewModels.ShoppingCart;
+    using Ecommerce.ViewModels.ShoppingCart;
 
     public class ShoppingCardService : BaseService, IShoppingCardService
     {
@@ -20,14 +21,14 @@
         }
 
         // Create
-        public async Task<ShoppingCard> CreateAsync(string userId, int productId)
+        public async Task<ShoppingCart> CreateAsync(string userId, int productId)
         {
-            ShoppingCard shoppingCard = new ShoppingCard()
+            ShoppingCart shoppingCard = new ShoppingCart()
             {
                 UserId = userId,
             };
 
-            await this.dbContext.ShoppingCards.AddAsync(shoppingCard);
+            await this.dbContext.ShoppingCarts.AddAsync(shoppingCard);
             await this.dbContext.SaveChangesAsync();
 
             return shoppingCard;
@@ -35,14 +36,14 @@
 
         public async Task AddProductToUserShoppingCardAsync(string userId, int productId)
         {
-            ShoppingCard shoppingCard = this.GetByUserId(userId);
+            ShoppingCart shoppingCard = this.GetByUserId(userId);
 
             if (shoppingCard == null)
             {
                 shoppingCard = await this.CreateAsync(userId, productId);
             }
 
-            ShoppingCardProduct shoppingCardProduct = this.GetShoppingCradProduct(shoppingCard.Id, productId);
+            ShoppingCartProduct shoppingCardProduct = this.GetShoppingCradProduct(shoppingCard.Id, productId);
 
             if (shoppingCardProduct != null)
             {
@@ -51,25 +52,25 @@
             }
             else
             {
-                shoppingCardProduct = new ShoppingCardProduct()
+                shoppingCardProduct = new ShoppingCartProduct()
                 {
                     ShoppingCardId = shoppingCard.Id,
                     ProductId = productId,
                     Count = 1,
                 };
 
-                await this.dbContext.ShoppingCardProducts.AddAsync(shoppingCardProduct);
+                await this.dbContext.ShoppingCartProducts.AddAsync(shoppingCardProduct);
             }
 
             await this.dbContext.SaveChangesAsync();
         }
 
         // Read
-        public ShoppingCardServiceModel GetUserShoppingCard(string userId, int currentPage = 1)
+        public ShoppingCartServiceModel GetUserShoppingCard(string userId, int currentPage = 1)
         {
-            ShoppingCard shoppingCard = this.GetByUserId(userId);
+            ShoppingCart shoppingCard = this.GetByUserId(userId);
 
-            IEnumerable<int> productIds = this.dbContext.ShoppingCardProducts
+            IEnumerable<int> productIds = this.dbContext.ShoppingCartProducts
                 .Where(scp => scp.ShoppingCardId == shoppingCard.Id)
                 .Select(scp => scp.ProductId);
 
@@ -79,37 +80,37 @@
             {
                 if (productIds.Contains(product.Id))
                 {
-                    product.AddedTimeToShoppingCard = this.GetShoppingCradProduct(shoppingCard.Id, product.Id).Count;
+                    product.AddedTimesToShoppingCart = this.GetShoppingCradProduct(shoppingCard.Id, product.Id).Count;
                     products.Add(product);
                 }
             }
 
-            return new ShoppingCardServiceModel()
+            return new ShoppingCartServiceModel()
             {
                 Products = products
-                    .Skip(currentPage - 1 * ShoppingCardServiceModel.ProductsPerPage)
-                    .Take(ShoppingCardServiceModel.ProductsPerPage),
+                    .Skip(currentPage - 1 * ShoppingCartServiceModel.ProductsPerPage)
+                    .Take(ShoppingCartServiceModel.ProductsPerPage),
                 TotalProducts = products.Count,
                 CurrentPage = currentPage,
             };
         }
 
         // Usefull methods
-        private ShoppingCard GetById(int id)
+        private ShoppingCart GetById(int id)
         {
             return this.GetUnDeletedShoppingCards()
                        .FirstOrDefault(sc => sc.Id == id);
         }
 
-        private ShoppingCard GetByUserId(string id)
+        private ShoppingCart GetByUserId(string id)
         {
             return this.GetUnDeletedShoppingCards()
                        .FirstOrDefault(sc => sc.UserId == id);
         }
 
-        private ShoppingCardProduct GetShoppingCradProduct(int shoppingCardId, int productId)
+        private ShoppingCartProduct GetShoppingCradProduct(int shoppingCardId, int productId)
         {
-            return this.dbContext.ShoppingCardProducts
+            return this.dbContext.ShoppingCartProducts
                 .FirstOrDefault(scp => scp.ShoppingCardId == shoppingCardId && scp.ProductId == productId);
         }
     }

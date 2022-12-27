@@ -58,6 +58,6 @@
 
         public virtual ICollection<ReviewVote> ReviewVotes { get; set; }
 
-        public ShoppingCard ShoppingCard { get; set; }
+        public ShoppingCart ShoppingCard { get; set; }
     }
 }
